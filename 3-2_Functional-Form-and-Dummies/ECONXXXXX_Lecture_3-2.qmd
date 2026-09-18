@@ -1,0 +1,641 @@
+---
+#      LECTURE 3.2 - Functional Form and Dummies
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation. The one that bites today is the difference
+#         between a percentage and a percentage point.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Logs and Elasticities
+#        2  Dummy Variables
+#        3  Interactions
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Logs and Elasticities
+#        35-38    pause
+#        38-63    Dummy Variables
+#        63-66    pause
+#        66-92    Interactions
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      WEIGHT. Section three is the one that matters. The misreading of a
+#      main term once its interaction is in the model is the single most
+#      common error in applied work, and it survives a course that taught
+#      interactions correctly but quickly. Do not let sections one and two
+#      eat into it.
+#
+#      FIGURES. None exist. Four placeholders are marked with FIGURE
+#      comments giving what each has to show. When they are built they
+#      belong in _apps/, exported by a script, so slide and app cannot
+#      drift apart. Until then every exhibit points at
+#      ../_shared/placeholder.pdf.
+#
+#      THE POPULATION. The same simulated population of 200,000 and the
+#      same sample of 120. Note the honest complication: that population
+#      was generated LINEAR in schooling, so a log specification fitted to
+#      it is an approximation we imposed rather than a truth we recovered.
+#      That is not a flaw in the example. It is the lecture.
+#
+#      REFERENCES. Entries for this deck are in ../../bib/3-2.bib and must
+#      be merged into ../_shared/econometrics.bib before this renders.
+#
+title: "Functional Form and Dummies"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 3.2"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 3.2
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{3.2}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## Adding a Control Changed the Coefficient Last Week
+
+Last week we added a control and the return to schooling changed. We could
+say by how much, and we could say why.
+
+::: {.tablenotes}
+Two minutes with your neighbour. Every model we have written says one more
+year of schooling is worth the same amount to everyone, at every level of
+schooling. Where did we decide that? And would you defend it?
+:::
+
+<!-- 0-6 min. Retrieval. Nobody decided it. It arrived with the straight
+     line in week 4 and has never been questioned since. Take two or three
+     answers, do not resolve them. -->
+
+## Lecture Plan
+
+- **Logs and Elasticities.** Change the units and the coefficient answers a different question.
+- **Dummy Variables.** A category shifts the intercept, relative to a base you chose.
+- **Interactions.** Let the slope differ across groups, and every coefficient around it changes meaning.
+
+::: {.tablenotes}
+Reading: [to settle]. @huntingtonklein2022 is the accessible treatment of
+specification as a choice rather than a step.
+:::
+
+# Logs and Elasticities
+
+## The Straight Line Assumes Constant Returns to Schooling
+
+**The goal of this section:** show that changing the units of a variable
+changes the question its coefficient answers, and be exact about which
+question.
+
+Our model has said, without ever arguing for it, that the tenth year of
+schooling and the twentieth year are worth the same 1.30 euro.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The same 120 people twice: earnings
+against schooling, and log earnings against schooling. Two straight lines,
+two different claims about the world.}
+```
+
+<!-- FIGURE 3-2_levels-logs: two panels, same sample. Left, earnings on
+     schooling with the fitted line. Right, log earnings on schooling with
+     its fitted line. Needs identical point identities across panels so a
+     student can follow one person from one panel to the other. -->
+
+<!-- IDEA 1. 10-35 min. -->
+
+## Logs Put the Change in Proportional Terms
+
+**Objective:** ask what a year of schooling is worth as a proportion of what
+a person already earns, rather than in euro.
+
+$$\log(w_i) = \beta_0 + \beta_1 S_i + u_i$$
+
+- $w_i$: hourly earnings of person $i$, in euro
+- $\log(\cdot)$: the natural logarithm
+- $S_i$: years of schooling
+- $\beta_1$: the change in log earnings per year of schooling
+- $u_i$: everything else
+
+::: {.defn title="Semi-elasticity"}
+$\beta_1$ is a semi-elasticity: an absolute change in $S$ mapped to a
+proportional change in $w$. Multiply it by one hundred and you have a
+percentage.
+:::
+
+## Four Specifications and What the Slope Means in Each
+
+```{=latex}
+\tabcaption{The same relationship under four specifications, and what the
+slope answers in each.}
+
+\begin{dgtable}{p{0.17\linewidth} p{0.20\linewidth} p{0.53\linewidth}}
+\thead{Specification} & \thead{Regression} & \thead{What $\beta_1$ says} \\
+\midrule
+Level--level & $w$ on $S$ & One more year of schooling: $\beta_1$ euro
+  more per hour. \\
+Log--level   & $\log w$ on $S$ & One more year of schooling: about
+  $100\beta_1$ percent more earnings. \\
+Level--log   & $w$ on $\log S$ & One percent more schooling: about
+  $\beta_1/100$ euro more per hour. \\
+Log--log     & $\log w$ on $\log S$ & One percent more schooling: about
+  $\beta_1$ percent more earnings. An elasticity. \\
+\end{dgtable}
+
+\dgnotes{Read the word ``about'' in the last three rows as a promise to come
+back to it. Only the first row is exact.}
+```
+
+<!-- The table is the reference object for the rest of the section. Leave
+     it up while the next two slides are discussed if the room allows. -->
+
+## The Log-Log Slope Is a Unit-Free Elasticity
+
+**Objective:** get a number that does not change when someone re-denominates
+the data.
+
+$$\log(w_i) = \gamma_0 + \gamma_1 \log(S_i) + v_i$$
+
+- $\gamma_1$: the elasticity of earnings with respect to schooling
+
+::: {.result}
+$\gamma_1$ is the percentage change in earnings for a one percent change in
+schooling. Switch the data from euro to cents, or from years to months, and
+$\gamma_1$ does not move. No other specification on that table can say that.
+:::
+
+::: {.tablenotes}
+The proof is two lines and it is in the appendix. Its shape: write the slope
+as a derivative of logs, apply the chain rule twice, and the levels cancel.
+The cancelling is the whole trick.
+:::
+
+## Percent and Percentage Point Are Not the Same Word
+
+::: {.caveat title="The confusion that costs marks and papers"}
+A **percentage change** is relative to where you started. A **percentage
+point** is an absolute difference between two percentages. Earnings rising
+from 10 to 11 euro is a ten percent rise. An employment rate going from 60
+to 61 is a one percentage point rise, and a rise of about one and two thirds
+percent.
+:::
+
+::: {.tablenotes}
+This is not a quibble about words. @schield2000 documents how badly students
+at this stage describe and compare rates, and the ambiguity is in ordinary
+English before it is in any regression. When your dependent variable is
+itself a rate, the level-level coefficient is in percentage points and the
+log-level coefficient is a percentage change of that rate. They are different
+numbers and they answer different questions.
+:::
+
+## The Exact Percentage Change and When the Shortcut Fails
+
+**Objective:** say exactly what a log-level coefficient implies, and then say
+when the convenient version is good enough.
+
+$$\%\Delta w = 100\left(e^{\beta_1} - 1\right)$$
+
+::: {.worked title="How wrong is the shortcut?"}
+- $\beta_1 = 0.05$: shortcut says 5, exact is 5.13
+- $\beta_1 = 0.10$: shortcut says 10, exact is 10.52
+- $\beta_1 = 0.20$: shortcut says 20, exact is 22.14
+- $\beta_1 = 0.50$: shortcut says 50, exact is 64.87
+:::
+
+::: {.tablenotes}
+Below about 0.1 the shortcut is fine and everyone uses it. Above about 0.2
+it is an error large enough to change a sentence in a results section, and it
+is always in the same direction: the shortcut understates.
+:::
+
+## What Logs Cost: Zeros and an Imposed Shape
+
+::: {.caveat}
+You cannot take the log of zero, and in earnings data zero is not rare. The
+usual fixes - add one, add a half, use $\log(1+w)$ - are choices about units
+that change the answer, and @chen2024 shows the estimate can be made
+arbitrarily large or small by the choice alone. We will not solve that in
+this module. Know that it is a live problem and not a formality.
+:::
+
+::: {.tablenotes}
+Second cost, and the one for this room: our population was generated as a
+straight line in levels. A log specification fitted to it is a shape we
+imposed. It will fit reasonably. It is still not what generated the data.
+:::
+
+## Vote: Percent or Percentage Point?
+
+A regression of log earnings on a training dummy returns 0.08. A colleague
+reports that training raises earnings by eight percentage points.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what would the sentence
+have to say instead, and what is the exact figure?
+:::
+
+<!-- ConcepTest 1. Two errors stacked: percentage points where a percentage
+     belongs, and the shortcut where 8.33 is the exact answer. Most rooms
+     catch the second and miss the first. Do not adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write the interpretation of a log-log slope of $0.3$ in one
+sentence, with units. Then compare with your neighbour and see whether your
+sentences agree.
+:::
+
+# Dummy Variables
+
+## A Category Enters the Model as an Intercept Shift
+
+**The goal of this section:** put something that is not a number into a
+regression, and know what the resulting coefficient is a comparison against.
+
+**Objective:** allow two groups to sit at different levels while sharing a
+slope.
+
+$$w_i = \beta_0 + \beta_1 S_i + \delta D_i + u_i$$
+
+- $D_i$: one if person $i$ is in the group, zero otherwise
+- $\delta$: the vertical gap between the two groups
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Two parallel fitted lines through one
+sample, split by a single dummy. The gap between them is the coefficient.}
+```
+
+<!-- FIGURE 3-2_dummy: one scatter, points coloured by the dummy, two
+     parallel fitted lines. Needs the vertical gap annotated as delta, drawn
+     at the sample mean of schooling rather than at zero. -->
+
+<!-- IDEA 2. 38-63 min. -->
+
+## The Coefficient Is a Difference Between Two Averages
+
+::: {.result}
+$\delta$ is the difference in average earnings between the two groups, at
+the same level of schooling. With no other regressors it is exactly the
+difference in the two group means.
+:::
+
+::: {.tablenotes}
+That is worth sitting with. A dummy in a regression with nothing else in it
+is a comparison of two averages, which is the first thing anyone would have
+done without regression at all. Regression earns its keep from the words
+*at the same level of schooling*.
+:::
+
+## Dummy Coefficients Are Comparisons Against the Omitted Category
+
+Four categories of highest qualification. You put in three dummies and the
+software reports three numbers.
+
+::: {.caveat title="The base you chose without noticing"}
+Every one of those three numbers is a comparison against the category you
+left out. You chose it. Very often R chose it for you, alphabetically. Change
+the base and all three reported numbers change, while nothing about the world
+does.
+:::
+
+::: {.tablenotes}
+In R the base is the first level of the factor, so `factor(qual)` orders
+alphabetically unless you say otherwise. `relevel()` is one line and it is
+the difference between a table that answers your question and a table that
+answers an accident of spelling.
+:::
+
+## The Dummy Variable Trap: Why One Category Is Omitted
+
+::: {.defn title="The dummy variable trap"}
+Put in a dummy for every category as well as an intercept, and the four
+dummies add up to the intercept exactly. There is no unique least squares
+answer, because infinitely many sets of coefficients fit identically well.
+:::
+
+::: {.tablenotes}
+This is assumption four from week 6 failing, not a new problem. There is no
+variation left in the last dummy once the other three and the intercept are
+known. R will drop one silently and report the rest. Silently is the word to
+worry about.
+:::
+
+## Dummy Coefficients When the Dependent Variable Is Logged
+
+When earnings are logged, a dummy coefficient $\hat\delta$ is a proportional
+gap, and the same approximation applies: about $100\hat\delta$ percent, and
+exactly $100(e^{\hat\delta}-1)$ percent. @halvorsen1980 is the half-page note
+that put this into applied practice, and @kennedy1981 refined the estimator
+one step further.
+
+::: {.tablenotes}
+Two things worth saying about a pair of half-page notes from 1980. They are
+cited thousands of times, which tells you how often the error was made. And
+the correction still gets skipped, which tells you it is still being made.
+:::
+
+## Vote: What Is This Number Compared To?
+
+A table reports coefficients on `apprenticeship`, `degree` and
+`postgraduate`. Your co-author writes that the degree coefficient is the
+return to a degree.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what sentence would be
+correct, and what else do you need to know before you can write it?
+:::
+
+<!-- ConcepTest 2. The number is a comparison against whatever was left out,
+     which the table does not name. Push them to notice that the table as
+     printed is uninterpretable. Do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Write the one sentence you would put under a table of dummy
+coefficients so a reader knows what they are compared to. Then compare with
+your neighbour.
+:::
+
+# Interactions
+
+## Interaction Terms Let the Slope Differ Across Groups
+
+**The goal of this section:** allow the return to schooling to differ across
+groups, and then be very careful about what every coefficient now means.
+
+**Objective:** stop forcing one slope on two groups.
+
+$$w_i = \beta_0 + \beta_1 S_i + \delta D_i + \gamma (S_i \times D_i) + u_i$$
+
+- $S_i \times D_i$: the product of the two, one variable, one column
+- $\gamma$: the difference in slope between the groups
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The same two groups, now with two
+fitted lines that are not parallel. The difference in slope is the
+interaction coefficient.}
+```
+
+<!-- FIGURE 3-2_interaction: same scatter and colours as 3-2_dummy so the
+     two slides read as one argument. Two non-parallel fitted lines. Needs
+     the slope difference annotated, and the two lines extended back to
+     zero schooling in a lighter weight so the intercept gap is visible. -->
+
+<!-- IDEA 3. 66-92 min. -->
+
+## What the Schooling Coefficient Means After an Interaction
+
+::: {.caveat title="Read this one carefully"}
+Before the interaction, $\beta_1$ was the return to schooling. After it,
+$\beta_1$ is the return to schooling **for the base group only**. It is not
+an average, it is not the overall effect, and it did not stay what it was.
+:::
+
+- For the base group, the return is $\beta_1$.
+- For the other group, the return is $\beta_1 + \gamma$.
+- $\gamma$ answers whether the two differ, and by how much.
+
+::: {.tablenotes}
+This is the most common misreading in applied work and it is not a student
+error. @brambor2006 read the published literature in an adjacent field and
+found the majority of papers with interaction models interpreting these
+coefficients wrongly, or omitting the terms needed to interpret them at all.
+:::
+
+## Why Centring Schooling Makes the Intercept Interpretable
+
+With the interaction in, $\delta$ is the gap between the groups **at zero
+years of schooling**. Nobody in our population has zero years of schooling.
+
+::: {.result title="One line of R fixes it"}
+Replace $S_i$ with $S_i - 12$. Every slope is unchanged. $\delta$ now
+reports the gap at twelve years of schooling, which is a person who exists,
+and the intercept reports expected earnings of 9.50 for the base group.
+:::
+
+::: {.tablenotes}
+Centring is not a statistical repair. The fit is identical and the residuals
+are identical. It relocates the point at which two of the coefficients are
+reported, so that they are reported somewhere you can defend.
+:::
+
+## Testing the Slope Difference and Its Standard Error
+
+The return for the other group is $\beta_1 + \gamma$, so its standard error
+is not either standard error and not their sum. It needs the covariance
+between the two estimates.
+
+::: {.tablenotes}
+Two honest routes. Refit with the other group as the base and read
+$\beta_1 + \gamma$ straight off the output with its standard error attached.
+Or test the two coefficients jointly, which is next week. Either way, note
+that an interaction is estimated off the difference between two subgroup
+slopes and is therefore much less precisely estimated than either.
+:::
+
+## Vote: Which Coefficient Answers the Question?
+
+Log earnings on schooling, a dummy for women, and their interaction. You are
+asked for the return to schooling for women.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: how would you report its
+standard error?
+:::
+
+<!-- ConcepTest 3. Offer three options aloud - the schooling coefficient,
+     the interaction coefficient, their sum - and let the room split. The
+     standard error is the follow-up that separates who understood it from
+     who guessed. Do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: functional form is an assumption you imposed. The data
+did not ask for a log, a straight line or an interaction, and the fit will
+not tell you that you chose wrongly.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. Push them past "the model might be wrong" to naming the specific
+     shape that was assumed and who it would mislead. -->
+
+## Application
+
+Fit all four specifications from the table to the same 120 people. Report
+each slope in a sentence with units.
+
+::: {.tablenotes}
+Vote first, before anything is run: which specification will have the highest
+R-squared, and does the winner tell you which shape is true? Take the vote
+before the output appears.
+:::
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Predicted earnings against schooling
+under all four specifications, drawn over the same scatter. The curves are
+close where the data are dense and diverge at the edges.}
+```
+
+<!-- FIGURE 3-2_four-fits: one scatter, four fitted curves in the theme
+     palette, all on the level scale so they are comparable. Needs the
+     schooling range where eighty percent of the sample sits shaded, so the
+     point lands: they agree where you have data and disagree where you do
+     not. -->
+
+<!-- 97-105 min. ConcepTest 4. The R-squareds are not comparable across
+     specifications with different dependent variables, which is the trap,
+     and which is next week's material arriving early. -->
+
+## Summary of Today's Three Functional-Form Choices
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Logs and Elasticities.** Logs change the question the coefficient answers, from euro to proportions, and the convenient percentage reading is an approximation with a known error.
+2. **Dummy Variables.** A dummy shifts the intercept, and the number it reports is a comparison against a base category you chose.
+3. **Interactions.** An interaction lets the slope differ, and the coefficient on the main term becomes the effect for the base group alone.
+:::
+
+::: {.tablenotes}
+Next week: testing several coefficients at once, which is how you ask whether
+a set of dummies or an interaction belongs in the model at all.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 3.3
+
+- **Read** [chapter], plus the two half-page notes in the references. They
+  take five minutes together and they are the whole of the log-dummy story.
+- **Do** the appendix derivations. There are two, and the second is the one
+  that tells you when you may use the shortcut.
+- **Try** the app: switch the specification and watch the fitted shape and
+  the interpretation change together.
+
+::: {.defn title="Problem set 3"}
+[Out this week, due week n. Covers 3.1 and 3.2, and asks for one results
+table written up in prose with correct units throughout.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Why a Log-Log Slope Is an Elasticity
+
+Write the slope as a derivative of logs, apply the chain rule to each side,
+and the levels cancel.
+
+::: {.tablenotes}
+Three steps. Differentiate $\log w$ with respect to $\log S$, write each as
+a proportional change using the derivative of the logarithm, and take the
+ratio. The step that does the work is the second: the derivative of $\log x$
+is $1/x$, which is exactly what turns an absolute change into a proportional
+one. The units cancel in the ratio, which is why an elasticity has none.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Derivation: The Exact Percentage Change and the Shortcut Error
+
+Start from the fitted model, difference it across a one-unit change in $S$,
+exponentiate, and compare the exact result with the shortcut.
+
+::: {.tablenotes}
+Four steps. Write the fitted value at $S$ and at $S+1$, subtract, exponentiate
+to get $e^{\beta_1}$ as the ratio of earnings, and subtract one for the
+proportional change. The step that does the work is the last: the shortcut
+replaces $e^{\beta_1}-1$ with $\beta_1$, which is the first term of its series
+expansion. The error is of order $\beta_1^2/2$, which is why it is invisible
+at 0.05 and embarrassing at 0.5.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The app, and this week's specification script.
+- `log()`, `factor()` and `relevel()` in R, and `y ~ x * d` as shorthand for
+  a model with both main terms and their interaction.
+- `I(x - 12)` inside a formula, which is centring without touching the data.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). The entries cited here are drafted in
+     ../../bib/3-2.bib and must be merged into the shared file before this
+     deck renders. A work mentioned only inside a raw LaTeX block is
+     invisible to citeproc - every citation above is in markdown prose. -->

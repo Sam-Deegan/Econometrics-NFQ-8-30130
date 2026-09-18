@@ -1,0 +1,2339 @@
+---
+#      LECTURE 1.1 - Data and Variation
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation is introduced by a plain sentence saying what it
+#         is for, ending on a colon where a notation list follows. Not a
+#         labelled announcement: "Objective:" and "The goal of this
+#         section:" are both gone from this deck.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      6. NO VOTES AND NO PAUSE FRAMES. A question to the room is a
+#         titled frame, one or two lines of context, the question itself
+#         in a `.defn title="Question"` box, and then answers taken out
+#         loud. Where the answer is a sign, a direction or a magnitude,
+#         answers come BEFORE anything is run.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Populations and Samples
+#        2  Describing One Variable
+#        3  Describing Two Variables
+#
+#      THIS DECK ALSO CARRIES THE SYLLABUS. There is no Lecture 0; the
+#      orientation that used to fill a whole slot is now one bounded
+#      section at the front, `How This Module Works`, which is deliberately
+#      NOT one of the three content sections and carries no question frame
+#      - you do not put an assessment weight to the room. It is capped at
+#      seventeen minutes and the cap is the teaching point: the outline is
+#      a document, and a room that hears a document read aloud concludes
+#      the module is low-stakes. Everything that did not fit is in the
+#      appendix.
+#
+#      WHAT THE MERGE COST. The three content sections lost seventeen
+#      minutes between them, most of it from `Describing Two Variables`,
+#      which is the most revision-like of the three and the one 2.1 rebuilds
+#      from scratch. If a cohort turns out to need that material properly,
+#      the place to take the time back from is the application, not the
+#      orientation.
+#
+#      THE DIAGNOSTIC moved to lab 1: eight to ten anonymous, ungraded items
+#      on expectation, sampling, logs, proportions and reading a table.
+#      Publish the aggregate and a remediation list before week 2.
+#
+#      WEEK 1 CARRIES THE NOTATION. This is the deck where Roman-for-
+#      sample and Greek-for-population are set, along with the subscript
+#      i, n against N, and the bar against E. Every later deck assumes it.
+#      The hat is NOT introduced here - it first bites in 1.3, on the
+#      frame "A Hat Marks the Sample Counterpart", where an estimator is
+#      first named as a rule rather than a number, and that is where its
+#      callout lives. An earlier version of this header said 2.1; that was
+#      wrong, and 1.2 and 1.3 were written against the corrected version.
+#      E[.] gets its own frame, "Expectation: The Population Average of an
+#      Expression", between the bar frame and the variance - it is an
+#      OPERATOR, not a quantity, and it had been a single notation line
+#      doing a job a notation line cannot do. That frame teaches the
+#      notation only; 1.2 teaches what an expectation is. Capital X is NOT
+#      introduced in this deck, so the sample/population callout says mu_x
+#      rather than E[X].
+#
+#      THE SHELF, and what each locator decides.
+#         Wooldridge, Introductory Econometrics, 7th ed., 2020, cited
+#         @wooldridge2020. The 7th edition calls them MATH REFRESHERS, not
+#         appendices, and this deck cites them by that name.
+#           B-3a  p.691   expected value; "population mean"
+#           B-3b  p.692   properties of expected values, E.1 to E.3
+#           B-3c  p.694   median; mean = median only under symmetry
+#           B-3e  p.695   variance, Var(X) = E[(X - mu)^2]
+#           B-3f  p.696   standard deviation, the POSITIVE square root
+#           B-3h  p.697   skewness E[(X-mu)^3]/sigma^3, kurtosis
+#                         E[(X-mu)^4]/sigma^4; larger kurtosis means
+#                         THICKER TAILS, and no excess-kurtosis
+#                         convention appears in the source
+#           B-4b  p.697   covariance; sign interpretation; Cov.2 scaling
+#           B-4c  p.698   correlation; Corr.1 bounds; Corr.2 invariance;
+#                         a measure of LINEAR dependence
+#           C-1   p.714   populations, parameters
+#           C-1a  p.714   random sampling, i.i.d. draws
+#           C-2a  p.715   estimators and estimates; the sample average
+#         Angrist and Pischke, Mastering 'Metrics, cited @angrist2014.
+#           6.1   p.209   schooling, experience and earnings; ability bias
+#
+#      CORRECTIONS MADE IN THIS PASS. Each is also noted on its frame.
+#         a. KURTOSIS CAPTION. The heavy-tailed panel was captioned "a
+#            sharper peak, and far more in the tails". Wooldridge B-3h
+#            p.697 supports only the tails: "larger values mean that the
+#            tails in the distribution of X are thicker". The peak claim
+#            is gone.
+#         b. SKEWNESS NOTES. "The first two moments cannot tell them
+#            apart" was changed to "the mean and the variance cannot tell
+#            them apart", on the grounds that B-3h counts skewness and
+#            kurtosis as moments of the STANDARDISED variable and numbering
+#            the variance as a moment invited a mismatch.
+#            SUPERSEDED 17 September, Sam's instruction: students need the
+#            term "moments of a distribution" for all four. The frame is
+#            now titled after it and the raw/central/standardised
+#            bookkeeping sits in the speaker notes instead.
+#         c. NEGATIVE COVARIANCE. The caveat said a negative covariance
+#            "says they do not" rise together. B-4b p.698 states the
+#            direction: when X is above its mean, Y is below its mean.
+#            The frame now says that.
+#         d. VARIANCE DENOMINATOR. The appendix said dividing by n gives
+#            a number "too small on average, every time". That is a
+#            statement about the sampling distribution dressed as one
+#            about a single sample. It now says the estimator is too
+#            small IN EXPECTATION, by the factor (n-1)/n.
+#         e. THE CROSS TERM. The appendix said the cross term "collapses".
+#            It does not vanish; it merges into the squared gap:
+#              sum (x_i - xbar)^2
+#                = sum (x_i - mu)^2 - 2(xbar - mu) sum (x_i - mu)
+#                  + n(xbar - mu)^2
+#                = sum (x_i - mu)^2 - n(xbar - mu)^2,
+#            because sum (x_i - mu) = n(xbar - mu). Expectations then give
+#            n sigma^2 - n(sigma^2/n) = (n-1) sigma^2. Wooldridge C-2b
+#            p.716 for unbiasedness.
+#         f. STOCK AND WATSON. stockwatson2019 is in the .bib but not on
+#            the shelf, so it was cited and unopenable. The Notes and
+#            Tools frame now points at Wooldridge chapter 1 and Math
+#            Refreshers B and C, which cover the same ground.
+#         g. "Schooling really does move earnings" carried no direction.
+#            The generator sets a positive return, so it now says raise.
+#
+#      NOT VERIFIED FROM THE SHELF, and therefore left as drafted:
+#         - "A long right tail of high earners pulls the mean above the
+#           median." Wooldridge B-3c p.694 gives only the converse
+#           direction, that symmetry makes mean and median equal. The
+#           claim is standard and true of the distributions this module
+#           draws, but it is not in the source and has not been hedged.
+#         - "Financial returns look like the heavy-tailed panel." No
+#           locator on this shelf. Moved off the slide into the notes and
+#           left unchanged.
+#         - The population parameters, 1.30 euro an hour a year and 9.50
+#           at twelve years, are facts about the module's own generator.
+#           The frame now says so explicitly: neither came from data.
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-12    the hook - the question the room cannot answer yet
+#        12-15    lecture plan
+#        15-32    How This Module Works - hard stop, whatever is unsaid
+#        32-53    Populations and Samples
+#        53-56    question to the room: which sample is biased
+#        56-78    Describing One Variable
+#        78-81    question to the room: which number in the headline
+#        81-97    Describing Two Variables
+#        97-102   the standing question
+#       102-107   application
+#       107-110   synthesis and exit ticket
+#
+#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
+#      written by _apps/export_figures.R. Rebuild with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, and every slide follows on the next render. Do
+#      not edit a PNG: edit the builder. The four moments exhibits are
+#      already built; the two marked with a FIGURE comment are not, and
+#      point at _shared/placeholder.pdf so the deck still compiles.
+#
+#      FIGURE FRAMES are title, exhibit, one-line caption under about 85
+#      characters, and a titled two-line .tablenotes box. Nothing above
+#      the exhibit. The walk-through of each exhibit is in ::: {.notes}.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it. The flaws are in the generator
+#      already, switched off, and each later lecture turns one on.
+#
+title: "Data and Variation"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 1.1"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 1.1
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{1.1}
+```
+
+::: {.notes}
+Thirty seconds, no more. Twelve lectures in four blocks, and today is the first
+box in the first column. Point at block 4 and say that is where the module
+stops being mechanical, then move on. Do not read the map aloud.
+:::
+
+## What a Year of Schooling Is Worth
+
+Put a number on it. Then say whose earnings you would need to see:
+
+::: {.defn title="Question"}
+How much more does a person earn per hour, on average, for each extra year they
+stayed in school?
+:::
+
+
+```{=html}
+<!-- 0-12 min. The hook, and the module's opening move. It replaces a
+     retrieval frame because there is no previous week.
+
+     AUTHOR'S WORDING. The question in the box is Sam's sentence and the
+     capstone in 4.2 repeats it word for word, so it is not trimmed to the
+     thirteen-word rule. Write down how you phrased it on the day.
+
+     The return to a year of schooling is the running example of Mastering
+     'Metrics 6.1, p.209, which is why it is worth a term: Angrist and
+     Pischke take the same question through regression, DD, IV and RD, and
+     never get a random assignment. -->
+```
+
+::: {.notes}
+Two minutes with a neighbour before any hands go up. Push for an actual number
+in euro an hour, not "it depends".
+
+Then the second question, which is the one that matters: whose earnings would
+you need to see to know whether your number is right? Everybody's, or some of
+them? And if some, which ones?
+
+The room arrives at "everybody's". That is the population, and it is exactly
+what nobody ever has, which hands you section one with no transition. Surface
+the disagreement about the number and do not resolve it. The room's inability
+to settle it is the argument for the next twelve weeks.
+:::
+
+## Lecture Plan
+
+::: {.contributions}
+1.  **How This Module Works.** What the term covers, how it is assessed, and the standing question.
+2.  **Populations and Samples.** The question is about a population; the data is a sample.
+3.  **Describing One Variable.** Centre, spread and shape, and what each one hides.
+4.  **Describing Two Variables.** Covariance, correlation, and what one number cannot show.
+:::
+
+```{=html}
+<!-- 12-15 min. Lecture 1.2 copies this block verbatim into its
+     "Last Week's Lecture" frame. If a tagline needs shortening, shorten
+     it HERE and copy the change across, never in the recap. -->
+```
+
+::: {.notes}
+Reading: [to settle]. Say out loud that the first section is the only
+administrative one all term, that it lasts seventeen minutes, and that the
+clock is running. The room should hear the cap as a promise.
+:::
+
+# How This Module Works
+
+## What the Module Covers: The Linear Regression Model
+
+The module does one thing thoroughly: the linear regression model.
+The term runs from what a sample is to reading a residual plot.
+
+::: {.takeaway title="Run One, and Name Its Assumption"}
+You can run a regression and say what its coefficient hides. You can name the
+assumption that would license a causal reading.
+:::
+
+```{=html}
+<!-- 15-32 min. The whole block is capped at seventeen minutes and the cap is
+     the point. The module outline is a document; a room that hears a document
+     read aloud concludes the module is low-stakes, and this is the
+     best-attended slot of the term. Anything not on these five frames is in
+     the appendix or the outline.
+
+     Wooldridge chapter 1, p.1, opens a first course on the same ground:
+     what econometrics is for, what kinds of data exist, and why causality
+     is hard. -->
+```
+
+::: {.notes}
+Name what the module does NOT cover as well: no matrix algebra, no panel data,
+no panel methods. Those are Part II and they exist because the problem this
+module ends on is hard.
+:::
+
+## How the Four Blocks Fit Together
+
+- **Foundations:** what a sample is, and why one estimate is only one draw.
+- **Simple Regression:** one line, its derivation, and how far to trust it.
+- **Multiple Regression:** what holding other things fixed buys, and what omitting them costs.
+- **Limits:** what breaks, how you would know, and what regression cannot license.
+
+::: {.takeaway title="Simple Before Multiple Regression"}
+Lecture 3.1 is unreadable without 2.1 to 2.4. Block 4 is where the module stops
+being mechanical.
+:::
+
+```{=html}
+<!-- The roadmap at the front of this deck is the same structure drawn as a
+     map; point back at it here rather than showing it twice. -->
+```
+
+::: {.notes}
+This is a dependency structure, not a list of weeks. Blocks 2 and 3 are one
+argument: 2.1 fits a line, 2.2 asks how well, 2.3 asks how much to trust it,
+2.4 asks how to report it, and 3.1 does all four again with a second regressor.
+Miss the middle of that and the second half of the term is unreadable.
+:::
+
+## The Question We Ask Every Week
+
+Regression says how two things vary together. Whether co-movement licenses a
+causal claim depends on the design, not the estimator.
+
+::: {.caveat title="The Standing Question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+```{=html}
+<!-- The module's position, stated once and enforced weekly. It is also the
+     answer to "why are we not doing the fancy methods": those are Part II,
+     and they exist because this problem is hard.
+
+     Mastering 'Metrics 6.1, p.209: the returns to schooling have been
+     attacked with every tool except random assignment, and the ability-bias
+     objection survives all of them.
+
+     Today's instance is at 97 minutes. Announce the ritual here; do not run
+     it, or the slot loses its force the first time it is used. -->
+```
+
+::: {.notes}
+Usually the honest answer is that the design does not license the causal claim.
+Say that now, so the room does not read the weekly slot as a formality with a
+reassuring answer at the end of it.
+:::
+
+## Nothing Is Derived in This Room
+
+- **The Result:** what it involves and what it buys you, in the lecture.
+- **The Derivation:** in the appendix of its deck, and set as homework.
+- **The Solutions:** published with the problem set, after you have tried it.
+
+::: {.caveat title="Watching a Proof Is Not Learning It"}
+A derivation copied off a screen teaches nothing you can reproduce. You get the
+shape of it here and fill in the steps yourself.
+:::
+
+::: {.notes}
+This only works if you attempt them, and say so. Today's derivation is at the
+back of this deck and it is short: three steps, and the last one is the only
+one that bites.
+:::
+
+## Assessment: Components, Weights and Weekly Workload
+
+[BLOCKED -- needs the module descriptor. One slide: component, weight, week,
+what it tests, which outcome it evidences, and one AI-policy line each.]
+
+::: {.caveat title="Nothing Here Is Read Aloud"}
+Everything not on this frame is in the outline and the appendix. A room that
+hears a document read aloud concludes the module is low-stakes.
+:::
+
+```{=html}
+<!-- Hard stop at 32 minutes, whatever is left unsaid. Enrolment is still
+     moving in week 1, so anything said here is said again in week 2's lab
+     anyway. -->
+```
+
+::: {.notes}
+Say the effort arithmetic out loud: total effort hours, minus contact hours,
+over twelve weeks, is roughly n hours a week of independent work.
+
+Ten of these seventeen minutes are well spent explaining the DESIGN. Students
+in active classrooms learn more and feel they learn less, because they read
+cognitive effort as failure. Show them that finding. Without it, a redesign
+that works gets marked down by the cohort it helps.
+:::
+
+# Populations and Samples
+
+## The Gap Between the Population and the Sample
+
+Two groups of people, and the whole module is the argument between them:
+
+- **Population:** every person the question is about.
+- **Sample:** the handful of those people whose numbers we hold.
+- **The Whole Module:** an argument from the sample back to the population.
+
+::: {.takeaway title="No Technique Closes the Gap"}
+Nothing later in the term removes the gap. Later techniques only say honestly
+how wide the gap might be.
+:::
+
+```{=html}
+<!-- IDEA 1. 32-53 min.
+
+     Wooldridge C-1, p.714: "By population, we mean any well-defined group of
+     subjects", and a parameter is a constant of that population. His own
+     example is the return to another year of education, which is the
+     module's question, so the section and the hook share a source. -->
+```
+
+::: {.notes}
+Sixty seconds on how a sample goes wrong, if the room is with you. Everyone at
+a graduate careers fair, everyone who answers a landline on a Tuesday
+afternoon, everyone on LinkedIn: all three are biased, and the useful question
+is which way each one tilts earnings. This used to be a question frame; the
+answer is obvious enough that it did not earn the room time.
+
+Insist on the word "every". A population is not a big sample; it is the whole
+group the answer is a fact about, and the question decides who is in it. Ask
+whose earnings are in the population for today's question: everyone in Ireland,
+everyone working, everyone who ever worked?
+:::
+
+## Notation for a Single Observation
+
+A sample is a list of pairs, one for each person in it:
+
+```{=latex}
+\begin{equation}
+\left\{ \left( x_i, y_i \right) \right\}_{i=1}^{n}
+\end{equation}
+```
+
+- $x_i$: years of schooling completed by person $i$
+- $y_i$: hourly earnings of person $i$, in euro
+- $i$: which person, running from 1 to $n$
+- $n$: how many people are in the sample
+
+```{=html}
+<!-- Wooldridge C-1a, p.714, writes the random sample as {Y_1, ..., Y_n}
+     drawn i.i.d. from f(y; theta), and C-2a, p.715, distinguishes the
+     random variables from the realised numbers {y_1, ..., y_n}. This deck
+     uses lower case throughout because capital X is not introduced until
+     2.1; the distinction between the variable and its realisation is 1.3's
+     job, not week one's. -->
+```
+
+::: {.notes}
+Write one row on the board: person 7, twelve years of schooling, 9.80 an hour.
+The subscript is an address, not an ordering, and nothing about person 7 makes
+them seventh in any meaningful sense.
+:::
+
+## Cross-Section, Time Series and Panel Data
+
+What you can estimate depends on how the data is indexed:
+
+- **Cross-Section Data:** many people, each seen once, indexed by $i$.
+- **Time-Series Data:** one unit, seen over many periods, indexed by $t$.
+- **Panel Data:** many people, each over many periods, indexed by $i$ and $t$.
+
+::: {.takeaway title="Every Dataset Here Is Cross-Section"}
+Our 120 people are each observed once. The assumptions change when the
+subscript does.
+:::
+
+```{=html}
+<!-- Added 17 September, on Sam's question. Wooldridge chapter 1 opens a
+     first course with exactly this, so it is standard and citable, and
+     Lambert has a short video "Time series vs cross sectional data" for
+     the Read item.
+
+     THE REASON IT EARNS A FRAME, beyond completeness. Two problems it
+     fixes. First, i was being introduced as though it were the only
+     subscript there is, which makes the notation look arbitrary rather
+     than chosen. Second, and larger: 4.1 has a whole section on SERIAL
+     CORRELATION, the t subscript appears nowhere in the module, and the
+     orientation section of this deck tells students there is no time
+     series. Those three cannot all stand. This frame lets 4.1 say that
+     serial correlation is a t-shaped fault and that we meet it in
+     i-shaped data because the residual plot looks identical - which is
+     4.1's actual teaching point.
+
+     SCOPE. Three structures, named by subscript, and nothing else. Pooled
+     cross-sections are deliberately absent: a fourth row would be a
+     taxonomy, and the module never uses any of them but the first. -->
+```
+
+::: {.notes}
+Two minutes, no more. The only thing to land is that the subscript is a claim
+about what varies, and that everything this term holds $i$ fixed as the thing
+that varies.
+
+Flag the one exception rather than leaving it to ambush them in week eleven.
+Lecture 4.1 covers serial correlation, which is a fault of $t$-indexed data.
+We meet it anyway, in our cross-section, because a mis-specified curve leaves a
+residual plot that looks exactly like the time-series version - and being able
+to tell those two apart is the point of that lecture rather than a detour.
+
+If anyone asks about panel data, it is Part II, and it is where most modern
+applied work lives.
+:::
+
+## Roman for What We Know, Greek for What We Want to Know
+
+Roman here means the everyday alphabet, the one English is written in. Our
+sample holds $n$ people; the population holds $N$.
+
+::: {.caveat title="Never the Same Number"}
+Every summary from here comes as a pair: a Roman letter computed from our 120,
+and a Greek letter for the fact about all 200,000 that nobody sees.
+:::
+
+```{=html}
+<!-- Wooldridge C-1, p.714: a parameter is a constant of the population;
+     C-2a, p.715: an estimator is a rule applied to the sample, and changes
+     with the sample. The Roman/Greek convention is this module's, not the
+     book's, but it encodes exactly that distinction. -->
+```
+
+::: {.notes}
+Say "Roman" once and then say what it means, because the word is doing three
+jobs in a maths context and a student has no reason to pick the right one.
+Roman numerals are the obvious wrong guess and they are sitting right there; in
+typesetting "roman" means upright rather than italic, which is a second wrong
+guess, and our variables are italic anyway. The everyday alphabet is all that
+is meant. Thirty seconds spent killing that ambiguity is cheaper than a term of
+students half-reading every symbol.
+
+A line of algebra that slides from a Roman letter to a Greek one is the move
+this module exists to make you suspicious of. Watch for it in your own working
+all term: the moment you write an equals sign between a sample quantity and a
+population quantity, you have assumed the thing being estimated.
+:::
+
+## The Population We Will Use All Term
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Schooling and hourly earnings: the population in grey, the two samples in colour.}
+```
+
+::: {.tablenotes title="A Year Pays 1.30 Here"}
+We set the generator so a year of schooling pays 1.30 an hour. Twelve years of
+schooling pays 9.50. Neither number came from data.
+:::
+
+```{=html}
+<!-- FIGURE 1-1_population: schooling on the horizontal, hourly earnings on
+     the vertical. Population of 200,000 as a light grey point cloud,
+     thinned or hexbinned so it renders. Sample of 120 in dgGreen, hold-out
+     of 120 in dgNavy, both at full opacity. No fitted line - week 1 has no
+     line yet. Needs the generator at its default settings with every flaw
+     switched off, and the two draws at the module seed.
+
+     THE TWO NUMBERS ARE PARAMETERS OF OUR GENERATOR, not estimates and not
+     findings about Ireland. The box says so in as many words, because a
+     deck that states them bare invites a student to quote them as facts.
+     No shelf locator applies and none is claimed. -->
+```
+
+::: {.notes}
+Two hundred thousand people, each with years of schooling and an hourly wage.
+It was simulated, which means the true answer exists and is written down.
+
+Walk the exhibit: grey is everybody, and it is a cloud rather than a line
+because people with the same schooling earn different amounts. The two coloured
+sets are 120 points each, and from here on you only ever see one of them.
+
+You are not supposed to use 1.30 and 9.50. They are how we mark our own
+homework.
+:::
+
+## Why a Simulated Population Rather Than Real Data
+
+Real earnings data gives an estimate and never says whether it was good. Here
+the truth is written down. Every estimate this term can be marked against 1.30.
+
+::: {.defn title="The Flaws Are Already Switched Off"}
+Lecture 3.1 turns on an omitted variable and Lecture 4.2 a mismeasured one. Lecture 4.1
+turns on an error whose size grows with schooling.
+:::
+
+::: {.notes}
+Real data arrives with all three switched on at once and no label saying which.
+That is the whole difficulty, and it is why the module spends eleven weeks
+building the apparatus before Lecture 4.2 asks what the apparatus cannot do.
+:::
+
+## The Training Sample and the Hold-Out Sample
+
+The 120 we work with is the **training** sample. A second 120 was drawn at the
+same time and put away unopened. The second draw is the **hold-out**, or test,
+sample. Statistics and machine learning both call the pair a train-test split
+[@james2021].
+
+::: {.takeaway title="A Fit Proves Nothing Alone"}
+Anything can be made to fit the data it was chosen on. The only honest check is
+data the choice never saw.
+:::
+
+```{=html}
+<!-- @james2021 is in the .bib and is the standard reference for the split,
+     but it is NOT on this module's two-book shelf. Flagged for the shelf
+     pass: either put the file in 1-1_Data-and-Variation/references/ or
+     drop the citation. -->
+```
+
+::: {.notes}
+We open the hold-out in Lecture 2.2, once there is a line worth testing. Until then
+it stays shut, and that discipline is the whole point of having drawn it. Say
+plainly that opening it early is the statistical equivalent of marking your own
+exam script.
+:::
+
+# Describing One Variable
+
+## The Mean Is Where the Distribution Balances
+
+The mean is the one number that stands in for everybody. It is the point where
+deviations above and below sum to zero:
+
+```{=latex}
+\begin{equation}
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+\end{equation}
+```
+
+- $\sum_{i=1}^{n}$: add up what follows, over all $n$ people in the sample
+- $\bar{x}$: said "x-bar", where the bar means the average of $x$
+- $\mu_x$: the average of $x$ across the population
+
+```{=html}
+<!-- IDEA 2. 56-78 min.
+
+     Wooldridge B-3a, p.691: the expected value is a weighted average of the
+     possible values, and "sometimes the expected value is called the
+     population mean". That is exactly the gloss on the E[.] line. B-3b,
+     p.692, carries the properties, E.1 to E.3, which 1.2 uses and this deck
+     does not state. C-2a, p.715, gives the sample average as an estimator
+     rather than a description. -->
+```
+
+::: {.notes}
+Read the sigma out loud before anything else, because it is the first piece of
+notation in the module that a weaker student will not already own: "add up
+x-sub-i, for i running from one to n". Say that the subscript is an address, not
+a power, and that the sign is an instruction rather than a quantity.
+
+Balance is not a metaphor here: the mean is the point where the deviations
+above it and below it sum to zero, and that identity is what makes the cross
+term in this week's derivation behave.
+
+Our population averages 13.54 years of schooling and 11.52 euro an hour. Both
+are facts about the generator, and neither is ever computed from a sample.
+
+E[.] is introduced once, here, and never re-listed. Lecture 1.2 puts something
+inside the brackets other than a bare variable.
+:::
+
+## Why the Bar Marks a Sample Quantity
+
+A bar over a letter means the average of that letter. Statistics marks sample
+averages this way everywhere, not only here. Our 120 earn 12.25 an hour on
+average; the population earns 11.52.
+
+::: {.caveat title="Redraw and the Bar Changes"}
+$\bar{x}$ is arithmetic you can do this afternoon on 120 numbers. $\mu_x$ is a
+fact about 200,000 people that you will never compute. Draw a different 120 and
+$\bar{x}$ changes; $\mu_x$ does not.
+:::
+
+::: {.notes}
+Say it out loud as "x-bar" and make the room say it back, because a symbol
+nobody can pronounce is a symbol nobody reads. The mark goes on whatever was
+averaged, so y-bar is the average of y. Lecture 1.3 adds the hat, which marks
+any sample estimate rather than a mean specifically.
+
+Redraw the 120 and the bar changes while mu does not: that sentence is the
+entire content of Lecture 1.3 and it is worth writing down now. Everything the
+module does from here is measure how far a Roman letter wanders from the Greek
+one it is aimed at.
+
+The 0.73 between 12.25 and 11.52 is the whole subject. Nobody outside this room
+ever gets to see it.
+:::
+
+## Expectation: The Population Average of an Expression
+
+$\mu_x$ is the population average of $x$ itself. We also want the population
+average of things built from $x$:
+
+::: {.defn title="An Operator, Not a Quantity"}
+$E[\cdot]$ takes whatever expression sits inside it and returns its population
+average. $E[x]$ is $\mu_x$; feed it something else and you get something else.
+:::
+
+Lecture 1.2 is about this operator. Today it is only notation.
+
+```{=html}
+<!-- Added 17 September. E[.] had been a single notation line on the mean
+     frame - "the population average of whatever is inside" - which is a
+     gloss, not an explanation, and an operator is a different kind of
+     object from the quantities beside it in that list. It also does real
+     work three frames on: the central moments frame is one operator fed
+     three different powers, and that only reads if the room knows E[.]
+     takes an argument.
+
+     Scope is deliberately narrow. This frame teaches the NOTATION; Lecture
+     1.2 teaches what an expectation IS - a property of a distribution that
+     exists before anyone collects data. The closing line says so, to stop
+     the two frames reading as a repeat. Wooldridge B-3a p.691 for the
+     expected value and the term "population mean". -->
+```
+
+::: {.notes}
+Thirty seconds, and resist expanding it - next week is the lecture. The point
+to land is that the brackets take an argument, because everything in section
+two is that one operator fed a different expression: $x$ gives the mean,
+$(x - \mu_x)^2$ gives the variance, and the higher powers give the shape.
+
+If someone asks what the population average of an infinite population means,
+say that is exactly Lecture 1.2's first frame and leave it.
+:::
+
+## Mean, Median and Mode
+
+Three answers to where a distribution sits. They agree only when it is
+symmetric:
+
+- **Mean:** the balance point, and the one a long tail pulls.
+- **Med\underline{i}an:** the m\textbf{\underline{i}}ddle value, with half the people either side.
+- **M\underline{o}de:** the m\textbf{\underline{o}}st common value, at the peak.
+
+The letters tell median and mode apart. The \textbf{\underline{i}} is for
+m\textbf{\underline{i}}ddle, the \textbf{\underline{o}} for
+m\textbf{\underline{o}}st common.
+
+::: {.defn title="Earnings Push the Mean Above the Median"}
+A town's earnings: the median is 26,000 and the mean 34,000. The peak sits
+lower still. Report the mean and you describe a person who may not exist.
+:::
+
+```{=html}
+<!-- Wooldridge B-3c, p.694: the median splits the area in two, and mean
+     and median coincide only when the distribution is symmetric about a
+     point. The directional claim on this frame - right tail implies mean
+     above median - is NOT in the source and has been left unhedged; see
+     the header block.
+
+     POSITION. This frame used to sit between the skewness figure and the
+     kurtosis frame, because it began life as "Mean and Median in a
+     Right-Skewed Distribution" - a frame about how a tail moves the centre,
+     which belonged in the shape block. When it was rebuilt as the deck's
+     definition frame for all three measures of centre it kept the old
+     position and was left stranded in the middle of the moments. Moved 18
+     September, Sam: centre first, then spread, then shape. It now closes
+     the centre material and hands over to the variance.
+
+     The forward reference to symmetry and to a long tail is deliberate and
+     survives the move. It is plain English at this point, needs none of the
+     skewness machinery, and plants the idea that the skewness frame later
+     puts a number on.
+
+     THE VOWEL MNEMONIC is Sam's, 17 September, and is marked on the slide
+     rather than only spoken: the i and the o are bold and underlined in
+     both the term and its gloss. Written as raw \underline{} and
+     \textbf{\underline{}} on purpose - Pandoc's [x]{.underline} span
+     emits \ul{}, and neither the pandoc beamer template nor this theme
+     defines \ul, so it would fail at compile. Checked against pandoc
+     before writing. The mnemonic stops at two letters: median also
+     contains an a, so "a for average" is not exact and is not used.
+
+     REBUILT 17 September, Sam's instruction: the deck used the median in
+     two places and defined it nowhere, and never mentioned the mode at all.
+     The frame was "Mean and Median in a Right-Skewed Distribution" and is
+     now the module's one definition frame for all three measures of centre.
+     The newspaper example, which had been a standalone question frame cut
+     earlier the same day, came back here as the callout's content.
+
+     THE MODE is not in Wooldridge's Math Refresher B at all - B-3a gives
+     the expected value and B-3c the median, and no mode. The definition
+     here is standard and uncontroversial but is not traced to the shelf.
+     The mode-median-mean ordering under right skew is likewise a rule of
+     thumb with known counterexamples, which is why the callout says the
+     peak sits lower still FOR EARNINGS rather than stating it generally. -->
+```
+
+::: {.notes}
+Define the median and the mode properly, because this is the only frame that
+does. The median: sort everybody by earnings and take the person in the middle,
+so half earn less and half earn more. The mode: the value that turns up most
+often, which on a density is the highest point of the curve.
+
+The slide states the trick and marks the letters, so read it off rather than
+explaining it. Median and mode are the pair that get swapped in exams; mean is
+never confused with either. Those are the only two of the three
+words carrying an i and an o, so the hook is exact. Do not extend it to "a for
+average", because median has an a in it too and the trick stops working. Mean
+is the leftover anyway, and it is the only one of the three you compute rather
+than locate - which is also why a billionaire walking into the room moves the
+mean and leaves the median where it was.
+
+The newspaper is the example to use. One line for what a town earns, mean
+34,000 and median 26,000: ask which one they would print. One number cannot
+carry a skewed distribution and an honest headline reports both. This was its
+own question frame until 17 September, cut because the module never returns to
+the median and the question did not earn the room time.
+
+This is not a technicality about summary statistics. It is the reason a
+government can put out a true sentence about average incomes in a year when the
+typical household lost ground, and neither number is a lie.
+
+The strict ordering - mode below median below mean - is the usual rule of thumb
+for a unimodal right-skewed distribution and it does have counterexamples, so
+the frame says "the peak sits lower still" about earnings rather than stating a
+law. Do not upgrade it to one.
+:::
+
+## The Three Centres on Two Distributions
+
+```{=latex}
+\figpair{../_shared/figures/1-1_centre-skewed.png}{A long right tail: the three
+separate.}{../_shared/figures/1-1_centre-normal.png}{No tail either way: the
+three coincide.}
+```
+
+::: {.tablenotes title="A Symmetric Distribution Has One Centre"}
+Navy marks the mode, blue the median, green the mean. On a symmetric
+distribution all three sit at the same point.
+:::
+
+```{=html}
+<!-- FIGURES 1-1_centre-skewed and 1-1_centre-normal, built 18 September by
+     D_05_09_skewed_fn and D_05_09b_symmetric_fn in _apps/regression/R/model.R.
+
+     LOGNORMAL RATHER THAN POISSON on the left. Sam asked for a Poisson and
+     it cannot do this job: it is discrete, so its median and mode are both
+     integers and its mean is lambda. Checked at lambda = 0.8, 1.5, 2.5, 3,
+     3.4, 4.5, 6 and 10 - at every one, either the mode equals the median or
+     the median equals the mean, so three distinct verticals never appear.
+     The lognormal separates all three by construction and is the standard
+     model of an earnings distribution.
+
+     A PAIR RATHER THAN AN OVERLAY, also Sam: a skewed curve drawn over a
+     normal with three centres marked put five objects in one panel and the
+     room could not tell which line belonged to which curve. -->
+```
+
+::: {.notes}
+Work the left panel first and get the order out of them before you say it:
+the peak is the mode, the middle person is the median, and the mean is dragged
+towards the tail. Then the right panel, which is the whole point of showing two
+- take the tail away and the three questions have the same answer, which is why
+nobody distinguishes them until a distribution is skewed.
+
+Earnings are the left panel. Every wage distribution anybody has measured looks
+like this, which is why the median is the number reported for household income
+and the mean is the number reported when somebody wants a bigger figure.
+:::
+
+## The Variance: Average Squared Distance From the Mean
+
+A mean tells you nothing about whether people cluster near it or scatter. The
+variance measures how far a typical person sits from the mean:
+
+```{=latex}
+\begin{equation}
+s_x^2 = \frac{1}{n-1} \sum_{i=1}^{n} \left( x_i - \bar{x} \right)^2
+\end{equation}
+```
+
+- $s_x^2$: the variance of $x$ in the sample
+- $\sigma_x^2$: the variance of $x$ in the population
+
+```{=html}
+<!-- Wooldridge B-3e, p.695: Var(X) = E[(X - mu)^2], and the squaring is
+     there to drop the sign and to treat distances above and below mu
+     alike. B-3f, p.696: the standard deviation is the POSITIVE square
+     root, sd(X) = +sqrt(Var(X)) - the word positive is in the source and
+     is now in the notation line. -->
+```
+
+::: {.notes}
+Two choices sit inside the formula, and say both out loud. Squaring drops the
+sign, so someone five euro below the mean counts as far out as someone five
+above. Averaging makes the number comparable across samples of different size.
+
+Squared, not absolute, because the square is what the algebra can carry
+through an expectation. Say that and move on: nobody is going to miss the
+absolute deviation.
+
+The variance itself is in squared euro, so "how far a typical person sits" is
+the picture rather than the arithmetic. The next frame pays that back by
+quoting the standard deviation instead.
+:::
+
+## Bessel's Correction
+
+An average weights the sum by $1/n$. Bessel's correction weights it by
+$1/(n-1)$ instead. Deviations from the sample mean sum to zero, so only $n-1$
+are free. The weight moves sharply in small samples:
+
+- **$n = 120$:** $1/119$ against $1/120$, a difference under one per cent.
+- **$n = 2$:** the weight is $1$, so the sum of squares is the estimate.
+- **$n = 1$:** the weight is $1/0$, so there is no estimate at all.
+
+
+```{=html}
+<!-- CORRECTED. The old wording, carried over from the appendix frame, was
+     "too small on average, every time" - a claim about the sampling
+     distribution written as a claim about one sample. The estimator with n
+     in the denominator has expectation (n-1) sigma^2 / n, so it is too
+     small IN EXPECTATION. Any single sample can of course come out high.
+     Wooldridge C-2b, p.716, for the definition of unbiasedness.
+
+     B-3f, p.696, Property SD.2, is why the standard deviation is the one
+     you quote: sd(aX + b) = |a| sd(X), so it scales with the data while
+     the variance scales with the square.
+
+     REWRITTEN 17 September. The lead had read "The sample mean sits closer
+     to the data than the truth does. It was chosen to" - which referred to
+     a minimising property the deck had never stated, so it referred to
+     nothing.
+
+     WOOLDRIDGE'S OWN EXPLANATION, C-2, p.718, under equation C.5: "The
+     division by n - 1, rather than n, accounts for the fact that the mean
+     mu is estimated rather than known. If mu were known, an unbiased
+     estimator of sigma^2 would be n^-1 sum (Y_i - mu)^2, but mu is rarely
+     known in practice." That counterfactual is now the frame's first
+     sentence, because it is the clearest human form of the argument: here
+     is what you would do if you knew mu, here is why you do not, here is
+     the repair.
+
+     SECOND REWRITE, same day. Wooldridge's counterfactual says WHY a
+     correction is needed and not HOW n-1 supplies it, so the frame still
+     asserted that it "corrects the shortfall exactly". The frame now runs
+     the degrees-of-freedom argument instead, which answers both.
+
+     WOOLDRIDGE ON DEGREES OF FREEDOM, chapter 3-3, p.94, equations 3.56
+     and 3.57: df = (number of observations) - (number of estimated
+     parameters), and the intuition he gives for it is the restriction
+     count - "given n - (k+1) of the residuals, the remaining k+1 residuals
+     are known: there are only n - (k+1) degrees of freedom in the
+     residuals."
+
+     THE EXTENSION IS OURS. Wooldridge makes that argument about OLS
+     residuals in chapter 3, not about the sample variance in Math Refresher
+     C, where he only asserts the correction. Applying it here is the k = 0
+     case of his own formula - one estimated parameter, the mean, so n - 1 -
+     and the restriction is the balance property already taught on the mean
+     frame, that deviations above and below sum to zero. Faithful, but it is
+     an extension and the next pass should know that.
+
+     MASTERING 'METRICS defines the sample variance in its chapter 1
+     appendix, p.34, and does not discuss the denominator at all.
+
+     THE MINIMISING PROPERTY - that no number makes the squared deviations
+     smaller than the sample mean does - is the other standard route and is
+     in neither book either. It is now in the notes and remains the opening
+     of the appendix derivation frame, which is where it does its work.
+
+     TITLE. Two changes, both Sam's. The frame and its appendix twin were
+     "Why the Sample Variance Divides by n-1": Bessel's correction IS the
+     factor 1/(n-1), so "divides by n-1" describes the arithmetic and names
+     the wrong object, which is the confusion the frame exists to remove.
+     Then, more simply, THE THING HAS A NAME AND THE DECK NEVER SAID IT. No
+     frame in block 1 contained the word "Bessel". A student meets the term
+     in every other treatment of this and had no way to connect it to what
+     we taught. Both frames are now titled after it and the lead uses the
+     name, so the pointer on Before Lecture 1.2 still resolves.
+
+     "The sample mean used one deviation up" is also gone from the lead. It
+     was the same borrowed-metaphor fault as "The Gap Eats One Term", which
+     was cut earlier for the same reason. The lead now states the
+     restriction plainly: deviations from the sample mean sum to zero, so
+     only n-1 are free.
+
+     THIRD REWRITE, same day, Sam's framing: state the correction as the
+     WEIGHT PUT ON THE SUM rather than as a division. A variance is a
+     weighted sum of squared deviations; the population weight is 1/n and
+     the sample weight is 1/(n-1). Reading that weight down three sample
+     sizes does the whole job, and the n = 2 row - where the weight is
+     exactly 1 and the estimator stops averaging at all - is the one a room
+     remembers. Same mathematics, and it is the mathematics itself doing the
+     explaining, which is the rule this deck now follows on the moments
+     frame too.
+
+     ARITHMETIC CHECKED. 1/119 against 1/120 is a factor of 1.0084 on the
+     variance, so "under one per cent" holds. 1/(2-1) = 1. 1/(1-1) is
+     undefined.
+
+     THE FOUR-SAMPLE ENUMERATION in the notes was computed, not asserted:
+     population {0, 2}, mu = 1, sigma^2 = 1. The four i.i.d. samples of two
+     give sums of squared deviations 0, 2, 2, 0; weighted by 1/n these
+     average to 1/2 and weighted by 1/(n-1) to 1. It assumes independent
+     draws, which is what C-1a means by random sampling.
+
+     THE n = 1 CASE is a standard teaching device and
+     is arithmetic rather than a claim needing a locator: with one
+     observation the sample mean is that observation, the sum of squared
+     deviations is zero, and n - 1 = 0 makes the estimator undefined. It
+     appears under "Source of bias" in the Wikipedia article on Bessel's
+     correction, which is where it was found, alongside the two routes
+     already recorded above - the restriction count and the minimising
+     property. Not cited on the frame: it is checked, not borrowed, and
+     Wikipedia is not on this module's shelf.
+
+     THE SIZE OF THE CORRECTION, in the notes: the factor is (n-1)/n on the
+     variance, so at n = 2 dividing by n gives half the truth, and at
+     n = 120 the standard deviation moves by sqrt(120/119) - 1, about 0.4
+     per cent.
+
+     REJECTED. A widely shared Towards Data Science post argues the bias
+     from overlapping normal curves and an "underestimation zone" larger
+     than the "overestimation zone". It is hand-waving, it needs normality
+     the result does not need, and it was not used.
+
+     BEN LAMBERT devotes a whole video to the intuition for this correction,
+     "Estimating the population variance from a sample - part one", which is
+     independent evidence that this is a known hard spot and worth its own
+     frame. His explanation is his; nothing here is taken from it. -->
+```
+
+::: {.notes}
+The appendix derivation of Bessel's correction is this week's homework, and problem set 1
+opens with it.
+
+Show the forcing on the board in thirty seconds, because the whole frame rests
+on it. Put three numbers up, compute their mean, then the three deviations.
+Cover the third and ask the room for it. They can always tell you, because the
+three have to sum to zero - so the third was never a separate measurement. Two
+free deviations out of three, and n-1 out of n.
+
+Read the three weights down the slide rather than explaining them, because the
+arithmetic is the argument. At 120 the correction is a rounding error and you
+should say so - they will otherwise think they have found a trick worth
+arguing about. At 2 the weight is one, so the estimator has stopped averaging
+altogether and simply hands back the sum. At 1 it asks for a division by zero
+and there is no answer, which is correct: one person carries no information
+about how spread out anybody else is.
+
+The n = 2 row is the one to slow down on. A student who notices that the
+correction doubles the answer there has spotted something real and should be
+told so. It doubles because half the samples of two are two people who happen
+to match, and those report a world with no variation in it. The rows that do
+show spread are inflated to pay for the rows that show none.
+
+If there is time, enumerate it. Population of two people worth 0 and 2, so the
+true variance is 1. The four samples of two give sums of squared deviations 0,
+2, 2, 0. Weighted by 1/n those average to 0.5, exactly half the truth. Weighted
+by 1/(n-1) they average to 1, exactly right. No expectations taken and the
+result is in front of them.
+
+Then say the general rule, because it comes back twice: subtract one from the
+denominator for every quantity you estimated from the same data. Lecture 2.3
+estimates two and divides by n-2; Lecture 3.1 estimates k+1 and divides by
+n-k-1. It is the same sentence every time.
+
+The other half of the story, if a student pushes: the sample mean is also the
+number that makes the squared deviations smallest, so deviations from the bar
+understate deviations from mu. That is what the appendix derivation turns into
+arithmetic. Ben Lambert has two short videos on exactly this, "Estimating the
+population variance from a sample", parts one and two, and the first is
+entirely intuition - worth pointing at, because this is the frame students
+most often say they nodded through.
+
+The derivation is three steps and the last one is the only one that bites: the
+gap between the bar and mu has a variance of its own, sigma-squared over n, and
+n of those account for exactly one of the n terms.
+:::
+
+## The Standard Deviation
+
+The variance is in squared euro, and nothing is measured in those. Taking the
+positive square root puts the spread back in euro:
+
+```{=latex}
+\begin{equation}
+s_x = \sqrt{s_x^2}
+\end{equation}
+```
+
+- $s_x$: the standard deviation of $x$ in the sample
+- $\sigma_x$: the standard deviation of $x$ in the population
+
+::: {.takeaway title="Read It Against the Mean"}
+Our 120 average 12.25 an hour, with a standard deviation of 5.91. Double
+everybody's earnings and both numbers double; the variance quadruples.
+:::
+
+```{=html}
+<!-- Wooldridge B-3f, p.696: the standard deviation is the POSITIVE square
+     root of the variance, and Property SD.2 is sd(aX + b) = |a| sd(X).
+     SD.2 is the callout's second sentence and is the real reason the
+     standard deviation is the one quoted: it scales with the data, while
+     VAR.2, sd's counterpart for the variance, scales with a^2.
+
+     Added 17 September, Sam: the deck defined the standard deviation in a
+     notation line on the variance frame and gave its motivation in one
+     trailing sentence on the Bessel frame, which was about something else.
+     Both moved here. The notation lines for s_x and sigma_x moved off the
+     variance frame too, so each symbol is now listed on the frame that
+     teaches it, and sigma_x is still introduced before the skewness frame
+     divides by it.
+
+     THE NUMBERS are the module's own standing sample: mean earnings 12.25
+     an hour and standard deviation 5.91, so the variance is about 34.9
+     squared euro an hour - the quantity nobody can interpret. -->
+```
+
+::: {.notes}
+Say "squared euro an hour" out loud rather than hiding behind the word "units".
+It is the honest reason the standard deviation is quoted and the variance is
+not, and a room that hears it once stops asking why there are two numbers for
+one idea.
+
+Put 5.91 next to 12.25 and say what the pair means: a typical person in our
+sample sits about six euro an hour away from the average. That sentence is
+impossible with the variance, because 34.9 squared euro an hour corresponds to
+nothing anybody has ever been paid.
+
+If someone asks why we keep the variance at all, the answer is Lecture 1.2:
+variances add and standard deviations do not. The variance of a sum is the sum
+of the variances plus twice the covariance, and there is no matching rule for
+standard deviations. So the variance is the one the algebra runs on and the
+standard deviation is the one you report.
+:::
+
+## Comparing Centre and Spread Across Distributions
+
+```{=latex}
+\figpair{../_shared/figures/1-1_mean.png}{The mean: same spread, different
+centre.}{../_shared/figures/1-1_variance.png}{The variance: same centre,
+different spread.}
+```
+
+::: {.tablenotes title="Centre and Spread Move Independently"}
+Grey is the same reference curve in both panels. The mean moves in one panel
+and the spread in the other. Neither touches the shape.
+:::
+
+```{=html}
+<!-- Wooldridge B-3d, p.695, Figure B.4, makes the same contrast: two
+     densities with the same mean and different spreads. The exhibits here
+     are drawn by our own builder, not reproduced from the book. -->
+```
+
+::: {.notes}
+Left panel: hold the spread fixed and slide the centre. Right panel: hold the
+centre fixed and widen the spread. Ask which of the two a wage subsidy would
+change and which a change in who is counted would change.
+:::
+
+## The Moments of a Distribution
+
+Mean, variance, skewness and kurtosis are the first four moments of a
+distribution. The mean locates it; the rest are one bracket at three powers:
+
+```{=latex}
+\begin{equation}
+E\left[\left( x - \mu_x \right)^{k}\right], \qquad k = 2,\, 3,\, 4
+\end{equation}
+```
+
+- $k$: the power, giving the variance, then skewness, then kurtosis
+
+::: {.defn title="A Higher Power Weights the Tails More"}
+Double a person's distance from the mean. At $k = 2$ they count four times
+more; at $k = 4$, sixteen. Kurtosis is decided by its outliers. An odd power
+keeps the sign, so $k = 3$ says which tail is longer.
+:::
+
+```{=html}
+<!-- The three summaries are one construction at three powers. Wooldridge
+     B-3e p.695 and B-3h p.697 give the definitions but not the reason the
+     exponent is what it is, so this frame is the module's own exposition
+     rather than a claim traced to the shelf. The two facts it rests on are
+     arithmetic: an odd power preserves sign, and a higher power weights a
+     far deviation more heavily RELATIVE TO a nearer one.
+
+     THE RATIO IS THE POINT, Sam's framing 17 September, and the callout now
+     states it with a number rather than talking about cancellation. Double
+     a deviation d to 2d: at k = 2 the contribution goes from d^2 to 4d^2, a
+     factor of four; at k = 4 it goes from d^4 to 16d^4, a factor of
+     sixteen. So the fourth power is decided almost entirely by whatever
+     sits furthest out, which IS kurtosis. The old second sentence said only
+     that an even power stops deviations cancelling - true, but that is the
+     reason kurtosis is positive, not the reason it measures tails.
+
+     Sam's framing, 17 September: use the mathematics itself to give the
+     intuition rather than describing each moment separately. This frame is
+     that idea, and it is why the skewness and kurtosis frames that follow
+     need no formula of their own. Confirmed by Sam later the same day: the
+     mechanics stay on distance from the mean and the power, and no per-
+     moment equation goes on any slide.
+
+     THE TERM IS NOW TAUGHT, also Sam's instruction. The frame is titled
+     after it, the lead names all four as the first four moments, and the k
+     line maps the power to the named statistic. Correction (b) in the
+     header, which removed moment-numbering from the skewness notes to
+     avoid a raw/central/standardised mismatch, was the wrong remedy: the
+     answer is to use the term correctly, not to avoid it. The exact
+     bookkeeping - first moment about zero, second about the mean, third and
+     fourth standardised by sigma^3 and sigma^4 - is now in the notes for
+     the lecturer and is deliberately not on the slide. Wooldridge B-3h,
+     p.697, is the locator for the standardised definitions. -->
+```
+
+::: {.notes}
+Two minutes, and it pays for both of the next two frames. Say "moments" out
+loud and say it is the standard word, because they will meet it in every
+statistics course and in every textbook treatment of this material. The slide
+now names all four; what it does not carry is the exact bookkeeping, and that
+is what you add here if anyone asks.
+
+The bookkeeping, for you rather than for them. The mean is the first moment
+taken about zero. The variance is the second moment taken about the mean, which
+is what "central" means. Skewness and kurtosis are the third and fourth central
+moments divided by sigma cubed and sigma to the fourth, and that division is
+what makes them unit-free and comparable across distributions. So "the first
+four moments" mixes one raw moment, one central moment and two standardised
+ones. That is the standard informal usage, it is what every other source will
+say to them, and the frame says it too - but do not let a sharp student catch
+you out on the detail.
+
+Make the recurrence explicit, because it is the reason this frame exists rather
+than three separate definitions. Point at the bracket and say: you have already
+met this at the second power, it is the variance. The third and the fourth are
+the next twenty minutes. Lecture 1.2 writes the variance and the covariance as
+expectations of exactly this shape, and the standard error in 1.3 and the
+variance of the slope in 2.3 are both built from it. A student who reads the
+bracket as a template stops memorising formulas; a student who reads each one as
+new has four things to learn instead of one.
+
+Say what the family buys, too: a distribution is not one number, and the moments
+are the ordered set of numbers that describe its structure - where it sits, how
+wide it is, which way it leans, how much lives out in the tails.
+
+Put three deviations
+on the board, say plus two, minus two and plus four euro, and run them through
+each power. The four euro is twice the distance of the twos, so watch what that
+doubling is worth at each power. At the second power the twos give four and the
+four gives sixteen: four times as much. At the third power the minus two gives minus
+eight and the sign survives, which is the whole of skewness. At the fourth power the twos give sixteen
+and the four gives 256: sixteen times as much, so the answer is decided almost
+entirely by the one person out in the tail, which is the whole of kurtosis.
+
+That ratio is the mechanism and it is worth saying in one line: the further out
+somebody sits, the more a higher power favours them, and kurtosis is the power
+that favours them most.
+
+Say explicitly that this is one construction, not three. A student who sees
+that does not have to memorise three formulas. The scaling by the standard
+deviation on the third and fourth is what makes them unit-free and comparable
+across distributions; that is the same move as correlation on covariance in
+the next section, and it is worth naming the repeat.
+:::
+
+## Skewness
+
+Skewness asks which side of the mean has the longer tail. Cube the deviations,
+then divide by $\sigma_x^3$ to strip the units:
+
+```{=latex}
+\begin{equation}
+\text{skew}(x) = \frac{E\left[\left( x - \mu_x \right)^{3}\right]}{\sigma_x^{3}}
+\end{equation}
+```
+
+- **Below 0.5:** approximately symmetric.
+- **0.5 to 1:** moderately skewed.
+- **Above 1:** highly skewed.
+
+::: {.caveat title="Bulmer's Bands Read the Size, Not the Sign"}
+Positive means a long right tail, negative a long left one [@bulmer1979]. The
+bands apply to the number with the sign stripped off.
+:::
+
+```{=html}
+<!-- Wooldridge B-3h, p.697: skewness is the third moment of the
+     standardised variable, E[(X - mu)^3] / sigma^3. Added as its own frame
+     17 September, Sam: each moment equation gets a slide of its own, and
+     the moments frame keeps only the general form.
+
+     THE CONVERSE DOES NOT HOLD and the frame is worded to avoid claiming
+     it: symmetry implies zero skewness, zero skewness does not imply
+     symmetry.
+
+     BULMER'S BANDS, added 18 September at Sam's request, on the Cohen
+     pattern used for correlation: below 0.5 approximately symmetric, 0.5
+     to 1 moderately skewed, above 1 highly skewed. Bulmer, Principles of
+     Statistics, 1979 Dover reprint of the 1965 second edition, is the
+     source everyone attributes these to, and bulmer1979 is now in the bib.
+     NOT on this module's shelf - Wooldridge B-3h gives the definition and
+     no interpretation at all, exactly as with the correlation. -->
+```
+
+::: {.notes}
+Cube on the board with two numbers and it lands in ten seconds: plus two cubes
+to plus eight, minus two to minus eight. The signs survive, so the sum tells
+you which side won. Squaring would have thrown that away, which is exactly why
+the variance says nothing about shape.
+
+Dividing by sigma cubed is the same move as correlation on covariance, one
+section later: strip the units so two distributions can be compared. Name the
+repeat when you get there.
+:::
+
+## Skewness: Which Tail Runs Longer
+
+```{=latex}
+\figpair{../_shared/figures/1-1_skew-negative.png}{Negative skew: the long
+tail runs left.}{../_shared/figures/1-1_skew-positive.png}{Positive skew: the
+long tail runs right.}
+```
+
+::: {.tablenotes title="The Tail Pulls the Mean"}
+This is the third power: both curves share the mean and the variance. Grey marks the
+median, green the mean, which sits out in the tail.
+:::
+
+```{=html}
+<!-- Wooldridge B-3h, p.697: skewness is the third moment of the
+     standardised variable, E[(X - mu)^3] / sigma^3, and a symmetric
+     distribution makes it zero. The deck states no formula, so there is no
+     normalisation to get wrong; the appendix is where it would go if a
+     cohort asks.
+
+     CORRECTED. The notes used to say "the first two moments cannot tell
+     them apart". B-3h numbers skewness and kurtosis as the third and fourth
+     moments of the STANDARDISED variable, and never numbers the variance,
+     so naming the mean and the variable's variance directly avoids a
+     mismatch that bought nothing.
+
+     NOT IN THE SOURCE. That the mean is pulled into the long tail is a
+     description of these exhibits, which our builder draws, and it is the
+     standard teaching claim. Wooldridge B-3c, p.694, gives only the
+     converse: a distribution symmetric about m has m as both mean and
+     median. Left as drafted and flagged, not hedged. -->
+```
+
+::: {.notes}
+Walk it: both panels have identical mean and identical variance, so the two
+numbers the room has learned so far are useless here. What separates them is
+which side the long tail is on.
+
+The median is the value with half the area either side of it, so a long tail
+adds area far out without moving the halfway point. The mean has to balance
+that area, so it follows the tail.
+:::
+
+## Kurtosis
+
+Kurtosis asks how much of the distribution sits far from the mean. Raise the
+deviations to the fourth power, then divide by $\sigma_x^4$:
+
+```{=latex}
+\begin{equation}
+\text{kurt}(x) = \frac{E\left[\left( x - \mu_x \right)^{4}\right]}{\sigma_x^{4}}
+\end{equation}
+```
+
+- **Below 3:** thinner tails than the normal curve.
+- **Exactly 3:** the normal curve itself.
+- **Above 3:** thicker tails, and more weight in them.
+
+::: {.caveat title="No Agreed Bands, Only the Benchmark"}
+Nobody has settled bands for kurtosis the way Bulmer did for skewness. Daily
+stock returns sit well above three. Finance cares about kurtosis for that
+reason.
+:::
+
+```{=html}
+<!-- Wooldridge B-3h, p.697: kurtosis is the fourth moment of the
+     standardised variable, E[(X - mu)^4] / sigma^4, and larger values mean
+     thicker tails. Added as its own frame 17 September, Sam.
+
+     NO BANDS EXIST FOR KURTOSIS and the frame says so rather than
+     inventing some. Bulmer has bands for skewness and no counterpart for
+     kurtosis; the only agreed reference point is the normal curve's 3, and
+     the vocabulary built on it - platykurtic below, mesokurtic at,
+     leptokurtic above - which the deck does not use because the words cost
+     more than they buy in a first course. The finance anchor is the honest
+     way to make 3 mean something: fat-tailed daily returns are the standard
+     case and the reason the benchmark is worth knowing.
+
+     THE BENCHMARK OF THREE IS NOT IN WOOLDRIDGE. B-3h gives no reference
+     value and the source carries no excess-kurtosis convention, so the deck
+     does not subtract three anywhere. The value 3 for the normal is
+     standard and correct, and it is stated here because "larger means
+     thicker" is uninterpretable without something to be larger than. Flag
+     if you would rather it came off the slide. -->
+```
+
+::: {.notes}
+Three is the number to make them write down, because kurtosis is meaningless
+without it. Everything is measured against the normal curve: at three the tails
+are normal, above three they are thicker, below three thinner.
+
+Say plainly that this is the least useful of the four for this module and that
+it earns its place because finance runs on it. Returns are the standard case of
+tails far heavier than a normal curve would allow, and a risk model built on
+the normal understates how often a very bad day happens.
+:::
+
+## Kurtosis: How Much Sits Far From the Middle
+
+```{=latex}
+\figpair{../_shared/figures/1-1_kurtosis-light.png}{Light tails: almost
+nothing lands far out.}{../_shared/figures/1-1_kurtosis-heavy.png}{Heavy
+tails: much more lands a long way out.}
+```
+
+::: {.tablenotes title="Thicker Tails, Same Variance"}
+This is the fourth power: both panels share the normal curve's mean and variance. What
+changes is how often a value turns up far out.
+:::
+
+```{=html}
+<!-- CORRECTED. The right-hand caption read "a sharper peak, and far more in
+     the tails". Wooldridge B-3h, p.697, defines kurtosis as the fourth
+     moment of the standardised variable, E[(X - mu)^4] / sigma^4, and says
+     only this about interpreting it: "larger values mean that the tails in
+     the distribution of X are thicker". The peak is not in the source, so
+     the caption now claims the tails alone.
+
+     Note also what the source does NOT do: it states no excess-kurtosis
+     convention, never subtracts three, and says outright that without a
+     reference value the level of E[Z^4] is hard to interpret. The value
+     for the normal is obtained in B-5. This deck therefore states no
+     number and no normalisation. -->
+```
+
+::: {.notes}
+Both panels have the same mean and the same variance, again, so again the first
+two summaries are blind to the difference. What changes is how often something
+lands a long way out.
+
+Financial returns look like the second panel, which is why models built on the
+first underestimate how often a crash happens. Said out loud only: there is no
+source for it on this module's shelf.
+:::
+
+## The Range
+
+The range is the measure everybody reaches for first. It is also the only one
+here that is not a moment:
+
+```{=latex}
+\begin{equation}
+\text{range} = x_{\max} - x_{\min}
+\end{equation}
+```
+
+::: {.caveat title="Two People Decide the Range"}
+Every other observation could move without changing it. A bigger sample can
+only widen the range, never narrow it.
+:::
+
+```{=html}
+<!-- Added 17 September, Sam: the deck had no range at all.
+
+     MOVED the same day, also Sam, from before the variance to the end of
+     the section. The range is not a moment - it is a difference of two
+     order statistics, not an average of deviations - so placing it inside
+     the run-up to the moments family cut across the one construction the
+     section is built on. It reads better as the coda: finish the family,
+     then show the measure that sits outside it and say why. The variance
+     never needed the range to motivate it anyway; its own frame is
+     motivated by the mean saying nothing about scatter.
+
+     NOT FROM THE SHELF. Wooldridge's Math Refresher B has no range; B-3e
+     p.695 starts at the variance. Both claims in the callout are
+     arithmetic: the range depends only on the two extreme order
+     statistics, and a superset of a sample cannot have a smaller max or a
+     larger min, so the range is non-decreasing in n. -->
+```
+
+::: {.notes}
+This frame is at the end on purpose, and the set-up for it happens twenty
+minutes earlier. When you open the spread material, ask the room for a measure
+of spread; somebody will say the range. Take it, write it on the board, and
+leave it there unanswered until now.
+
+Then break it, with the moments fresh. Move every observation except the top
+and the bottom one: the range does not move. Then the worse property - draw
+more people and the range can only grow, so two samples of different size
+cannot be compared on it at all. Nothing in the moments family has either
+problem, because every one of them uses all n observations rather than two.
+:::
+
+
+# Describing Two Variables
+
+## Covariance: Measuring How Two Variables Move Together
+
+Each variable has its own mean. Every person has a distance from each, and the
+covariance multiplies the two:
+
+```{=latex}
+\begin{equation}
+s_{xy} = \frac{1}{n-1} \sum_{i=1}^{n}
+         \left( x_i - \bar{x} \right)\left( y_i - \bar{y} \right)
+\end{equation}
+```
+
+- $s_{xy}$: the covariance of $x$ and $y$ in the sample
+
+::: {.defn title="Same Side Positive, Opposite Sides Negative"}
+Above on both, or below on both, and the product is positive. Above on one and
+below on the other, and it is negative.
+:::
+
+## The Sign Is the Part You Can Read
+
+Sum those products across all 120 people, and ours comes out positive:
+
+- **Positive:** above-average schooling mostly comes with above-average earnings.
+- **Negative:** above-average schooling mostly comes with below-average earnings.
+- **Near Zero:** the products cancel, so no straight-line relationship shows.
+
+::: {.takeaway title="Zero Is Cancellation, Not a Convention"}
+Zero does not mean unrelated by definition. It means the positive products and
+the negative ones came out even.
+:::
+
+```{=html}
+<!-- Split from the covariance frame, 17 September. The old frame did the
+     mechanics - multiply the signs, add them up - and stopped there, so it
+     said how the number is BUILT and never what it TELLS you. That second
+     half is this frame.
+
+     WOOLDRIDGE B-4b, p.698 is the middle bullet and it is a fact-check
+     correction that must survive: "If sigma_XY < 0, then, on average, when
+     X is above its mean, Y is below its mean." Do not weaken "mostly" to a
+     bare negation.
+
+     ZERO IS THE POINT OF THE FRAME. A first course states that zero
+     covariance means no linear relationship as though it were a definition.
+     It is not - it is what cancellation looks like when the agreements and
+     the disagreements are evenly matched. A student who has that does not
+     need to memorise the zero case.
+
+     ORDER MATTERS. This frame says the SIGN is readable; the frame after it
+     says the SIZE is not. Do not add a magnitude claim here ("and by how
+     much"), because the next frame spends itself contradicting it. -->
+```
+
+::: {.notes}
+Two minutes, and say the mechanism twice because it is the whole frame. Each
+variable is measured against its own mean. Every person therefore has two
+distances, and the covariance is the average of their products.
+
+Add the half the slide has no room for: the products are not the same size.
+Someone a year above average on schooling and fifty cents above on earnings
+contributes almost nothing. Someone four years above and fifteen euro above
+contributes sixty, because the product multiplies both distances. That is why
+the formula multiplies the deviations rather than just counting the signs - and
+it is also why one extreme person can carry a covariance, which is the outlier
+problem Lecture 2.1 meets properly.
+
+Push on the zero case if there is time. Ask what a cloud with zero covariance
+looks like: not an empty scatter, but one where for every person above on both
+there is another above on one and below on the other. The cancelling is
+visible in the picture, and that is worth more than the sentence.
+:::
+
+```{=html}
+<!-- IDEA 3. 81-92 min.
+
+     Wooldridge B-4b, p.697: Cov(X, Y) = E[(X - mu_X)(Y - mu_Y)], built
+     from exactly this product of deviations, and his own set-up runs
+     through the four sign cases the frame's notes use.
+
+     ORDER FIXED 18 September, Sam: the equation leads and the two sign
+     cases moved into a callout. They had been bullets sitting ABOVE the
+     equation, which is the one place the skill's equation pattern does not
+     put anything - a plain sentence introduces the equation, the notation
+     list follows it, and an argument about a symbol is a separate callout.
+
+     LEAD REWRITTEN 17 September, Sam's framing: covariance works because
+     each variable is measured against ITS OWN mean and the two distances
+     are multiplied. The lead had used a voting metaphor - every person
+     casts a vote, the covariance is the tally - which described the sign
+     behaviour without ever stating the mechanism, and was the same
+     borrowed-metaphor fault as "The Gap Eats One Term". Votes are gone from
+     both covariance frames and from the notes.
+
+     CORRECTED in the notes on the next frame: it said the n-1 was there
+     because "two sample means have been used up", which predicts n-2 and
+     is wrong. The sample covariance weights by 1/(n-1) because
+     E[sum (x_i - xbar)(y_i - ybar)] = (n-1) sigma_xy, the cross-product
+     term being n Cov(xbar, ybar) = sigma_xy. -->
+```
+
+::: {.notes}
+Put the four cases on the board rather than reading the slide: above and above,
+below and below, above and below, below and above. The slide states the sign;
+the board is where the room sees the sum count the positives against the
+negatives.
+
+A single person contributes nothing when they sit exactly at one of the two
+means, which is worth saying if someone asks what the zero case looks like.
+
+The weight is Bessel's correction again. Someone will expect 1/(n-2) here,
+since two means were estimated rather than one; it is 1/(n-1), because the
+expected sum of cross-products comes to (n-1) sigma_xy. The free-deviations
+shortcut does not transfer cleanly to two variables, so do not wave at it -
+say that the algebra gives n-1 and that the appendix for it is Lecture 1.2.
+:::
+
+## Why the Size of a Covariance Is Not Interpretable
+
+The same 120 people and the same relationship, measured three ways:
+
+- **Earnings in Euro an Hour:** 8.11 euro-years
+- **Earnings in Cents an Hour:** 811.16 cent-years
+- **Schooling in Months Instead:** 97.34 euro-months
+
+::: {.takeaway title="Only the Yardstick Changed"}
+Nothing about these 120 people changed from one line to the next. Only the
+units did, so the size of a covariance carries no information.
+:::
+
+```{=html}
+<!-- CORRECTED, then MOVED. The frame used to say a negative covariance
+     "says they do not" rise together, which is a bare negation and weaker
+     than the source. Wooldridge B-4b, p.698: "If sigma_XY < 0, then, on
+     average, when X is above its mean, Y is below its mean." That
+     corrected sentence now lives on the covariance frame, which is the one
+     about the sign; this frame is only about the size. The correction is
+     NOT dropped - do not reinstate it here.
+
+     THE THREE NUMBERS, 17 September. Computed from the module's own
+     C_02_05_sample_df, n = 120, not invented: cov in euro-years 8.11, in
+     cent-years 811.16, with schooling in months 97.34, and the correlation
+     0.594 in every case (8.11 / (2.31 x 5.91) = 0.594). Recompute if
+     B_03 changes.
+
+     The scaling claim is Property Cov.2, p.698:
+     Cov(a1 X + b1, a2 Y + b2) = a1 a2 Cov(X, Y). Euro to cents is
+     a2 = 100 with a1 = 1, so the covariance multiplies by a hundred
+     exactly. -->
+```
+
+::: {.notes}
+"On average" is doing real work in both sentences: a positive covariance does
+not mean every high-schooling person out-earns every low-schooling one, only
+that the positive products outweigh the negative ones.
+
+Nothing about the world has changed when you switch to cents, which is the
+whole complaint.
+:::
+
+## Correlation Is Covariance With the Units Divided Out
+
+The covariance carries euro-years; so does the product of the two standard
+deviations. Divide and the units cancel:
+
+```{=latex}
+\begin{equation}
+r_{xy} = \frac{s_{xy}}{s_x \, s_y}
+\end{equation}
+```
+
+- $r_{xy}$: the correlation of $x$ and $y$ in the sample
+
+::: {.takeaway title="All Three Become 0.594"}
+Every one of those three covariances divides down to 0.594. Both standard
+deviations are positive, so the covariance's sign survives.
+:::
+
+```{=html}
+<!-- Wooldridge B-4c, p.699, equation B.29:
+     Corr(X, Y) = Cov(X, Y) / (sd(X) sd(Y)) = sigma_XY / (sigma_X sigma_Y),
+     "sometimes denoted rho_XY", which is the Greek symbol on this frame. -->
+```
+
+::: {.notes}
+The denominator is a product of two standard deviations, so it carries
+euro-years as well, and the ratio is a pure number. That is the entire trick.
+:::
+
+## Correlation Runs From Minus One to One
+
+Correlation says how strong the relationship is, not only which way it runs.
+Price and quantity demanded move opposite ways, so that correlation is negative.
+
+::: {.takeaway title="One Means an Exact Line"}
+At $1$ or $-1$ the points lie exactly on a straight line. Values nearer either
+end mean a stronger straight-line relationship. Measure earnings in cents and
+nothing moves.
+:::
+
+```{=html}
+<!-- Wooldridge B-4c, pp.698-699. "Because sigma_X and sigma_Y are
+     positive, Cov(X, Y) and Corr(X, Y) always have the same sign."
+     Property Corr.1: -1 <= Corr(X, Y) <= 1. Corr(X, Y) = 1 implies
+     Y = a + bX with b > 0, and -1 the same with b < 0; "values of rho_XY
+     closer to 1 or -1 indicate stronger linear relationships". Property
+     Corr.2 gives the invariance, for a1 a2 > 0 - and euro to cents is
+     a2 = 100 > 0, so the sign condition holds here. -->
+```
+
+::: {.notes}
+Wooldridge says the extreme cases of plus or minus one rarely occur, and he is
+right: a correlation of exactly one in real data usually means the same
+variable has been entered twice.
+
+Note the asymmetry worth carrying: independence implies zero correlation, but
+zero correlation does not imply independence. Wooldridge gives the standard
+counterexample, a variable and its own square. Lecture 3.1 needs that distinction.
+:::
+
+## Small, Medium and Large: 0.1, 0.3, 0.5
+
+Cohen's conventions, the ones you will meet everywhere [@cohen1988]:
+
+- **$r = 0.1$:** small.
+- **$r = 0.3$:** medium.
+- **$r = 0.5$:** large.
+
+::: {.caveat title="Cohen Wrote These for Psychology"}
+Wooldridge gives no bands at all. Ours is 0.594, large by Cohen. Squared, it
+says the two share a third of their variation.
+:::
+
+## Correlations of 0.10, 0.30 and 0.50
+
+```{=latex}
+\figtriple{../_shared/figures/1-1_cohen-weak.png}{Cohen's small.}%
+{../_shared/figures/1-1_cohen-medium.png}{Cohen's medium.}%
+{../_shared/figures/1-1_cohen-strong.png}{Cohen's large.}
+```
+
+::: {.tablenotes title="Earnings Depend on More Than Schooling"}
+Even the panel Cohen calls large is a wide cloud. Earnings depend on far more
+than schooling, which is what block 3 adds.
+:::
+
+```{=html}
+<!-- FIGURES 1-1_cohen-weak, -medium and -strong, built 18 September by
+     D_05_10_panel_fn. THREE SEPARATE FILES, Sam, 18 September: faceted
+     into one exhibit they shared a y axis and a strip band, and \fig
+     caps the whole thing at 0.42\textheight, so three scatters landed
+     too small to read. \figtriple gives each a third of the line width
+     and its own axes; the macro was added to dublin-components.tex in
+     the same pass, in the module copy and in the theme repo.
+     Correlations are constructed exactly rather than drawn and measured, so
+     a panel labelled 0.50 realises 0.50. Added at Sam's request for weak,
+     medium and strong co-movement; pinned to Cohen's own numbers so it
+     carries the frame before it rather than inventing a third scale. -->
+```
+
+::: {.notes}
+Somebody will ask whether adding more variables tightens the cloud, and the
+honest answer needs care. Adding a variable does not make a CORRELATION
+clearer - a correlation is a two-variable object and does not change when a
+third arrives. What multiple regression does is account for some of the other
+things earnings depend on, so that what is left over is smaller. Do not say
+"the fit improves as you add variables": R-squared rises when you add any
+variable at all, including a useless one, which is Lecture 2.2's warning, and
+Lecture 3.1 is a whole frame on controls that make the estimate worse. The
+sentence that survives all of that is the one in the box: the cloud is wide
+because schooling is not the whole story, and block 3 is where the rest of the
+story goes.
+
+Put this up straight after the bands and say nothing for a few seconds. The
+room expects "large" to look like a line and it does not - at 0.5 the cloud is
+still wide enough that knowing schooling tells you very little about any one
+person's earnings. That gap between the word and the picture is the honest
+content of the previous frame, and it is worth more than the numbers.
+
+The panels share the same 160 people on the horizontal axis, so what changes
+across the three is only how tightly earnings track schooling.
+:::
+
+```{=html}
+<!-- Added 17 September, on Sam's request for rules of thumb, and
+     rewritten the same day when he asked for the NAMED conventions: the
+     value of a rule of thumb is that it is memorable, so the three numbers
+     go in the frame title and Cohen gets the credit.
+
+     THE NUMBERS ARE VERIFIED. Cohen (1988) gives r = 0.1 small, 0.3 medium,
+     0.5 large. Checked against the MRC CBU statistics wiki's effect-size
+     table, which also carries the standard warning that contextual effect
+     sizes beat canned ones.
+
+     COHEN IS NOT ON THE SHELF, and the caveat box is the honest handling.
+     Wooldridge B-4c, p.699, gives no thresholds at all - only that values
+     nearer 1 or -1 mean stronger linear relationships, and that the
+     extremes rarely occur. So the bands are offered as something the room
+     will meet elsewhere, attributed, and immediately qualified.
+
+     THE ARITHMETIC. 0.3^2 = 0.09, 0.6^2 = 0.36, 0.9^2 = 0.81. Our own
+     sample gives r = 0.594, so r^2 = 0.35 - about a third, which is the
+     figure to quote if the room asks about the working example.
+
+     "IN COMMON" IS AN INFORMAL GLOSS and it is deliberate. Lecture 2.2
+     makes it precise as the share of the variation in one variable
+     accounted for by a straight line in the other. Do not sharpen it here;
+     the room has no fitted line yet. -->
+```
+
+::: {.notes}
+This is the rule of thumb worth carrying out of the lecture, because it is the
+one that deflates the number correctly. A correlation of 0.6 sounds like most
+of the story and is about a third of it.
+
+Do the working example out loud: our schooling and earnings correlation is
+0.594, so a shade over a third of the variation in earnings moves with
+schooling and the rest does not. Then remind them what we already know about
+this population - the return is a real 1.30 an hour, we wrote it ourselves -
+so a third is what a genuine, exactly known effect looks like in a correlation.
+That pairing is the whole lesson.
+
+On the bands: do not tell the room they are wrong, tell them where they come
+from. In labour economics a
+cross-sectional correlation of 0.6 between two things measured on individuals
+is about as strong as it gets, and a "weak" 0.2 can carry an effect worth
+billions. Strength and importance are different questions, which is the point
+the application frame closes on.
+
+This frame is also the first appearance of the squaring move that becomes
+R-squared in 2.2. Say so, so that frame arrives as a return rather than a new
+idea.
+:::
+
+## Correlation Measures Straight-Line Association Only
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Four samples from this population, each with a correlation of 0.60.}
+```
+
+::: {.tablenotes title="Same Number, Four Clouds"}
+A curve, four outliers and two separate groups all return 0.60. One statistic
+cannot tell them apart [@anscombe1973graphs; @matejka2017].
+:::
+
+```{=html}
+<!-- FIGURE 1-1_same-correlation: a 2x2 panel of scatterplots, schooling
+     against earnings, each n = 120 and each with r = 0.60 to two decimals.
+     Panel A a plain linear draw; panel B a strong curve that turns over;
+     panel C a flat cloud plus four high-leverage points; panel D two
+     separate clusters with no relationship inside either. Print the
+     correlation on each panel so the equality is visible. Needs the
+     generator's shape switch plus a tuning loop to match r across panels.
+
+     Wooldridge B-4c, p.699: the correlation coefficient "is also a measure
+     of linear dependence", and B-4b, p.698: "The covariance is useful in
+     contexts when relationships are at least approximately linear." That is
+     the claim this frame makes and nothing stronger - the number is not
+     wrong in the curved panel, it is answering a question about straight
+     lines in a cloud that is not one.
+
+     The citations sit in the markdown box, not in the LaTeX caption, so
+     citeproc can see them. -->
+```
+
+::: {.notes}
+Walk the four panels in order: the honest one, the curve that turns over, the
+flat cloud that four points drag into a slope, and the two clusters with no
+relationship inside either. Then say all four correlations are 0.60.
+
+Four different worlds, four different answers to what schooling is worth, and
+one summary statistic that cannot separate them. The lesson is old and keeps
+needing to be relearned, which is why there are two citations forty-four years
+apart.
+:::
+
+## Why a Correlation Is Not a Causal Claim
+
+Schooling really does raise earnings here by 1.30 an hour a year. We wrote the
+generator that way. Outside a simulation you are handed the correlation and not
+the generator.
+
+::: {.caveat title="0.594 Is Consistent With No Effect"}
+The same 0.594 could come from a world where schooling changes nothing. The
+number alone cannot tell you which world you are in.
+:::
+
+## Three Ways a Correlation Misleads
+
+All three are real correlations, and each one goes wrong differently:
+
+- **Coincidence:** films starring Nicolas Cage track pool drownings, $r = 0.66$.
+- **A Common Cause:** on sunny days people buy ice cream, and people swim.
+- **A Difference That Pays:** people who stay in school longer differ in more than schooling.
+
+::: {.caveat title="Ice Cream Does Not Cause Drowning"}
+Nothing connects Cage to drownings at all. Sunshine drives both the ice cream
+and the swimming. Ability raises schooling and earnings alike. The correlation
+looks identical in all three.
+:::
+
+```{=html}
+<!-- Added 17 September, Sam's request. The deck already had the module's
+     own causal caveat on the frame before this one; what it lacked was the
+     general statement and the distinction between the failures, which is
+     the part that transfers.
+
+     EXPOSITION PASS, 17 September. The three mechanisms had been split one
+     and two across this frame and the one before it, so the seam read as
+     arbitrary and the ability objection looked like a separate point rather
+     than the third member of a list. Ability moved onto this frame as the
+     third bullet. The frame before now carries the reveal instead: that the
+     same 0.594 is consistent with a true effect of zero.
+
+     THE THREE CASES ARE DIFFERENT and the frame exists to separate them.
+     Cage and drownings is COINCIDENCE - no mechanism of any kind, found by
+     dredging thousands of series until two lined up. Ice cream and drowning
+     is CONFOUNDING by a common cause, both genuinely caused by summer.
+     Schooling and earnings is CONFOUNDING by a difference that pays, which
+     is the one this module spends a term on. A student who thinks
+     "correlation is not causation" means only the second has not understood
+     the first.
+
+     LOCATOR. The Cage pairing is Tyler Vigen's, @vigen2015, and r = 0.66 is
+     as stated in the LibreTexts introductory statistics text (Geraghty,
+     3.6.03 "Correlation vs. Causation"), which also draws the coincidence
+     against confounding distinction this frame uses. Vigen is NOT on the
+     shelf - the example is described and attributed here, not reproduced.
+
+     FORWARD LINKS. The dredging point is 3.3's specification search: hunt
+     across enough pairs and correlations like this appear by construction.
+     The common-cause point is 3.1's confounder. Both are named in the
+     notes so this frame plants them. -->
+```
+
+::: {.notes}
+The Cage example gets a laugh and then it has to earn its place, so follow it
+with the question: how did anyone find that? Vigen ran a search across
+thousands of public series looking for pairs that moved together. At that scale
+correlations like this are not a surprise, they are arithmetic - which is
+exactly the argument Lecture 3.3 makes about searching across specifications
+until something comes out significant.
+
+Draw the difference on the board, because it is the whole frame. Cage to
+drownings: no arrow anywhere, the two series have nothing to do with each
+other. Ice cream to drownings: sunshine at the top with two arrows coming down
+out of it, one to ice cream and one to swimming, and swimming on to drowning.
+Then rub out nothing and ask the room to find the arrow from ice cream to
+drowning. There isn't one, and that is the point - the two things we measured
+are cousins, not parent and child.
+
+Say the denial out loud rather than leaving it implied: ice cream does not
+cause drowning. A student who only hears "they are correlated because of the
+weather" has been given the mechanism and not the conclusion.
+
+The third bullet is the one the module lives on, so slow down for it. Ability,
+family money and stamina all raise schooling and raise earnings, and none of
+them is in the data. Lecture 3.1 gives that a name and an arithmetic for which
+way it throws the estimate.
+
+Resist giving the fourth kind here. Reverse causation is 4.2 and the room has
+enough.
+:::
+
+```{=html}
+<!-- CORRECTED. "Schooling really does move earnings" named no direction.
+     The generator sets a return of +1.30 euro an hour a year, so the verb
+     is now "raise". The direction is a fact about our generator, stated on
+     the population frame, not a finding. The intuition pass also put the
+     magnitude, 1.30 an hour a year, on this frame; it is the same generator
+     parameter the population frame states, and it is not a finding either.
+     The forward pointer to Lecture 3.1 moved out of the caveat and into the
+     notes, where it was already stated.
+
+     EXPOSITION PASS, 17 September. The caveat used to read "People who stay
+     in school longer differ in more than schooling", which is one of the
+     three mechanisms on the next frame and read as a stray fourth. It moved
+     there as a bullet. The caveat now carries what only this frame can say:
+     that the sample correlation is consistent with a true return of zero,
+     which follows from the frame's own point that outside a simulation you
+     never see the generator.
+
+     Mastering 'Metrics 6.1, p.209, is the source for the objection: Angrist
+     and Pischke's own version is that the highly educated are plausibly
+     "smarter, harder working, and better bred", and those qualities are
+     themselves associated with higher earnings. Mincer's regression gives
+     about 7% a year with no controls and about 11% with potential
+     experience, and 6.1 says outright that it remains to be seen whether
+     either is causal. -->
+```
+
+::: {.notes}
+Today it is enough that you can say the sentence. Lecture 3.1 turns it into omitted
+variable bias and gives you the formula for which way the estimate is thrown.
+
+If a student asks for the real number: Mincer's census regressions give about
+seven per cent a year without controls and about eleven with experience
+controls. Neither is a causal effect and Mastering 'Metrics 6.1 says so.
+:::
+
+## What Would Have To Be True Today?
+
+Today's number is the correlation between schooling and earnings in our sample.
+
+::: {.defn title="Question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+```{=html}
+<!-- 97-102 min. The standing question, run for the first time. The wording
+     in the box is Sam's and matches the announcement frame in section one
+     word for word; it is not trimmed.
+
+     THIS FRAME ABSORBED A SECOND QUESTION, cut 17 September: "Two Studies,
+     One Correlation of 0.42", which sat five minutes earlier and asked
+     whether two studies reporting the same number had found the same thing.
+     It asked what this frame asks, and section three was carrying three
+     interaction points in fifteen consecutive minutes on eleven minutes of
+     content. Section three now runs 81-97 instead of 81-92. The list the
+     room builds is preserved in the notes below. -->
+```
+
+::: {.notes}
+They will struggle to say what they would need to see, and the list they build
+getting there - the scatterplot, the sample size, who was left out, what else
+differs between two studies - is the syllabus for the rest of the term. Write
+it up and leave it up.
+
+Candidate answer for this week, after the room has had a go: a correlation
+means what we said it means only if the cloud it summarises is a straight line,
+and only if the sample it came from stands in for the population. Neither is
+checkable from the number itself.
+
+The point is not that causation is hard in the abstract. It is that THIS
+estimate rests on two nameable conditions, and both of them may well be false.
+:::
+
+## Application: The Four Numbers on Our Sample
+
+Open the sample of 120 and plot the cloud. Compute the mean, median, standard
+deviation, and the correlation of schooling with earnings.
+
+::: {.defn title="Question"}
+We built this population so a year of schooling is worth 1.30. Does that make
+the correlation close to one?
+:::
+
+
+```{=html}
+<!-- 102-107 min. Answers BEFORE the computation, which is the surviving
+     form of predict-before-reveal in this module: no hands, no revote,
+     just a number on the board that the run either matches or does not. -->
+```
+
+::: {.notes}
+The answer is no, and the reason is the whole of section three. Correlation
+measures how tightly the cloud hugs the line, not how steep the line is. The
+effect here is real, it is exact, and we wrote it down ourselves - and the
+correlation still comes nowhere near one, because earnings vary for a hundred
+reasons that have nothing to do with schooling.
+
+That is the sentence to get out of the room before running anything: a strong
+true effect and a modest correlation sit together perfectly happily. Most people
+expect the two to travel together and they do not. Lecture 2.2 rebuilds exactly
+this argument with the R-squared, so the wrong intuition is worth surfacing here
+where it costs nothing.
+
+Lab this week: compute all four by hand from the formulas, then check them
+against `mean()`, `median()`, `sd()` and `cor()`. Getting the same answer twice
+by two routes is the point, not the answer.
+:::
+
+## Three Ways to Describe Data
+
+Today was three separate ideas, each answering a different question:
+
+::: {.contributions}
+1. **Populations and Samples.** The question is about a population; the gap to the sample never closes.
+2. **Describing One Variable.** Centre, spread and shape each answer one question, and each throws something away.
+3. **Describing Two Variables.** Covariance and correlation measure straight-line co-movement, and nothing else.
+:::
+
+```{=html}
+<!-- 107-110 min. No new material. The three names match the section
+     dividers, which match the roadmap and the Lecture Plan.
+
+     The .contributions component sets the bold lead on one line and the
+     body on the next, so the lead has to be a complete label and the body
+     a complete sentence. An em dash opening the body leaves a dangling
+     dash on the second line. -->
+```
+
+::: {.notes}
+Exit ticket after this frame: what was the muddiest point? The answers set next
+week's retrieval questions, and Lecture 1.2 opens on whichever of the three ideas
+the sheets say did not land.
+:::
+
+## Before Lecture 1.2
+
+::: {.contributions}
+1.  **Play:** load the sample of 120 in R and compute today's four numbers.
+2.  **Apply:** problem set 1, which opens with the appendix derivation of Bessel's correction.
+3.  **Review:** @wooldridge2020, Math Refresher B, sections 3 and 4.
+:::
+
+::: {.defn title="Diagnostic in This Week's Lab"}
+Ten anonymous, ungraded items on expectation, sampling, logs and proportions.
+:::
+
+::: {.notes}
+All three look back at today. Say that out loud, because a room that has been
+told to pre-read a chapter it cannot yet parse simply does not do it.
+
+Math Refresher B section 3 is the mean, the variance and the two shape
+measures; section 4 is covariance and correlation. Between them they cover
+every number on today's application frame.
+
+Problem set 1 is out this week, due week n, and covers 1.1 and 1.2.
+
+The diagnostic was the one part of the old Lecture 0 that needed a whole block
+of room time, and it does not need a lecture theatre. Items: expectation, a
+sampling distribution, logs, a proportion, reading a simple table. Publish the
+aggregate and a remediation list before Lecture 1.2, then normalise the difficulty
+out loud - most people find weeks 2 and 3 hard, and that is the module working
+rather than failing.
+:::
+
+## Next Week
+
+Instead of one average for everybody, an average for each level of schooling.
+
+::: {.takeaway title="An Average at Each Year"}
+The line a regression draws joins one average per year of schooling.
+:::
+
+::: {.notes}
+That is the whole idea behind a regression and it is worth saying before they
+have seen a line: they already know how to take an average, and 1.2 takes
+several.
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+```{=html}
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+```
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Bessel's Correction
+
+No other number makes the squared deviations smaller than $\bar{x}$ does. So the
+expected sum of squared deviations from $\bar{x}$ comes to $(n-1)\sigma_x^2$,
+not $n\sigma_x^2$.
+
+::: {.worked title="The Cross Term Merges Into the Gap"}
+Write each deviation from $\bar{x}$ as a deviation from $\mu_x$ minus the gap.
+Square and sum, and the cross term merges into the squared gap. Take
+expectations of what is left.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+```{=html}
+<!-- CORRECTED. The old wording said the cross term "collapses", which reads
+     as "vanishes". It does not. Writing d_i = x_i - mu and g = xbar - mu:
+
+       sum (x_i - xbar)^2 = sum (d_i - g)^2
+                          = sum d_i^2 - 2 g sum d_i + n g^2
+                          = sum d_i^2 - 2 n g^2 + n g^2
+                          = sum d_i^2 - n g^2,
+
+     because sum d_i = n g. So the cross term does not disappear; it doubles
+     the squared-gap term and reverses its sign. Taking expectations,
+     E[sum d_i^2] = n sigma^2 and E[g^2] = Var(xbar) = sigma^2 / n, so
+
+       E[sum (x_i - xbar)^2] = n sigma^2 - n (sigma^2 / n) = (n-1) sigma^2.
+
+     Wooldridge C-2b, p.716, for the definition of unbiasedness this makes
+     the n-1 estimator satisfy. -->
+```
+
+::: {.notes}
+The step that does the work is the last one, because the gap between $\bar{x}$
+and $\mu_x$ has a variance of its own, sigma-squared over n, and n copies of it
+eat exactly one term.
+
+Dividing by n instead gives an estimator whose expectation is too small by the
+factor (n-1)/n. Any one sample can still come out high; the bias is a property
+of the average over samples, not of a draw.
+:::
+
+## The Greek Alphabet: Alpha to Mu
+
+Say them out loud. A symbol you cannot pronounce is one you will never ask
+about:
+
+| Lower | Upper | Name | Said as | Used here for |
+|:--|:--|:--|:--|:--|
+| $\alpha$ | $A$ | alpha | AL-fa | |
+| $\beta$ | $B$ | beta | BEE-ta | the regression coefficients, from 2.1 |
+| $\gamma$ | $\Gamma$ | gamma | GAM-a | |
+| $\delta$ | $\Delta$ | delta | DEL-ta | a shift; $\Delta$ for a change in |
+| $\epsilon$ | $E$ | epsilon | EP-si-lon | |
+| $\zeta$ | $Z$ | zeta | ZEE-ta | |
+| $\eta$ | $H$ | eta | EE-ta | |
+| $\theta$ | $\Theta$ | theta | THEE-ta | |
+| $\iota$ | $I$ | iota | eye-OH-ta | |
+| $\kappa$ | $K$ | kappa | KAP-a | |
+| $\lambda$ | $\Lambda$ | lambda | LAM-da | |
+| $\mu$ | $M$ | mu | MEW | a population mean |
+
+## The Greek Alphabet: Nu to Omega
+
+| Lower | Upper | Name | Said as | Used here for |
+|:--|:--|:--|:--|:--|
+| $\nu$ | $N$ | nu | NEW | |
+| $\xi$ | $\Xi$ | xi | KSY | |
+| $o$ | $O$ | omicron | OH-mi-kron | |
+| $\pi$ | $\Pi$ | pi | PY | |
+| $\rho$ | $P$ | rho | ROH | |
+| $\sigma$ | $\Sigma$ | sigma | SIG-ma | a population spread; $\Sigma$ means add up |
+| $\tau$ | $T$ | tau | TAW | |
+| $\upsilon$ | $\Upsilon$ | upsilon | UP-si-lon | |
+| $\phi$ | $\Phi$ | phi | FY | |
+| $\chi$ | $X$ | chi | KY | |
+| $\psi$ | $\Psi$ | psi | SY | |
+| $\omega$ | $\Omega$ | omega | OH-mig-a | |
+
+Thirteen capitals are identical to ours, so nobody uses them as symbols.
+A capital alpha is just an A.
+
+```{=html}
+<!-- Added 17 September, on Sam's request. Appendix, so it is Roman-numbered
+     and costs the deck nothing, and .allowframebreaks lets LaTeX split the
+     table rather than forcing a two-frame split by hand.
+
+     The "Used here for" column is filled ONLY where the use was verified in
+     the repo: beta (49 occurrences across the decks as beta_0, beta_1,
+     beta_2, beta_j), delta (7, the dummy shift in 3.2), mu (population
+     mean), sigma (population spread) and Sigma (summation). Gamma appears
+     ten times but always inside a figure or app expression rather than as a
+     named quantity, so it is left blank rather than given an invented
+     meaning. Epsilon is blank because this module writes the error as u_i,
+     not epsilon_i - worth knowing, because most textbooks use epsilon and a
+     student reading around will meet it.
+
+     Pronunciations are the British and Irish ones: beta is BEE-ta, not
+     BAY-ta, and zeta is ZEE-ta. Say so if a student has learned the US
+     forms, rather than correcting them. -->
+```
+
+::: {.notes}
+Do not read this out. It is a lookup table, and its whole job is to be there in
+week six when someone cannot say sigma and so does not ask.
+
+Point at it once, in week one, and say the thing that actually unblocks people:
+nobody is born knowing these, every economist learned them by saying them
+wrong in public first, and the cost of not asking is a term of half-read
+equations.
+
+The last line is worth thirty seconds. A student who notices that capital
+alpha, beta, epsilon and the rest are just Roman capitals has understood
+something real about why the notation is the way it is, rather than
+memorising a table.
+:::
+
+## How to Study This Subject
+
+- **Re-derive:** the week's central result, from a blank page, before the tutorial.
+- **Attempt:** the problem set before reading the answers, not after.
+- **Space:** the work across the week, since four short days beat one long.
+- **Avoid:** rereading and highlighting, which give fluency without retrieval.
+
+::: {.caveat title="Nothing on This Frame Is Examinable"}
+Ten minutes today, and no time after that. The four habits above are worth more
+than any revision guide.
+:::
+
+## Notes and Tools
+
+- **Wooldridge:** chapter 1 for the subject, Math Refreshers B and C for today [@wooldridge2020].
+- **Angrist and Pischke:** section 6.1, on why the schooling question fills a term [@angrist2014].
+- **The Train-Test Split:** chapter 2 of @james2021, stated properly.
+- **Pictures First:** @healy2018 on the plot before the statistic, @wickham2023 for the R.
+- **Software:** R and RStudio, both free. [Install links and the module page.]
+
+```{=html}
+<!-- stockwatson2019 was cited on this frame and is NOT on the shelf, so a
+     student could not open it and the precision pass could not check it.
+     Replaced by the Wooldridge locators that open a first course on the
+     same ground: chapter 1, p.1, and Math Refreshers B, p.684, and C,
+     p.714. The bib key is left in the .bib for other decks to decide on. -->
+```
+
+::: {.notes}
+Lambert's video series is optional pre-work and is mapped week by week on the
+module page. Do not read the install links aloud.
+:::
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+```{=html}
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). A work mentioned only inside a raw LaTeX
+     block is invisible to citeproc - put the citation in the markdown
+     around the block, or add it under nocite.
+
+     The frame takes .allowframebreaks because the list outgrows one slide;
+     the theme blanks the continuation title so the breaks are invisible. -->
+```

@@ -1,0 +1,1096 @@
+---
+#      LECTURE 1.3 - Estimators and Sampling Variation
+#
+#      Third lecture of a twelve-week first undergraduate econometrics
+#      module, and the last of block 1. Block 2 opens on simple regression.
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SECTIONS. Three, named by content, and named the same way in the
+#      roadmap, the dividers, the Lecture Plan and the closing summary.
+#
+#        1  What Makes an Estimator Good
+#        2  The Sampling Distribution
+#        3  Confidence Intervals and Tests
+#
+#      The Lecture Plan block is copied verbatim into Lecture 2.1's
+#      "Last Week's Lecture" frame. If a tagline is changed here it must be
+#      changed there in the same edit, or the two frames disagree.
+#
+#      THE SHELF, and what each source decides. Wooldridge (7th edition,
+#      2020; the file on the shelf is misnamed 2018) decides every
+#      definition, formula and condition below. Angrist and Pischke decide
+#      framing and examples only.
+#
+#        Wooldridge, Math Refresher C - Fundamentals of Mathematical
+#        Statistics, p.714. Cited by subsection, not as "Appendix C":
+#          C-2a  Estimators and Estimates                       p.715
+#          C-2b  Unbiasedness                                   p.716
+#          C-2c  The Sampling Variance of Estimators            p.718
+#          C-2d  Efficiency                                     p.719
+#          C-3a  Consistency                                    p.721
+#          C-3b  Asymptotic Normality, and the CLT              p.723
+#          C-5a  The Nature of Interval Estimation              p.727
+#          C-5b  Confidence Intervals, Normal Population        p.729
+#          C-5d  Asymptotic Confidence Intervals, Nonnormal     p.732
+#          C-6a  Fundamentals of Hypothesis Testing             p.733
+#          C-6b  Testing Hypotheses about the Mean              p.735
+#          C-6d  Computing and Using p-Values                   p.738
+#          C-6f  Practical versus Statistical Significance      p.742
+#          C-7   Remarks on Notation (the hat)                  p.743
+#
+#        Angrist and Pischke, appendix "Mastering Inference", p.33, and
+#        its figures 1.1-1.4 on pp.40-42, which plot the distribution of
+#        the t-statistic at n = 10, 40 and 100. Framing only.
+#
+#      CORRECTIONS MADE IN THIS PASS. Each is also noted in a ```{=html}```
+#      comment on its own frame.
+#
+#        1. EFFICIENCY WAS CLAIMED TOO WIDELY. The deck said the sample
+#           mean has the smallest variance among all unbiased rules.
+#           Wooldridge C-2d, p.720, establishes the minimum only within
+#           the class of LINEAR unbiased estimators, under common mean,
+#           common variance and pairwise uncorrelated draws. Every slide
+#           now carries "linear".
+#        2. RULE C'S BIAS WAS WRONG. The deck said a constant rule
+#           reporting 12.00 is "wrong by 0.80 every time". The bias is
+#           12.00 - 11.52 = 0.48. Corrected on two frames.
+#        3. THE CLT WAS STATED WITHOUT ITS CONDITIONS. The old frame was
+#           headed "Why Sample Means Are Normal" and said averages of
+#           almost any population are close to normal. Wooldridge C-3b,
+#           p.723-724, states it for the STANDARDISED mean, requires
+#           random sampling and a finite population variance, and gives
+#           an asymptotic result, not a finite-sample one. Rewritten, and
+#           a frame added on what the theorem does not say.
+#        4. THE INTERVAL'S 1.96 IS AN ASYMPTOTIC VALUE. Earnings are
+#           skewed, so C-5b's exact normal-population interval does not
+#           apply; C-5d, p.732, licenses y-bar +/- 1.96 se(y-bar) as a
+#           large-sample approximation. Recorded on the frame. The exact
+#           t(119) multiplier is 1.98, which would give 11.18 to 13.32;
+#           C-6c, p.738, says the two are practically identical above
+#           n = 120, so the deck keeps 1.96 and the generator's numbers.
+#        5. THE P-VALUE CLAIM WAS TOO LOOSE. "Less than once in a
+#           thousand" is true but understates: the two-sided p-value at
+#           t = 4.17 on 119 degrees of freedom is 5.8e-05. The slide now
+#           says fewer than one sample in ten thousand.
+#        6. THE HAT WAS DEFINED AS A NUMBER. Wooldridge C-2a, p.715, and
+#           C-7, p.743: the hat marks the sample counterpart, which is a
+#           rule (a random variable) before the draw and a number after
+#           it. The frame now says both.
+#
+#      NOT VERIFIED FROM THE SHELF. Rule D's trimmed mean is said to sit
+#      below mu under a right tail. That is a property of the module's own
+#      simulated earnings population, not a Wooldridge result; confirm it
+#      against the generator when B_03 lands.
+#
+#      TIMING, 110 minutes of a two-hour slot. Section 2 takes five
+#      minutes from sections 1 and 3: the sampling distribution is the
+#      hardest idea in the first half of the module and everything after
+#      week 3 rests on it.
+#         0-6     retrieval, on Last Week's Lecture
+#         6-10    lecture plan
+#        10-32    What Makes an Estimator Good
+#        32-35    question to the room
+#        35-65    The Sampling Distribution
+#        65-68    question to the room
+#        68-92    Confidence Intervals and Tests
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis, then Before Lecture 2.1 and Next Week
+#
+#      FIGURES. Four exhibits, none built. Every one is a placeholder
+#      pointing at ../_shared/placeholder.pdf, with a FIGURE comment
+#      underneath saying what to draw. When the generator lands, build
+#      them in _apps/ and export them with export_figures.R so the slide
+#      and the app cannot drift apart. Do not edit a PNG: edit the
+#      builder. Captions are held under 85 characters, which is where
+#      they wrap at 10pt.
+#         1-3_sampling     500 sample means at n = 120
+#         1-3_samplesize   the same at n = 30, 120, 480, shared axis
+#         1-3_clt          population density beside the mean's density
+#         1-3_intervals    100 intervals, caterpillar plot, misses marked
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it: the return is 1.30 euro a year,
+#      expected earnings at twelve years of schooling are 9.50, and the
+#      error has a standard deviation of 4.50.
+#
+#      NUMBERS USED BELOW, and the arithmetic behind them, all re-checked
+#      in this pass. The quantity estimated in this deck is the POPULATION
+#      MEAN of hourly earnings, read off the generator as 11.52 at a mean
+#      schooling of 13.54 years. The data-generating process implies
+#      9.50 + 1.30 x 1.54 = 11.50 at that mean schooling; the 0.02
+#      difference is the realised mean of the error term in a finite
+#      population and is not an error in the deck. Our one sample of 120
+#      gives a mean of 12.25 and a standard deviation of 5.91, so:
+#         se      5.91/sqrt(120)      = 0.5395  -> 0.54
+#         95% CI  12.25 +/- 1.96*0.54 = 11.19 to 13.31
+#         t       (12.25 - 10.00)/0.54 = 4.17   -> 4.2
+#         p       two-sided, t(119)            = 5.8e-05
+#         bias of the constant rule 12.00 - 11.52 = 0.48
+#      All were read off the generator with seed 42 and C_02_05_sample_df;
+#      if B_03 changes, re-read them - they appear on six slides.
+#
+title: "Estimators and Sampling Variation"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 1.3"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 1.3
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{1.3}
+```
+
+::: {.notes}
+Thirty seconds. Lecture 1.3, the last before regression. Point at the
+block-2 column: everything there is built out of what we do today.
+:::
+
+## Last Week's Lecture
+
+Lecture 1.2 defined the average we cannot compute, and its algebra:
+
+::: {.contributions}
+1.  **Expectation.** A property of a distribution, not of a sample.
+2.  **The Algebra of Expectations.** The rules every derivation in this module spends.
+3.  **The Conditional Expectation Function.** The best guess of earnings given schooling.
+:::
+
+::: {.notes}
+0-6 min. Retrieval, not recap: at a week's delay retrieval beats restudy.
+Two minutes with your neighbour. Write down what E[y] is the average of, and
+how many of those numbers you have ever seen. Then: we have 120 people, so
+what would you do with them? The answer they should reach on their own is
+"average the 120". Take two or three answers out loud and do not resolve them.
+The whole lecture is why that instinct is right and what it costs.
+:::
+
+```{=html}
+<!-- Copied verbatim from Lecture 1.2's Lecture Plan frame. If 1.2 changes a
+     tagline, this block changes in the same edit. -->
+```
+
+## Lecture Plan
+
+::: {.contributions}
+1.  **What Makes an Estimator Good.** Unbiased, consistent and efficient are three separate properties.
+2.  **The Sampling Distribution.** How an estimate varies across samples nobody drew.
+3.  **Confidence Intervals and Tests.** Two claims about the procedure, not about the number.
+:::
+
+Reading: @wooldridge2020, Math Refresher C, sections C-2, C-3, C-5 and C-6.
+
+::: {.notes}
+6-10 min. Say that section 2 is the hard one and gets the most time. Say also
+that nothing here is regression, and that everything here is used by regression
+from Lecture 2.1 onwards.
+:::
+
+```{=html}
+<!-- This block is copied verbatim into Lecture 2.1's "Last Week's Lecture"
+     frame. One wording, used twice. -->
+```
+
+# What Makes an Estimator Good
+
+## An Estimator Is a Rule, Fixed Before the Draw
+
+This section asks what makes one estimating rule better than another. We want
+average hourly earnings in the population and we hold 120 people:
+
+```{=latex}
+\begin{equation}
+\bar{y} \;=\; \frac{1}{n}\sum_{i=1}^{n} y_i
+\end{equation}
+```
+
+::: {.defn title="A Rule Before, a Number After"}
+An estimator turns a sample into a number, by a rule fixed beforehand. An
+estimate is the number one sample gives.
+:::
+
+::: {.notes}
+IDEA 1, 10-32 min. The rule is fixed in advance and does not depend on which
+120 people turn up. Put on the board: the same formula, two different samples,
+two different numbers. That is the distinction the whole lecture needs, and it
+is the one students skip.
+:::
+
+```{=html}
+<!-- Wooldridge C-2a, p.715: an estimator is a rule assigning each possible
+     sample outcome a value; the rule is specified before any sampling is
+     carried out. Estimate = the realised number. Equation is C.1, p.715.
+     Notation list dropped: y_i and n were introduced in Lecture 1.1. -->
+```
+
+## A Hat Marks the Sample Counterpart
+
+Every quantity in this lecture has two versions, one unknowable and one computed:
+
+- $\mu$: average hourly earnings over the whole population
+- $\bar{y}$, also written $\hat{\mu}$: the same quantity from our 120
+
+::: {.defn title="The Hat Marks the Sample"}
+A bare Greek letter is a population quantity, fixed and unknown. The hat marks
+its sample counterpart: a rule before the draw, a number after it. So $\mu$
+never changes, and $\bar{y}$ changes with every sample.
+:::
+
+::: {.notes}
+Two minutes, and slowly. A student who reads mu-hat and mu as one object cannot
+be taught sampling variation, and every later confusion in this deck traces
+back here. The bar on y is convention for the mean only; from Lecture 2.1 the hat
+is the general form.
+:::
+
+```{=html}
+<!-- Wooldridge C-7, p.743: theta-hat denotes BOTH an estimator and an
+     estimate. C-2a, p.715, is where the two are separated. CORRECTION: the
+     previous version defined the hat as "a number we computed from a
+     sample", which drops the estimator half and contradicts the rest of the
+     deck. Fixed to name both. -->
+```
+
+## Four Candidate Estimators of the Population Mean
+
+Each rule below could be written down before any data arrive:
+
+- **Rule A:** Average all 120.
+- **Rule B:** Average the first ten drawn, discard the rest.
+- **Rule C:** Report 12.00 euro, whatever the sample says.
+- **Rule D:** Drop the top and bottom five per cent, average the rest.
+
+::: {.takeaway title="Rule C Is an Estimator"}
+Rule C meets the definition: a rule, fixed in advance, returning a number.
+:::
+
+::: {.notes}
+Five minutes. Rule C is not a joke. It is legal, it is cheap, and it has one
+property rule A does not have, which the next two frames name. Rule B is
+Wooldridge's own counter-example enlarged from one observation to ten.
+:::
+
+```{=html}
+<!-- Wooldridge C-2b, p.718, uses W = Y_1, the first observation only, as the
+     unbiased-but-poor estimator. Rule B is that example with ten draws
+     instead of one. C-2d, p.720, uses the constant-zero rule as the biased
+     zero-variance estimator; rule C is that rule at 12.00. -->
+```
+
+## Unbiased, Consistent and Efficient
+
+Two rules can both be right on average, and one still lands closer. Three
+properties, asked separately, say which rule to prefer:
+
+- **Unbiased:** Over the samples we might have drawn, the rule returns $\mu$.
+- **Consistent:** As $n$ grows without bound, the rule concentrates on $\mu$.
+- **Efficient:** Of two unbiased rules, the one with smaller sampling variance.
+
+::: {.caveat title="Only in the Linear Unbiased Class"}
+The sample mean is least variable only among linear unbiased rules. The result
+also needs a common mean, a common variance and uncorrelated draws.
+:::
+
+::: {.notes}
+Five minutes, and the separation is the point. Unbiasedness is a finite-sample
+property: it holds at n = 10 exactly as it holds at n = 10,000. Consistency is
+about a sequence of sample sizes. Efficiency is only defined by comparison, and
+only between rules that are already unbiased.
+:::
+
+```{=html}
+<!-- Wooldridge C-2b, p.716, equation C.3: E(W) = theta for all theta.
+     C-3a, p.721, equation C.7: P(|W_n - theta| > e) -> 0. C-2d, p.719:
+     relative efficiency is defined between TWO UNBIASED estimators.
+     C-2d, p.720: "If we do not restrict our attention to unbiased
+     estimators, then comparing variances is meaningless."
+     C-2d, p.720, Problem C.2, for the linear-unbiased-class caveat.
+     EXPOSITION PASS: the three properties moved out of the .defn into
+     bullets, wording unchanged, so the linear-class restriction could take
+     the frame's one callout. The body line on unbiasedness holding at any n
+     went to the notes, where it already appeared. -->
+```
+
+## How the Four Rules Score
+
+No rule wins on every count, and the steadiest one is always wrong:
+
+- **Rule A:** Unbiased, consistent, and least variable among linear unbiased rules.
+- **Rule B:** Unbiased at every $n$, and inconsistent: ten people stay ten people.
+- **Rule C:** Never varies, and is wrong by 0.48 euro every time.
+- **Rule D:** Less variable than rule A, and biased downwards by the tail.
+
+::: {.takeaway title="Bias and Variance Are Traded"}
+Mean squared error is the average squared distance from $\mu$. It equals
+variance plus bias squared, and that sum ranks rule D against rule A.
+:::
+
+::: {.notes}
+Five minutes. Rule A's variance is sigma-squared over n, rule B's is
+sigma-squared over ten, and the second does not fall as the sample grows. Rule
+C's bias is 12.00 minus 11.52, which is 0.48. Rule D buys stability with a
+little bias, and whether that is a good bargain depends on what the number is
+for. The appendix derivations cover rule A's first two properties.
+:::
+
+```{=html}
+<!-- CORRECTION 1. Rule A was previously said to be "all three", with
+     efficiency defined as smallest variance among ALL unbiased rules.
+     Wooldridge C-2d, p.720: the sample average has the smallest variance
+     among unbiased estimators that are also LINEAR functions of the data,
+     under common mean, common variance and pairwise uncorrelated draws
+     (Problem C.2). "Linear" added here and in the defn on the previous
+     frame.
+     CORRECTION 2. Rule C's bias read 0.80. 12.00 - 11.52 = 0.48.
+     MSE = Var + Bias^2 is C-2d, p.720.
+     NOT ON THE SHELF: rule D sitting below mu under a right tail is a
+     property of this module's simulated population, not a Wooldridge
+     result. Confirm against the generator. -->
+```
+
+## Why Unbiasedness Alone Is Not Enough
+
+Unbiasedness makes two claims, and the second is weaker than students expect:
+
+- **Across Samples:** The rule returns $\mu$ on average over repeated draws.
+- **In One Sample:** Nothing, not even that 12.25 is anywhere near $\mu$.
+
+::: {.caveat title="Unbiased and Still Worthless"}
+Rule B is unbiased. Ten people give an answer close to worthless, so sampling
+variance comes next.
+:::
+
+::: {.notes}
+Four minutes. Wooldridge's sentence is that unbiasedness does not mean the
+estimate from any particular sample is equal to the parameter, or even close to
+it. Say it twice. This is the sentence that stops a student reading 12.25 as
+"the unbiased answer" and therefore the right one.
+:::
+
+```{=html}
+<!-- Wooldridge C-2b, p.717: "Unbiasedness does not mean that the estimate we
+     get with any particular sample is equal to theta, or even very close to
+     theta." C-2c, p.718: unbiased estimators exist that are quite poor. -->
+```
+
+## Choosing Among Three Imperfect Rules
+
+You want average hourly earnings for Irish workers, and rule A is unavailable.
+
+::: {.defn title="Question"}
+Rule B, rule C or rule D: which would you defend, and on what ground?
+:::
+
+
+::: {.notes}
+32-35 min. "You may not pick A" is what makes this a question. Most rooms go to
+D, which is the interesting answer, because it means they have accepted bias in
+exchange for stability without being told that was allowed. Take answers out
+loud and do not adjudicate. If there is time: one sentence each on what it
+would mean for an estimator to be unbiased and useless.
+:::
+
+# The Sampling Distribution
+
+## What One Estimate Leaves Open
+
+This section describes how our estimate varies across different samples of 120.
+Our sample gave 12.25, and that one number cannot separate draw from population:
+
+- **What Varies:** The estimate, from one sample of 120 to the next.
+- **What Does Not:** The population mean $\mu$, which is one fixed number.
+
+::: {.defn title="The Estimate Has Its Own Distribution"}
+$\bar{y}$ varies across samples, and that variation has a distribution: the
+sampling distribution. Every property in this lecture belongs to it.
+:::
+
+::: {.notes}
+IDEA 2, 35-65 min, and this is the frame to go slowly on. Wooldridge's phrase
+is that the distribution of an estimator describes the likelihood of various
+outcomes across different random samples. Angrist and Pischke put the same
+point as: drawing another sample, we would get somewhat different results.
+:::
+
+```{=html}
+<!-- Wooldridge C-2b, p.716: "The distribution of an estimator is often called
+     its sampling distribution, because this distribution describes the
+     likelihood of various outcomes of W across different random samples."
+     MM appendix to ch.1, p.33, for the framing. -->
+```
+
+## Five Hundred Samples, Five Hundred Means
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Means of 500 samples of 120; truth 11.52, our sample 12.25.}
+```
+
+::: {.tablenotes title="Our 12.25 Is One Draw"}
+Our 12.25 is one draw from that histogram. A different 120 people lands
+somewhere else in it.
+:::
+
+::: {.notes}
+Three minutes at the picture. Walk it: each bar is one sample of 120, each
+sample gave one mean, and the histogram collects five hundred of them. Green is
+the truth at 11.52. The dashed navy line is our one sample at 12.25, which sits
+to the right of the truth by chance and not by any fault of the rule. Ask where
+they would have to stand to see this picture in real work; the answer is
+nowhere.
+:::
+
+```{=html}
+<!-- FIGURE 1-3_sampling: histogram of 500 sample means, n = 120, drawn from
+     the earnings population. Vertical rule at the true mean in green, and at
+     our one sample's mean in dashed navy. Needs the generator and a
+     replicate() loop; export from _apps/. This is the deck's central
+     exhibit and 2-3 builds the same picture for the slope, so keep the
+     geometry and the colours identical between the two. -->
+```
+
+## The Sampling Distribution Is Not Observable
+
+In real work you draw once, compute once, and never see that histogram:
+
+- **What We Have:** One sample, one number, and a standard error.
+- **In This Module:** We wrote the population, so we can draw repeatedly.
+
+::: {.caveat title="Simulation Shows What Data Cannot"}
+No dataset gives the sampling distribution. Simulation shows it here, and
+theory stands in for it everywhere else.
+:::
+
+::: {.notes}
+Three minutes. This is the entire reason the module has a simulated population.
+From Lecture 2.1 the histogram is gone and the standard error is all that is
+left, so the histogram is what they should picture whenever they read one.
+:::
+
+## Spread Across People and Spread Across Samples
+
+Two numbers describe our sample, and they measure different things:
+
+- **5.91:** How far one person's earnings sit from another's.
+- **0.54:** The typical distance between our answer and the next sample's.
+
+::: {.caveat title="Spread Across Samples Is Smaller"}
+Dividing by $\sqrt{n}$ converts spread across people into spread across
+samples. Confusing the two is this section's commonest error.
+:::
+
+::: {.notes}
+Four minutes. Earnings in the sample run from almost nothing to over
+thirty-five euro, and the five hundred sample means all sit between about ten
+and thirteen. Same population, two completely different pictures. Angrist and
+Pischke make the same warning: do not confuse standard errors with the standard
+deviations of the underlying variables.
+:::
+
+```{=html}
+<!-- Wooldridge C-5c, p.733: sigma measures spread in the distribution of Y;
+     sigma/sqrt(n) is the sampling standard deviation of Y-bar. MM appendix
+     to ch.1, p.37, on the same confusion. -->
+```
+
+## The Standard Error of the Sample Mean
+
+Errors partly cancel in a sum, so averages vary less than people do. Our 120
+people are all we have to measure the spread across samples:
+
+```{=latex}
+\begin{equation}
+\mathrm{se}(\bar{y}) \;=\; \frac{s}{\sqrt{n}}
+\end{equation}
+```
+
+- $s$: the standard deviation of the 120 earnings we drew
+- $\mathrm{se}(\bar{y})$: the estimated standard deviation of $\bar{y}$
+
+::: {.takeaway title="Variances Add, Spreads Do Not"}
+Variances add and standard deviations do not, hence the root. Here
+$5.91/\sqrt{120} = 0.54$, so four times the data halves it.
+:::
+
+::: {.notes}
+Five minutes. Say the cancelling out loud: one person far above the mean is
+usually offset by someone below, and the more people you add the more of that
+offsetting there is, which is why root n and not n sits under the s. Then two
+steps, and they are separate. First, the sampling variance of the mean is
+sigma-squared over n, which needs independent draws with a common variance;
+that is what random sampling buys. Second, sigma is unknown, so s goes in its
+place and the result is called a standard error rather than a standard
+deviation. The appendix derives the formula in three lines and does the first
+step. Do not give the fourfold number away here; the next frame asks for it.
+:::
+
+```{=html}
+<!-- Wooldridge C-2c, p.718, equation C.6: Var(Y-bar) = sigma^2/n, using
+     independence of the Y_i. C-5b, p.730: se(y-bar) = s/sqrt(n), the point
+     estimate of sd(Y-bar). ARITHMETIC CHECKED: 5.91/sqrt(120) = 0.5395. -->
+```
+
+## How the Standard Error Falls With Sample Size
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Means of 500 samples at n = 30, 120 and 480, on one shared axis.}
+```
+
+::: {.tablenotes title="Four Times the Data Halves the Spread"}
+The square root sets the rate. Four times the data halves the spread, and
+sixteen times halves it again.
+:::
+
+::: {.notes}
+Two minutes. Walk the three panels left to right: same population, same truth,
+same five hundred repetitions, only n changes. All three are centred in the
+same place, which is unbiasedness, and only the width changes, which is the
+standard error. Ask what n would be needed to halve 0.54; the answer is 480.
+:::
+
+```{=html}
+<!-- FIGURE 1-3_samplesize: three histograms of 500 sample means at n = 30,
+     120, 480, on a SHARED horizontal axis or the comparison is lost. Truth
+     marked on each. -->
+```
+
+## The Central Limit Theorem, and What It Requires
+
+Averaging washes out the shape of whatever population you started from. An
+extreme average needs many people extreme the same way, which is rare.
+Bell-shaped averages are what let one estimate carry a margin of error:
+
+- **The Standardised Mean:** Subtract $\mu$ from $\bar{y}$, then divide by $\sigma/\sqrt{n}$.
+- **The Large-Sample Shape:** A standardised mean is approximately standard normal.
+
+::: {.caveat title="Large Samples, Finite Variance"}
+The theorem needs random sampling and a finite population variance, and it
+improves as $n$ grows.
+:::
+
+::: {.notes}
+Five minutes. Three things make the statement, and dropping any one of them
+makes it false: random sampling, a finite population variance, and a large n.
+Note also what is standardised - the theorem is about the standardised mean,
+not about the mean itself, and the multiplication by root n is what keeps the
+variance from collapsing to a point. Wooldridge says large-sample
+approximations have been known to work well from about n = 20; Angrist and
+Pischke's figures show the t-statistic already close to normal at n = 100.
+In practice we treat y-bar as approximately normal with mean mu and variance
+sigma-squared over n, which is the same statement rearranged.
+:::
+
+```{=html}
+<!-- CORRECTION 3. The old frame was headed "Why Sample Means Are Normal" and
+     said that averaging enough draws from almost any population gives a
+     close-to-normal average. Wooldridge C-3b, p.724, equation C.12: for a
+     random sample with mean mu and variance sigma^2, Z_n = sqrt(n)(Y-bar -
+     mu)/sigma has an ASYMPTOTIC standard normal distribution. The finite
+     variance is a condition, the object is the STANDARDISED mean, and the
+     result is a limit. C-3, p.721, on how large "large" must be. MM
+     appendix to ch.1, pp.36-37 and figures 1.1-1.4, pp.40-42.
+     EXPOSITION PASS: the frame now leads with the idea in plain words. The
+     .defn's content is unchanged in substance and split across two bullets
+     (what is standardised, what shape it takes); random sampling, finite
+     variance and the asymptotic character moved into the .caveat so the
+     frame keeps one callout. Nothing claimed here has been weakened. -->
+```
+
+## A Skewed Population and a Symmetric Average
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Left: earnings in the population. Right: means of 500 samples of 120.}
+```
+
+::: {.tablenotes title="The Population Stays Skewed"}
+The population keeps its long right tail. Only the distribution of the average
+has gone close to symmetric.
+:::
+
+::: {.notes}
+Two minutes. The point only lands if the left panel is obviously not normal, so
+name the tail before moving right. Then say what changed between the panels:
+not the population, only what is being plotted. Angrist and Pischke run the
+same demonstration with a dummy variable that takes two values, where the
+underlying distribution is two spikes and the t-statistic is still bell-shaped.
+:::
+
+```{=html}
+<!-- FIGURE 1-3_clt: two panels. Left, the population density of earnings,
+     visibly right-skewed. Right, the sampling distribution of the mean at
+     n = 120 with a normal curve overlaid. The point only lands if the left
+     panel is obviously not normal.
+     MM appendix to ch.1, figures 1.2-1.4, pp.40-42: t-statistic at n = 10,
+     40 and 100 for a Bernoulli(0.8) variable. -->
+```
+
+## What the Central Limit Theorem Does Not Say
+
+The theorem is about averages, and says nothing about the people behind them:
+
+- **Not About One Person:** Earnings stay skewed, and poor workers outnumber rich ones.
+- **Not Exact:** Normality improves with $n$ and never holds exactly at 120.
+- **Two Conditions:** Random sampling, and a population variance that is finite.
+
+::: {.caveat title="Finite Samples Get No Guarantee"}
+Nothing here says $\bar{y}$ is normal in our 120. The theorem describes a
+limit, and 120 buys a good approximation to it.
+:::
+
+::: {.notes}
+Four minutes, and this is the frame that pays for itself in Lecture 2.3. The
+theorem arrives without our asking: we never assumed earnings were normal, and
+they are not. What it gives is one formula that serves every sample, which is
+why Lecture 2.1 onwards needs no new theory. What it does not give is a
+finite-sample guarantee, and a student who thinks it does will over-read a
+t-statistic in a sample of twenty.
+:::
+
+## Doubling the Sample Size
+
+Suppose we drew 240 people instead of 120, from the same population.
+
+::: {.defn title="Question"}
+Does the histogram of sample means shift, narrow, do both, or do neither?
+:::
+
+
+::: {.notes}
+65-68 min. It narrows and does not shift, and the factor is root two rather
+than two, which nearly nobody predicts. The wrong answers are worth more than
+the right one: "shifts" means the centre and the spread have not been
+separated. Hear the direction before anything is run. Do not
+adjudicate.
+:::
+
+# Confidence Intervals and Tests
+
+## Building a 95 Per Cent Interval
+
+This section turns an estimate and its standard error into a defensible
+statement:
+
+```{=latex}
+\begin{equation}
+\bar{y} \;\pm\; 1.96 \times \mathrm{se}(\bar{y})
+\end{equation}
+```
+
+- $1.96$: the 97.5th percentile of the standard normal distribution
+
+::: {.takeaway title="The Interval Runs 11.19 to 13.31"}
+$12.25 \pm 1.96 \times 0.54$, and 1.96 is the large-sample value for a skewed
+population.
+:::
+
+::: {.notes}
+IDEA 3, 68-92 min. Say where 1.96 comes from: it is the point beyond which a
+standard normal puts 2.5 per cent in each tail. For a genuinely normal
+population with sigma estimated we would use the t distribution on 119 degrees
+of freedom, whose value is 1.98 and would give 11.18 to 13.32. Above n = 120
+the choice makes no practical difference, which is Wooldridge's own remark.
+:::
+
+```{=html}
+<!-- CORRECTION 4. Earnings are skewed, so the exact interval of C-5b,
+     p.729-730, which assumes a normal population, does not apply. C-5d,
+     p.732, equation C.27, licenses y-bar +/- 1.96*se(y-bar) as an
+     approximate 95% interval for large n from a nonnormal population, and
+     the slide now says "large-sample value". C-6c, p.738: for n > 120 the
+     choice between t and standard normal critical values is practically
+     irrelevant. ARITHMETIC CHECKED: 12.25 +/- 1.96(0.5395) = 11.19, 13.31;
+     the t(119) multiplier 1.98 gives 11.18, 13.32. Numbers come from the
+     generator and are unchanged. -->
+```
+
+## Coverage Across Repeated Intervals
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{One hundred intervals from one hundred samples; the true mean is a vertical line.}
+```
+
+::: {.tablenotes title="Five in a Hundred Miss"}
+Every interval lands somewhere different; the truth at 11.52 stays put. The
+rule carries the 95 per cent, not any one interval.
+:::
+
+::: {.notes}
+Three minutes. Walk it slowly: one hundred samples of 120, one interval built
+from each by the same rule, the truth drawn as a vertical line at 11.52.
+Count the marked ones aloud. That count is what the 95 per cent was a promise
+about, and it is the only thing it was a promise about. Ask which interval is
+ours; the honest answer is that we cannot tell from the data.
+:::
+
+```{=html}
+<!-- FIGURE 1-3_intervals: 100 horizontal intervals stacked vertically,
+     vertical rule at the true mean 11.52, misses in a contrasting colour
+     with a heavier stroke. Around five should miss. Do NOT reuse the
+     2-4_interval.png geometry - that one shades a density, this one is a
+     caterpillar plot.
+     Wooldridge C-5a, p.728, table C.2, runs the same demonstration with 20
+     replications. -->
+```
+
+## Why the 95 Per Cent Describes the Procedure
+
+Throw a ring at a fixed peg. The peg never moves; the throws scatter. The
+endpoints jump across the hundred intervals; the truth stays put at 11.52.
+Randomness lives in the endpoints, never in the population mean.
+
+::: {.caveat title="Ninety-Five Intervals in a Hundred"}
+Before the sample is drawn, the random interval covers $\mu$ with probability
+0.95. Once the endpoints are numbers, $\mu$ either sits inside them or does
+not.
+:::
+
+No sample says whether our own 11.19 to 13.31 covered 11.52.
+
+::: {.notes}
+Four minutes, and it is worth being slow. Written out, the correct sentence is
+dull and the wrong one is exciting, which is most of why the wrong one wins.
+Wooldridge's own wording: probability plays no role once the confidence
+interval is computed for the particular data at hand.
+:::
+
+```{=html}
+<!-- Wooldridge C-5a, p.727-728. Equation C.17: P(Y-bar - 1.96/sqrt(n) < mu <
+     Y-bar + 1.96/sqrt(n)) = .95, a statement about the RANDOM interval
+     C.19. p.728: "The probability that mu is in the interval (C.18) is .95.
+     This is incorrect... Probability plays no role once the confidence
+     interval is computed for the particular data at hand." -->
+```
+
+## Wording a Confidence Interval
+
+Only one of these sentences is defensible, and the wrong one sounds better.
+
+::: {.worked title="The Sentence to Avoid"}
+"There is a 95 per cent chance the true average lies between 11.19 and 13.31."
+:::
+
+::: {.worked title="The Sentence to Use"}
+"Our estimate is 12.25 euro, with a 95 per cent confidence interval from 11.19
+to 13.31."
+:::
+
+The first sentence makes $\mu$ vary; only the endpoints vary [@hoekstra2014robust].
+
+::: {.notes}
+Three minutes. A different 120 people would have produced a different pair of
+endpoints, and mu would have sat exactly where it sits now. Hoekstra and
+co-authors put the wrong sentence to researchers and to students, and both
+groups endorsed it. Tell them this is examinable wording, because it is.
+:::
+
+```{=html}
+<!-- Wooldridge C-5a, p.728, for both sentences. The two .worked boxes are a
+     matched pair, which is the one case the one-callout rule allows. -->
+```
+
+## Testing the Mean Against a Claimed Value
+
+Somebody claims average hourly earnings in this population are ten euro. That
+claim is the null hypothesis, and the statistic below is the t-statistic:
+
+```{=latex}
+\begin{equation}
+t \;=\; \frac{\bar{y} - \mu_0}{\mathrm{se}(\bar{y})}
+\end{equation}
+```
+
+- $\mu_0$: the null hypothesis, the value the claim asserts, here 10.00
+- $t$: how many standard errors $\bar{y}$ sits from $\mu_0$
+
+::: {.takeaway title="t Equals 4.2, Far Into the Tail"}
+$(12.25 - 10.00)/0.54 = 4.2$, far into the tail of what the claim would produce.
+:::
+
+::: {.notes}
+Five minutes. The statistic measures the distance from the sample mean to the
+claimed value in units of the standard error, so it is scale-free. Under the
+claim, and with a normal population, it follows a t distribution on n minus one
+degrees of freedom; with 119 of those, the normal and the t are practically the
+same curve. Angrist and Pischke's rule of thumb is that anything past about two
+in absolute value is hard to square with the claim.
+:::
+
+```{=html}
+<!-- Wooldridge C-6b, p.735, equation C.35: t = sqrt(n)(y-bar - mu_0)/s =
+     (y-bar - mu_0)/se(y-bar), distributed t(n-1) under H0 in a normal
+     population. C-6c, p.738, for the nonnormal case at large n. MM appendix
+     to ch.1, pp.38-39, for the "bigger than about two" convention.
+     ARITHMETIC CHECKED: 2.25/0.5395 = 4.17. -->
+```
+
+## What a p-Value Says and What It Does Not
+
+A p-value says what the claim would produce, not whether it is true. It
+measures how badly the data embarrasses the claim, not its truth:
+
+- **What a p-Value Is:** The smallest error rate at which the claim would be rejected.
+- **Under the Claim:** Fewer than one sample in ten thousand reaches $|t| = 4.2$.
+
+::: {.caveat title="Not the Chance of Error"}
+A p-value is not the probability the claim is false. Nor is a p-value the chance
+we erred. A large p-value is no evidence the claim is true
+[@wasserstein2016asa].
+:::
+
+::: {.notes}
+Four minutes. Wooldridge's definition is the largest significance level at
+which we could carry out the test and still fail to reject; the equivalent
+reading is the probability of a test statistic at least this extreme when the
+claim is true. Both are statements about what the claim would generate, and
+neither is a statement about the claim. Note also that we say "fail to reject",
+never "accept": many values of mu_0 survive the same sample.
+:::
+
+```{=html}
+<!-- Wooldridge C-6d, p.738-739: p-value is the largest significance level at
+     which we fail to reject; also "the probability that we observe a value
+     of T as large as [t] when the null hypothesis is true". C-6b, p.738, on
+     "fail to reject" rather than "accept". ASA statement for the list of
+     misreadings.
+     CORRECTION 5. The slide read "less than once in a thousand times". The
+     two-sided p-value at t = 4.17 on 119 df is 5.8e-05, so "fewer than one
+     in ten thousand" is the accurate statement. -->
+```
+
+## Significance and the Size of the Gap
+
+A large statistic comes from a large gap or a small standard error:
+
+- **Statistical Significance:** The gap divided by its standard error, which is $t$.
+- **Practical Significance:** The size of the gap itself, here 2.25 euro an hour.
+- **Why Both Are Reported:** A big sample makes a tiny gap statistically significant.
+
+::: {.takeaway title="Significance Is Not Magnitude"}
+Whether 2.25 euro an hour matters is a judgement, not a test result.
+:::
+
+::: {.notes}
+Three minutes, and it is the frame that keeps Lecture 2.3 honest. Wooldridge's
+example is a freeway widening that cuts commuting by 3.6 minutes on a sample of
+900: overwhelmingly significant, and a meagre effect. The mechanism is test
+consistency - as n grows the test rejects any false null with probability
+approaching one, however small the true gap. So report the estimate alongside
+the test, always.
+:::
+
+```{=html}
+<!-- Wooldridge C-6f, p.742: "an estimate can be statistically significant
+     without being especially large in a practical sense"; practical
+     significance depends on context and judgement. p.743, test consistency:
+     "no matter how close mu is to zero, we can be almost certain to reject
+     H0: mu = 0 given a large enough sample size." Example C.9, p.742, is
+     the freeway case. -->
+```
+
+## What Would Have To Be True?
+
+::: {.defn title="Question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+The 95 per cent belongs to the procedure, and the procedure includes sampling.
+If the 120 chose themselves, the rule covers less than 95 per cent. The
+arithmetic on the slide will not say so.
+
+::: {.notes}
+92-97 min. Same slot every week. They answer in pairs first, then you. The
+point is not that sampling is hard in the abstract, but that THIS interval
+rests on something nameable that may well be false: if the people who answered
+are the ones with something to report, every number on the slide is wrong in a
+direction the standard error cannot see.
+:::
+
+## Application
+
+Simulate the whole exercise, and count:
+
+- **Draw:** 120 people, take the mean, build the interval by the same rule.
+- **Repeat:** Five hundred times, recording whether 11.52 falls inside.
+- **Change:** The sample size, then see which number shrinks and which holds.
+
+::: {.takeaway title="Coverage Holds, Width Shrinks"}
+Raising $n$ narrows every interval and leaves coverage near 95 per cent.
+:::
+
+::: {.notes}
+97-105 min. Take the prediction before the code runs or the demonstration is
+passive: what fraction of the five hundred intervals will contain the truth?
+Write the number on the board first. Then run it. The fraction stays put and
+the width shrinks, which is the whole lecture in one output. Lab this week:
+they write the loop themselves.
+:::
+
+## Three Claims About an Estimate
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1.  **What Makes an Estimator Good.** Unbiased, consistent and efficient are three separate properties.
+2.  **The Sampling Distribution.** How an estimate varies across samples nobody drew.
+3.  **Confidence Intervals and Tests.** Two claims about the procedure, not about the number.
+:::
+
+::: {.notes}
+105-110 min. No new material. The names match the section titles, which match
+the roadmap and next week's recap frame. Exit ticket after this: what was the
+muddiest point? The answers set next week's retrieval questions.
+:::
+
+## Before Lecture 2.1
+
+::: {.contributions}
+1.  **Play:** The sampling app, at $n = 30$ and then $n = 480$.
+2.  **Apply:** Problem set 1, covering 1.2 and 1.3.
+3.  **Review:** @wooldridge2020, Math Refresher C, on estimation and inference.
+:::
+
+::: {.defn title="Problem Set 1 This Week"}
+[Out this week, due week n. The last question is the coverage simulation,
+written as prose not code.]
+:::
+
+::: {.notes}
+All three look back at today, Review included. Math Refresher C is estimators,
+sampling variance, confidence intervals and testing, which is the whole
+lecture. Tell them the appendix derivations are set as homework, and that the second is the one that makes
+every standard error from Lecture 2.3 onwards mean something.
+:::
+
+## Next Week
+
+Lecture 2.1 stops averaging one variable and fits a line through two:
+
+- **The Population Line:** An intercept, a slope on schooling, and an error.
+- **The Least Squares Rule:** One rule turning 120 pairs into a slope.
+- **The Same Three Questions:** Unbiased, how variable, and what interval.
+
+::: {.takeaway title="The Slope Is an Estimator"}
+Everything today said about $\bar{y}$ gets asked again of the fitted slope.
+:::
+
+::: {.notes}
+One minute. Make the transfer explicit: the slope is a rule turning a sample
+into a number, so it has a sampling distribution, a standard error, a
+confidence interval and a t-statistic. Same three moves, one harder object.
+:::
+
+```{=html}
+<!-- Wooldridge chapter 2, The Simple Regression Model, p.20. Nothing about
+     the slope appears in this deck beyond this preview. -->
+```
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+```{=html}
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+```
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Unbiasedness and Consistency of the Sample Mean
+
+Take the expectation of the sample mean. Then take its variance and grow $n$.
+
+::: {.takeaway title="Linearity, Then Independence"}
+Linearity of expectation carries part one. Independence of the draws carries
+part two, which is what random sampling buys.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+::: {.notes}
+Two short parts. For the first, push the expectation through the sum using last
+week's rules and use the fact that every drawn person has the same population
+mean. For the second, do the same to the variance, notice the n in the
+denominator, and say what happens to it as n grows. Wooldridge writes both out:
+the unbiasedness algebra is on p.717 and the variance on p.718.
+:::
+
+```{=html}
+<!-- Wooldridge C-2b, p.717, for E(Y-bar) = mu. C-2c, p.718, equation C.6,
+     for Var(Y-bar) = sigma^2/n. C-3a, p.721-722: an unbiased estimator
+     whose variance goes to zero is consistent; the law of large numbers,
+     equation C.8, gives consistency even without a finite variance. -->
+```
+
+## Derivation: The Standard Error of the Mean
+
+Compute the variance of the sample mean, then take its square root. Replace the
+population spread with the sample one.
+
+::: {.takeaway title="Root n Is Not Assumed"}
+The root $n$ appears only at the last step, from taking the square root.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+::: {.notes}
+Part two of the previous derivation, stopped one step earlier. Reading that
+formula and reading the three-panel figure should feel like the same activity.
+Flag the last step: sigma is unknown, so s replaces it, which is why the result
+is called a standard error rather than a standard deviation. The same shape
+reappears in Lecture 2.3 for the slope, with two extra ingredients.
+:::
+
+```{=html}
+<!-- Wooldridge C-5b, p.730: se(y-bar) = s/sqrt(n) is the point estimate of
+     sd(Y-bar) = sigma/sqrt(n). C-5c, p.733, separates the four quantities:
+     sigma, sigma/sqrt(n), s and s/sqrt(n). -->
+```
+
+## Notes and Tools
+
+- The app, and this week's simulation script.
+- `mean()`, `sd()` and `replicate()` in R, which are the whole of the lab.
+- Simulation as the route in [@delmas1999model; @chance2004reasoning;
+  @tintle2012retention].
+- The two misreadings this lecture heads off [@sotos2007misconceptions;
+  @kalinowski2008overcoming; @greenland2016statistical].
+- Retrieval practice, and why it beats restudy [@roediger2006test;
+  @crouch2001peer].
+- What a first course should spend its time on [@angrist2017undergraduate].
+
+::: {.notes}
+Reference frame only, not shown in the room. The two misreadings are the
+probability statement about mu and the confusion of the two spreads.
+:::
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::

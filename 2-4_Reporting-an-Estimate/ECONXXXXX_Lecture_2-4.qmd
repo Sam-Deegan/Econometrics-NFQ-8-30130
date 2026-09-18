@@ -1,0 +1,389 @@
+---
+#      LECTURE 2.4 - Reporting an Estimate
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Testing a Coefficient
+#        2  Confidence Intervals for an Effect
+#        3  Reading a Regression Table
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Testing a Coefficient
+#        35-38    pause
+#        38-63    Confidence Intervals for an Effect
+#        63-66    pause
+#        66-92    Reading a Regression Table
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
+#      written by _apps/export_figures.R. Rebuild with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, and every slide follows on the next render. Do
+#      not edit a PNG: edit the builder.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it. The flaws are in the generator
+#      already, switched off, and each later lecture turns one on.
+#
+title: "Reporting an Estimate"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 2.4"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 2.4
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{2.4}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## Last Week: The Spread of the Sampling Distribution
+
+Last week the sampling distribution had a centre and a spread, and we gave the
+spread a name.
+
+::: {.tablenotes}
+Two minutes with your neighbour. Our sample gave a slope of 1.52. What else
+would you need before you would write that number in a sentence?
+:::
+
+<!-- 0-6 min. Retrieval. The answer is the standard error, and today is what
+     you do with it. -->
+
+## Lecture Plan
+
+- **Testing a Coefficient.** Asking whether an estimate is distinguishable from nothing at all.
+- **Confidence Intervals for an Effect.** Reporting a range instead of a point, and why it says more.
+- **Reading a Regression Table.** What the numbers in a published table are, and what to look at first.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+# Testing a Coefficient
+
+## Testing a Coefficient Against a Benchmark Value
+
+**The goal of this section:** ask whether an estimate is distinguishable from
+zero, and be exact about what that question is.
+
+An estimate of 1.52 euro a year is large or small only against something. The
+only thing we have to compare it with is its own sampling variation.
+
+```{=latex}
+\begin{equation}
+t = \frac{\hat{\beta}_1 - 0}{\mathrm{se}(\hat{\beta}_1)}
+\end{equation}
+```
+
+- $\hat{\beta}_1$: our estimate, from our one sample
+- $\mathrm{se}(\hat{\beta}_1)$: the estimated spread of last week's histogram
+- $0$: the value we are testing against, which is a choice
+
+::: {.caveat title="Zero is a choice, not a default"}
+Nothing makes zero special except that it is often the interesting comparison.
+If theory says the return should be two euro, test against two.
+:::
+
+<!-- IDEA 1. 10-35 min. -->
+
+## What Rejecting Does and Does Not Mean
+
+::: {.defn title="What a rejection says"}
+If the true return were zero, a sample like ours would be unusual.
+:::
+
+::: {.caveat title="What it does not say"}
+It does not say the true return is 1.52. It does not say the return is large.
+It does not say the finding matters. And it says nothing at all about whether
+schooling causes earnings.
+:::
+
+## Vote: Would You Reject at Five Per Cent?
+
+An estimate of 0.40 with a standard error of 0.19.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what is the largest
+standard error that would still let you reject?
+:::
+
+<!-- ConcepTest 1. The arithmetic is easy; the second question is the one
+     that shows whether they understand what the ratio is doing. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down, without the slide, what the number in the denominator
+of a t-statistic is measuring. Then compare with your neighbour.
+:::
+
+# Confidence Intervals for an Effect
+
+## Reporting an Interval Instead of a Point Estimate
+
+**The goal of this section:** report the estimate and its precision in one
+object, instead of throwing the precision away.
+
+```{=latex}
+\figsmall{../_shared/figures/2-4_interval.png}{The sampling distribution implied by
+our estimate and its standard error. The shaded region is the 95 per cent
+interval; the dashed line is the null.}
+```
+
+<!-- IDEA 2. 38-63 min. -->
+
+## Reading the Interval Out Loud
+
+::: {.worked title="The sentence"}
+Our estimate of the return to a year of schooling is 1.52 euro an hour, with a
+95 per cent confidence interval from [lower] to [upper].
+:::
+
+::: {.caveat title="What the 95 per cent counts"}
+It counts intervals, not truths. If we repeated the whole exercise many times,
+about 95 per cent of the intervals we built this way would contain the true
+return. This particular interval either contains it or does not.
+:::
+
+::: {.tablenotes}
+The test is inside the picture: the interval excludes zero exactly when the
+test rejects at five per cent. They are the same statement, and the interval
+is the more informative way to say it.
+:::
+
+## Vote: Which Interval Is More Useful?
+
+An estimate of 1.5 with an interval from $-0.1$ to $3.1$, or an estimate of
+0.4 with an interval from 0.3 to 0.5.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: which one would you act on, and does that match
+which one is significant?
+:::
+
+<!-- ConcepTest 2. The second is significant and small; the first is not
+     significant and might be large. Most rooms pick on the star. Do not
+     adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Say what the 95 per cent in a 95 per cent confidence interval is
+counting. Then compare with your neighbour and see if you agree.
+:::
+
+# Reading a Regression Table
+
+## The Same Estimate at Four Different Sample Sizes
+
+**The goal of this section:** read published output the way a referee reads
+it, starting with the right number.
+
+```{=latex}
+\figsmall{../_shared/figures/2-4_studies.png}{Four studies reporting an identical
+return to schooling. Only the sample size differs.}
+```
+
+<!-- IDEA 3. 66-92 min. -->
+
+## Why Significance Is About Precision, Not Effect Size
+
+Every one of those four found the same effect. Two of them would be published
+as a finding and two as a null result.
+
+::: {.result}
+Significance is a statement about how precisely you measured something. It is
+not a statement about how big the something is, and the two get confused in
+print constantly.
+:::
+
+::: {.tablenotes}
+This is also why a large study can report a significant effect that nobody
+should act on, and a small one can miss an effect that matters.
+:::
+
+## What to Read First in a Regression Table
+
+1. **The coefficient, in units.** What does it mean in euro?
+2. **The standard error.** How precisely was it measured?
+3. **The sample size and what it is a sample of.**
+4. **What else is in the regression**, which is week 8.
+5. **The stars**, last, if at all.
+
+::: {.caveat}
+A table with stars and no standard errors is hiding the number you most need.
+When you build your own, report the interval.
+:::
+
+## Vote: What Is Missing From This Table?
+
+[Show a published table with stars, no standard errors, and no sample size.]
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: could you tell from it whether the effect is
+large?
+:::
+
+<!-- ConcepTest 3. No, and that is the point. Do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: significance is not size, and size is not
+importance. A star tells you about the standard error. It tells you nothing
+about whether the number matters.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. Not that causation is hard in the abstract, but that THIS
+     estimate rests on something nameable that may well be false. -->
+
+## Application
+
+Take the same estimate and report it four ways: bare, with a standard error,
+with an interval, and with a star.
+
+::: {.tablenotes}
+Vote first: which of the four would you want if you were deciding whether to
+stay in education another year? Take the vote before we discuss.
+:::
+
+Lab this week: building a regression table in R, and reading someone else's.
+
+<!-- 97-105 min. ConcepTest 4. -->
+
+## Three Ways to Report One Number
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Testing a Coefficient.** A t-statistic compares an estimate to its own standard error, and to nothing else.
+2. **Confidence Intervals for an Effect.** An interval carries the estimate and its precision in one object.
+3. **Reading a Regression Table.** A table is a set of claims, each with a standard error attached - read those first.
+:::
+
+::: {.tablenotes}
+Next week: what happens when a second variable enters, and what holding it fixed actually buys you.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 3.1
+
+- **Read** [chapter].
+- **Do** the appendix derivation, and problem set 2.
+- **Try** the app: move the sample size and watch the interval and the verdict
+  change while the estimate stays put.
+
+::: {.defn title="Problem set 2"}
+[Due this week. Covers 2.3 and 2.4.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Where the t-Statistic Comes From
+
+Standardise the estimator by its own estimated standard error and show what
+distribution the result has.
+
+::: {.tablenotes}
+Three steps. Start from the sampling distribution of the slope, divide by the
+standard error, and account for the fact that the standard error is itself
+estimated. The step that does the work is the third: it is the only reason the
+answer is a t and not a normal, and it is why the difference stops mattering
+once the sample is large.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The app, and this week's lab script.
+- `summary()`, `confint()`, and one table package in R.
+
+::: {.tablenotes}
+Report intervals. If a table you are writing has stars and no standard errors,
+it is hiding the thing a reader needs.
+:::
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::

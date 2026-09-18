@@ -1,0 +1,26 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+/.quarto/
+**/*.quarto_ipynb
+
+# Six commercial textbooks live here. They belong on the disk, not in the
+# history: 41MB of a 56MB repo, and git keeps them for ever even after a
+# later delete. Nothing in the decks reads from this folder at build time.
+materials/
+
+# LaTeX intermediates left behind when a beamer render fails. Quarto
+# deletes these on a clean run; a crashed run leaves them beside the .qmd,
+# where they get mistaken for source. The .pdf is the only build output
+# worth keeping in the repo.
+**/*.tex
+!_shared/*.tex
+!_extensions/**/*.tex
+**/*.aux
+**/*.log
+**/*.out
+**/*.nav
+**/*.snm
+**/*.vrb

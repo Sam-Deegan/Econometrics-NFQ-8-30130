@@ -1,0 +1,419 @@
+---
+#      LECTURE 2.3 - Bias and Precision
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  The Gauss-Markov Assumptions
+#        2  Unbiasedness
+#        3  Precision
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    The Gauss-Markov Assumptions
+#        35-38    pause
+#        38-63    Unbiasedness
+#        63-66    pause
+#        66-92    Precision
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
+#      written by _apps/export_figures.R. Rebuild with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, and every slide follows on the next render. Do
+#      not edit a PNG: edit the builder.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it. The flaws are in the generator
+#      already, switched off, and each later lecture turns one on.
+#
+title: "Bias and Precision"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 2.3"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 2.3
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{2.3}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## Would a Different Sample Give the Same Slope?
+
+Last week we measured how well a line fits the sample in front of us.
+
+::: {.tablenotes}
+Two minutes with your neighbour. Suppose I drew a different 120 people from
+the same population and fitted again. Would I get the same slope? Should I
+want to?
+:::
+
+<!-- 0-6 min. Retrieval. Both answers are no, and today is why. -->
+
+## Lecture Plan
+
+- **The Gauss-Markov Assumptions.** What has to be true of the population for any of this to work.
+- **Unbiasedness.** In what sense least squares gets the right answer, and in what sense it does not.
+- **Precision.** How much an estimate would move if we drew again, and why no other line does better.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+# The Gauss-Markov Assumptions
+
+## Five Claims About the Population
+
+**The goal of this section:** state what has to be true of the population
+before any of last week's arithmetic tells us anything about the world.
+
+1. Earnings really are a straight line in schooling, plus an error.
+2. The error has mean zero at every level of schooling.
+3. We drew our sample at random.
+4. Schooling actually varies in the sample.
+5. The error has the same variance at every level of schooling.
+
+::: {.tablenotes}
+Read them as promises rather than as a checklist. Each one is doing a specific
+job, and we will see which job in the next two sections.
+:::
+
+<!-- IDEA 1. 10-35 min. -->
+
+## Which Assumption Buys Unbiasedness and Which Buys Precision
+
+- **Two** is the one that buys unbiasedness. It is also the one that is almost
+  never true outside a simulation, and weeks 8 and 12 are about that.
+- **Four and five** buy precision, and a usable standard error.
+- **One** is about shape, and you saw last week what its failure looks like.
+- **Three** is about how the data arrived, and it is the one nobody checks.
+
+::: {.caveat}
+Assumption two is not a technicality. It says that people with more schooling
+do not differ from people with less in any way that also affects earnings.
+Say that out loud about this population and see whether you believe it.
+:::
+
+## Vote: Which Assumption Is Least Plausible Here?
+
+Schooling and hourly earnings, in a sample of Irish workers.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would change
+your mind?
+:::
+
+<!-- ConcepTest 1. Two, and they should say so unprompted. That instinct is
+     correct and we spend weeks 8 and 12 justifying it. Do not adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down which assumption you think is least plausible and one
+sentence saying why. Keep it - we come back to it in week 12.
+:::
+
+# Unbiasedness
+
+## One Sample Fitted Against the Known True Line
+
+**The goal of this section:** say in what sense least squares gets the right
+answer, and then be precise about what that does not mean.
+
+```{=latex}
+\figsmall{../_shared/figures/2-3_onesample.png}{Grey is the population of 200,000.
+Colour is the 120 we drew. Green is the true line; dashed navy is what our
+sample says.}
+```
+
+<!-- IDEA 2. 38-63 min. -->
+
+## Repeated Samples From the Same Population
+
+```{=latex}
+\figsmall{../_shared/figures/2-3_sampling.png}{Five hundred samples of 120 from the
+same population, one slope kept from each. Green is the truth; dashed navy is
+the single sample we happened to draw.}
+```
+
+::: {.result}
+The histogram is centred on the truth. That is what unbiasedness means, and it
+is a statement about the histogram rather than about any bar in it.
+:::
+
+## Unbiasedness Does Not Mean Your Estimate Is Right
+
+::: {.caveat title="Read this one carefully"}
+Our sample gave 1.52 when the truth is 1.30. Least squares is unbiased and our
+estimate is still wrong. Those two facts are entirely compatible, and if you
+leave today believing that unbiasedness means your number is right, the rest
+of the module will not work.
+:::
+
+::: {.tablenotes}
+In real work you get one draw. You never see the histogram. Everything from
+next week onwards is about what can honestly be said from a single draw.
+:::
+
+## Vote: Is This Estimator Biased?
+
+I always drop the highest earner before fitting.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: which of the five assumptions did that break?
+:::
+
+<!-- ConcepTest 2. It breaks the random sample and it breaks zero conditional
+     mean, and it is a rule most people find reasonable. Do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. In one sentence with no symbols, say what unbiasedness claims.
+Then compare with your neighbour, and see whether your sentences agree.
+:::
+
+# Precision
+
+## Three Ways to Narrow the Distribution
+
+**The goal of this section:** say how far an estimate would move if we drew
+again, and what we could do about it.
+
+```{=latex}
+\figpair{../_shared/figures/2-3_precision-n.png}{Four times the
+sample.}{../_shared/figures/2-3_precision-spread.png}{More spread in
+schooling.}
+```
+
+<!-- IDEA 3. 66-92 min. -->
+
+## Three Ingredients in the Standard Error of the Slope
+
+The spread of that histogram has a name and a formula, and the formula has
+exactly the three ingredients the figure has:
+
+- more people, and it narrows
+- more spread in schooling, and it narrows
+- a quieter error, and it narrows
+
+```{=latex}
+\figsmall{../_shared/figures/2-3_precision-noise.png}{The third ingredient: a
+smaller error variance.}
+```
+
+::: {.tablenotes}
+Only the first is usually in your control. The second is a fact about who you
+sampled; the third is a fact about the world.
+:::
+
+## Comparing Two Unbiased Estimators by Their Variance
+
+```{=latex}
+\figsmall{../_shared/figures/2-3_blue.png}{Least squares against an estimator that
+uses only the two extreme observations. Both centre on the truth.}
+```
+
+::: {.result title="The Gauss-Markov theorem"}
+Among all estimators that are linear in the data and unbiased, least squares
+has the smallest variance. Under those five assumptions, nothing else in that
+class does better.
+:::
+
+## Scope and Limits of the Gauss-Markov Theorem
+
+- It is a claim about a **class**: linear, and unbiased. Step outside either
+  and the theorem says nothing.
+- It rests on **all five** assumptions, and the fifth in particular.
+- It is about **precision**, not about correctness. A biased estimator with a
+  tiny variance is outside the class entirely.
+
+::: {.caveat}
+Hold on to the fifth assumption. In week 11 the error stops having constant
+variance, least squares stops being best, and the standard error you just
+learned to read stops being right. That is where robust standard errors come
+from, and this theorem is why they are needed.
+:::
+
+## Vote: Which Sample Gives a Tighter Estimate?
+
+Two hundred people whose schooling runs from eleven to thirteen years, or
+eighty whose schooling runs from nine to twenty.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: which of the three ingredients did you trade
+against which?
+:::
+
+<!-- ConcepTest 3. This is the variance formula asked as a question, and the
+     answer is not obvious - which is the point. Do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: unbiasedness is a property of repeated sampling.
+It says nothing about the one estimate in front of you, and you will only ever
+have one.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. Not that causation is hard in the abstract, but that THIS
+     estimate rests on something nameable that may well be false. -->
+
+## Application
+
+Simulate. Draw a sample, fit, keep the slope, repeat five hundred times.
+
+::: {.tablenotes}
+Vote first: if we quadruple the sample size, does the histogram move, narrow,
+or both? Take the vote before anything is run.
+:::
+
+Lab this week: write the loop yourself, then break one assumption deliberately
+and watch which of the two things happens.
+
+<!-- 97-105 min. ConcepTest 4. -->
+
+## Summary of Today's Three Ideas
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **The Gauss-Markov Assumptions.** Each assumption earns one specific result, and none of them is decoration.
+2. **Unbiasedness.** Unbiasedness is a statement about where the distribution sits, not about your estimate.
+3. **Precision.** Precision comes from sample size, spread in schooling, and a quiet error - and no other linear unbiased estimator beats it.
+:::
+
+::: {.tablenotes}
+Next week: turning one estimate and its standard error into a claim you can defend in writing.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 2.4
+
+- **Read** [chapter].
+- **Do** the appendix derivations. There are two, and the second is the one
+  that makes the standard error in next week's output mean something.
+- **Try** the app: change the sample size and the spread of schooling and
+  watch the sampling distribution respond.
+
+::: {.defn title="Problem set 2"}
+[Out this week, due week n. Covers 2.3 and 2.4, and carries one question back
+from problem set 1.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Unbiasedness of Least Squares
+
+Write the estimator as the truth plus a term in the errors, take expectations,
+and use the zero conditional mean assumption.
+
+::: {.tablenotes}
+Three steps. Substitute the population model into the estimator, split the
+result into the truth plus a weighted sum of errors, take the expectation.
+The step that does the work is the third, and it works only because of
+assumption two. Turn that assumption off and the whole thing fails, which is
+exactly what happens in week 8.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Derivation: The Variance of the Slope
+
+Take the same decomposition and compute its variance instead of its mean.
+
+::: {.tablenotes}
+The result has three ingredients, and each one is a panel of the figure you
+saw: the error variance on top, the spread of schooling and the sample size
+underneath. Reading the formula and reading that figure should feel like the
+same activity.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The app, and this week's simulation script.
+- `replicate()` in R, which is the whole of the sampling-distribution lab.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::

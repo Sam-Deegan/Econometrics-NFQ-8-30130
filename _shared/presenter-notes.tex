@@ -1,0 +1,28 @@
+% ---------------------------------------------------------------------------
+% Presenter notes, second screen.
+%
+% Pulled in ONLY by the `presenter` Quarto profile:
+%
+%     quarto render --profile presenter
+%
+% which renders the whole project into _presenter/ with every ::: {.notes}
+% block printed on a second screen beside the slide. A plain
+%
+%     quarto render
+%
+% leaves the student PDFs beside their .qmd files with notes hidden — the
+% theme sets \setbeameroption{hide notes} by default, and this file overrides
+% it because header includes are read in order and the last one wins.
+%
+% WHAT BELONGS IN A .notes BLOCK: what you say out loud. Timings, what to put
+% on the board, which app scenario to run, how to read the room.
+%
+% WHAT DOES NOT: provenance, [M1 nn] source references, TODOs, warnings about
+% defective figures, anything about how the deck was built. That stays in
+% ```{=html}``` comment blocks, which are dropped from every output and can
+% never reach a student. A .notes block is hidden in the student PDF but it
+% is still authored text — treat it as something a student could conceivably
+% see, and keep the housekeeping out of it.
+% ---------------------------------------------------------------------------
+
+\setbeameroption{show notes on second screen=right}

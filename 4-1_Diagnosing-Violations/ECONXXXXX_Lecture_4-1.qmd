@@ -1,0 +1,626 @@
+---
+#      LECTURE 4.1 - Diagnosing Violations
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`; the term skeleton is the artifact
+#      "Twelve Weeks of OLS".
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. Today's is the residual: $u_i$ is the error nobody sees
+#         and $\hat u_i$ is the residual the fit leaves behind, and the
+#         whole robust estimator is the second standing in for the first.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Heteroskedasticity
+#        2  Serial Correlation
+#        3  Misspecification
+#
+#      WHAT MAKES THIS MORE THAN A LIST OF FAULTS. Week 6 stated a
+#      promise: under five assumptions least squares is unbiased and has
+#      the smallest variance among linear unbiased estimators. Every
+#      violation today is sorted by WHICH PART OF THAT PROMISE IT COSTS.
+#      Heteroskedasticity and serial correlation cost efficiency and
+#      valid inference; the estimates survive. Misspecification costs
+#      unbiasedness itself, which is a different kind of problem and a
+#      worse one. Students rank them the other way round, and the point
+#      of the hour is to reverse that ranking. The table on the first
+#      content frame is that spine made visible; the closing summary is
+#      the same three rows in words.
+#
+#      DIAGNOSTIC TESTS are treated briefly and sceptically. A test that
+#      rejects tells you something is wrong, not what. Do not drill a
+#      battery of named tests; one mention of RESET is the whole budget.
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Heteroskedasticity
+#        35-38    pause
+#        38-63    Serial Correlation
+#        63-66    pause
+#        66-92    Misspecification
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. None exist yet. Four exhibits are specified in HTML
+#      comments beside their placeholders, each naming the B_04 switch it
+#      needs in _apps/regression/R/model.R. Built figures belong in
+#      _apps/export_figures.R so the slide and the app cannot drift, as
+#      ECON42550 does. Until then: ../_shared/placeholder.pdf.
+#
+#      THE POPULATION. The same 200,000 people as every week. Until now
+#      the switches in B_04 have been off. This is the lecture that turns
+#      three of them on: hetero_gain, curvature and outlier_share.
+#
+title: "Diagnosing Violations"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 4.1"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 4.1
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{4.1}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## What Last Week's Joint Test Assumed
+
+Last week we tested three restrictions at once and read one number off the
+output.
+
+- What did that number assume about the errors?
+- We tried several specifications before we reported one. What did the
+  searching do to the number?
+- Collinearity widened a standard error. Did it move the estimate?
+
+::: {.tablenotes}
+Two minutes with your neighbour. The third question is the shape of today:
+a fault that costs you precision and leaves the estimate alone.
+:::
+
+<!-- 0-6 min. Retrieval, not recap. Take two or three answers out loud and
+     do not resolve them. The third answer is no, and the students who say
+     so confidently have already built the distinction the hour needs. -->
+
+## Lecture Plan
+
+- **Heteroskedasticity.** The estimates survive, the standard errors do not, and that is why robust is the default.
+- **Serial Correlation.** The same damage, but read it as a symptom of something left out rather than a disease to treat.
+- **Misspecification.** The one that is different in kind, because it takes unbiasedness away.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+<!-- 6-10 min. -->
+
+# Heteroskedasticity
+
+## What Each Violation Costs: Unbiasedness or Precision
+
+**The goal of this section:** say what a non-constant error variance costs
+you, and be exact about what it leaves untouched.
+
+```{=latex}
+\tabcaption{Each fault against the promise of week six.}
+\begin{dgtable}{l c c c}
+\thead{Fault} & \thead{Still unbiased?} & \thead{Still best?}
+  & \thead{Usual SE right?} \\ \midrule
+Heteroskedasticity   & Yes & No & No \\
+Serial correlation   & Yes & No & No \\
+Wrong shape          & \hl{No} & \hl{No} & \hl{No} \\
+\end{dgtable}
+```
+
+::: {.tablenotes}
+Three rows, and the third one is not a worse version of the first two. It is
+a different column that has gone.
+:::
+
+<!-- IDEA 1. 10-35 min. Put this table up and leave it up. The hour is the
+     table filled in, and the closing summary is these three rows in
+     words. -->
+
+## The Error Fans Out With Schooling
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Residuals from the usual fit, plotted
+against years of schooling. The band is narrow on the left and wide on the
+right: people with more schooling are spread further from the line.}
+```
+
+::: {.tablenotes}
+Nothing about the line is wrong here. The line is in the right place. What
+has changed is how far a person is likely to sit from it, and that depends
+on where they are along the axis.
+:::
+
+<!-- FIGURE 4-1_hetero-fan: residuals against schooling for one sample of
+     120, drawn from C_01_01_population_fn(hetero_gain_dbl = 0.18). Zero
+     line in grey. Needs the hetero_gain switch in B_04 and nothing
+     else. -->
+
+## The Variance of the Slope Under Heteroskedasticity
+
+**The question this answers:** how far would the slope move across repeated
+samples when the error variance is not the same for everybody?
+
+$$
+\operatorname{Var}(\hat\beta_1)
+= \frac{\sum_{i} (x_i - \bar x)^2 \, \sigma_i^2}
+       {\left[ \sum_{i} (x_i - \bar x)^2 \right]^2}
+$$
+
+- $\hat\beta_1$: the slope least squares computes from one sample
+- $x_i$: years of schooling for person $i$
+- $\bar x$: the sample mean of schooling
+- $\sigma_i^2$: the error variance for person $i$
+
+::: {.result}
+Set every $\sigma_i^2$ equal to the same $\sigma^2$ and this collapses to the
+formula from week 6. That is the only difference, and it is the whole
+difference.
+:::
+
+## Estimating the Slope Variance With Squared Residuals
+
+**The question this answers:** we cannot see $\sigma_i^2$, so what do we put
+in its place?
+
+$$
+\widehat{\operatorname{Var}}(\hat\beta_1)
+= \frac{\sum_{i} (x_i - \bar x)^2 \, \hat u_i^2}
+       {\left[ \sum_{i} (x_i - \bar x)^2 \right]^2}
+$$
+
+- $\hat u_i$: the residual left for person $i$ by the fitted line
+
+::: {.defn title="Notation: the error and the residual"}
+$u_i$ is the error, which belongs to the population and which nobody ever
+sees. $\hat u_i$ is the residual, which belongs to the fit. The robust
+standard error is the second standing in for the first, and the hat is
+carrying all of that.
+:::
+
+<!-- The one derivation this week, in the appendix and set as homework. In
+     the room: state the two formulas, point at the one symbol, move on. -->
+
+## Why Robust Standard Errors Are the Default Choice
+
+The estimator is due to @white1980heteroskedasticity, with the same idea
+reached independently by @eicker1967limit and @huber1967behavior a decade
+earlier. It has been available in every package you will use for forty
+years.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The classical standard error and the
+robust one for the same slope, as the error is made to fan out more
+steeply. The estimate barely moves; the two standard errors come apart.}
+```
+
+::: {.takeaway}
+Test first and correct afterwards, and your reported standard error depends
+on a test you ran and did not report. Use the robust one from the start and
+it does not.
+:::
+
+<!-- FIGURE 4-1_robust-vs-classical: classical SE and robust SE for the
+     slope, plotted against hetero_gain_dbl running 0 to 0.30, one sample of
+     120 at each setting, with the point estimate on a second panel or as a
+     flat reference line so students see it does not move. Needs the
+     hetero_gain switch. -->
+
+## Arguments For and Against Robust Standard Errors by Default
+
+@angrist2017undergraduate argue that most of what an introductory course
+teaches about inference can be replaced by the instruction to use robust
+standard errors, and that time spent testing assumptions and applying
+generalised least squares fix-ups is time badly spent.
+
+::: {.caveat title="The honest qualification"}
+In small samples the robust estimator is itself unreliable, and the usual
+version is the least reliable of the family. @long2000using and
+@imbens2016robust both recommend the corrected variants — the ones your
+software calls HC2 and HC3 — once the sample is small or a few observations
+carry unusual leverage. @mackinnon1985some is where those variants come
+from.
+:::
+
+::: {.tablenotes}
+So: robust by default, and the corrected variant by default too. That is a
+one-word change in your code, not a chapter.
+:::
+
+## Vote: Which Estimates Are Still Unbiased?
+
+The error fans out with schooling, exactly as in the figure. We fit the
+usual line and report the usual standard error.
+
+- The slope is biased and the standard error is fine.
+- The slope is fine and the standard error is too small.
+- The slope is fine and the standard error is wrong, and you cannot say in
+  advance which way.
+- Both are wrong.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would
+settle it?
+:::
+
+<!-- ConcepTest 1. The third. "Too small" is the popular wrong answer and
+     it is wrong because the direction depends on where the variance is
+     large relative to where schooling is spread. Take answers, do not
+     adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write one sentence saying what heteroskedasticity breaks and
+one saying what it leaves alone. Then compare with your neighbour.
+:::
+
+# Serial Correlation
+
+## Correlated Errors Have the Same Consequences as Heteroskedasticity
+
+**The goal of this section:** put correlated errors in the same place as
+heteroskedasticity, and then argue that the correction is usually the wrong
+response.
+
+When errors are correlated with each other — adjacent quarters, workers in
+the same firm, people in the same town — the estimates are still centred on
+the truth and the usual standard error is still wrong. Row two of the table
+is row one again.
+
+::: {.result}
+Structurally there is nothing new here. What is new is what you should do
+about it, and it is not the same thing.
+:::
+
+<!-- IDEA 2. 38-63 min. This module is cross-sectional, so serial
+     correlation arrives as an idea rather than as a dataset. That is the
+     right weight for it: the transferable lesson is the diagnosis, not the
+     HAC formula. -->
+
+## What a Run of Same-Signed Residuals Indicates
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Residuals in order of schooling. They
+are negative at both ends and positive through the middle — not scattered,
+but arranged in runs.}
+```
+
+::: {.tablenotes}
+Order these residuals by anything and you can compute a correlation. Here
+the pattern is not noise that happens to be correlated. It is the shape of
+something the model does not contain, showing through.
+:::
+
+<!-- FIGURE 4-1_runs: residuals from the straight-line fit, plotted in
+     order of schooling, sample of 120 from
+     C_01_01_population_fn(curvature_dbl = -0.09). Shade the runs of one
+     sign. Needs the curvature switch. The point of drawing it from the
+     curvature population rather than a time series is that the two faults
+     produce the same picture. -->
+
+## Why Correcting the Standard Error Comes Last
+
+A correction exists: @newey1987simple gives a standard error valid under
+both heteroskedasticity and autocorrelation, and it is one argument in your
+regression call.
+
+::: {.caveat title="Why reaching for it first is the mistake"}
+The correction widens the interval around a number you have not yet asked
+whether you should be reporting. @granger1974spurious is the case that
+settled this: two unrelated series, a large $t$-statistic and residuals that
+were badly correlated. The residuals were the warning. A wider interval
+around a meaningless coefficient is still meaningless.
+:::
+
+::: {.takeaway}
+Correlated residuals are a symptom. Ask what is missing, or what shape is
+wrong, before you ask which standard error to report.
+:::
+
+## Vote: What Would Cause This Pattern?
+
+Residuals negative at both ends of the schooling range and positive through
+the middle.
+
+- The errors are genuinely correlated with each other.
+- A variable that matters is missing from the model.
+- The relationship is curved and we fitted a straight line.
+- You cannot tell from this plot which of the three it is.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would
+settle it?
+:::
+
+<!-- ConcepTest 2. The fourth, and the second and third are both live.
+     This is the lecture's sceptical point about diagnostics arriving as a
+     vote rather than as an assertion. Take answers, do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Name two different faults that would produce the residual plot
+on the board. Then compare with your neighbour.
+:::
+
+# Misspecification
+
+## Why the Wrong Functional Form Costs Unbiasedness
+
+**The goal of this section:** show that getting the shape wrong is a
+different kind of failure from the first two, and a worse one.
+
+Returns to schooling diminish. The truth bends, and we fitted a line. The
+line is then too low in the middle of the range and too high at the ends,
+which means the error does not average zero at every level of schooling.
+
+::: {.result}
+That is assumption two, the one week 6 said buys unbiasedness. Break it and
+the estimate is no longer centred on anything in particular. No standard
+error repairs that, because there is nothing wrong with the standard error.
+:::
+
+<!-- IDEA 3. 66-92 min. Go back to the table and point at the row. The
+     third column is the one that changed. -->
+
+## Curvature and Outliers in the Residual Plot
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Left: residuals against fitted values
+with curvature switched on — an arch, not a cloud. Right: the same plot with
+a few very high earners in the sample — a cloud with four points a long way
+above it.}
+```
+
+The point that summary statistics cannot be trusted to reveal a shape is
+@anscombe1973graphs, and it is fifty years old and still the reason the
+first thing you do with a fitted model is plot it.
+
+::: {.tablenotes}
+Two plots, two faults, two different responses. The arch says the model has
+the wrong form. The four points say a handful of people are unlike the rest,
+and neither a robust standard error nor a quadratic term is the answer to
+that.
+:::
+
+<!-- FIGURE 4-1_resid-fitted: two panels. Left, residuals against fitted
+     values from a sample of 120 drawn with curvature_dbl = -0.09. Right,
+     the same plot from a sample drawn with outlier_share_dbl = 0.04 and
+     curvature off. Same axes on both so the shapes are comparable. Needs
+     the curvature and outlier_share switches. -->
+
+## What the RESET Test Can and Cannot Tell You
+
+There are named tests for this. @ramsey1969tests is the standard one, and it
+adds powers of the fitted values to the regression and asks whether they
+help.
+
+::: {.caveat}
+It will reject for a missing variable, for the wrong functional form, for a
+handful of outliers, and for a sample large enough that any of the three is
+detectable. A rejection is a prompt to look at the plot. It is not a
+diagnosis, and it is certainly not a repair.
+:::
+
+::: {.takeaway}
+Run the plot first. If you run the test first you will spend the afternoon
+choosing a correction for a fault you have not identified.
+:::
+
+## Ranking the Three Faults by What They Cost
+
+::: {.takeaway title="The claim to take away"}
+A wrong standard error costs you an honest interval around the right number.
+A wrong shape costs you the number. Almost everyone worries more about the
+first, because it is the one with a test attached.
+:::
+
+@king2015robust make a related argument that is worth holding on to: when the
+robust and the classical standard errors differ a lot, that gap is
+information about the model, not just a nuisance to be corrected away.
+Something in the specification is not doing its job.
+
+::: {.tablenotes}
+This is why the third row of the table is set apart, and why 4.2 exists.
+:::
+
+## Vote: Does This Residual Plot Worry You?
+
+A cloud of residuals against fitted values, plus four points sitting far
+above the rest — the four highest earners in the sample.
+
+- Yes, and I would use a robust standard error.
+- Yes, and I would look at who those four people are.
+- Yes, and I would drop them.
+- No, four points out of a hundred and twenty is nothing.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would
+settle it?
+:::
+
+<!-- ConcepTest 3. The second. Dropping them is the answer 2.3 already
+     showed to be an estimator with a bias, and the students who remember
+     that will say so. Take answers, do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it
+means? And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: a robust standard error makes the interval honest
+about noise. It says nothing about whether the line is the right shape, and
+nothing at all about whether schooling is what moved earnings.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. The whole hour has been about faults a residual plot reveals, and
+     the point of this slot today is that the biggest one is not among
+     them. -->
+
+## Application
+
+Take one sample. Fit the usual line. Report the classical and the robust
+standard error side by side, then turn the fan on and do it again.
+
+::: {.tablenotes}
+Vote first: as the error fans out more steeply, does the estimate move, does
+the classical standard error move, does the robust one, or some combination?
+Take the vote before anything is run.
+:::
+
+Lab this week: turn on curvature instead and watch the same two standard
+errors both stay narrow while the estimate walks away from the truth.
+
+<!-- 97-105 min. ConcepTest 4. The lab half is the lecture's argument in
+     one screen: the diagnostics that get attention respond to the fault
+     that matters least. -->
+
+## What Each Fault Costs You
+
+Today was three separate ideas, sorted by what each one takes away:
+
+::: {.contributions}
+1. **Heteroskedasticity.** The estimates survive and the standard errors do not, which is why robust is the default rather than a repair.
+2. **Serial Correlation.** The same damage with a different cause, and the correction is usually the wrong first move.
+3. **Misspecification.** This one takes unbiasedness, and no standard error can give it back.
+:::
+
+::: {.caveat title="Where 4.1 stops and 4.2 begins"}
+Everything today was a fault you can see in the residuals and respond to.
+Next week is the faults no diagnostic will ever reveal, because the residual
+plot looks perfectly fine.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 4.2
+
+- **Read** [chapter].
+- **Do** the appendix derivation. It is the one that explains why the
+  standard error in every piece of output you have read this term is the
+  wrong one whenever the fan is on.
+- **Try** the app: dial the fan up and watch the two standard errors come
+  apart while the estimate stays put.
+
+::: {.defn title="Problem set 4"}
+[Out this week, due week n. Covers 4.1, and carries one question back from
+problem set 3.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck and can be walked to if a question needs them.
+
+     The divider is the .appendix div on a plain frame, NOT a level-one
+     "# Appendix" heading - the div calls \appendixcontent, which is what
+     switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Why Heteroskedasticity Breaks the Variance Formula
+
+Take the week 6 decomposition of the slope into the truth plus a weighted
+sum of errors, and compute its variance without assuming the errors share a
+variance.
+
+::: {.tablenotes}
+Three steps. Write the slope as the truth plus a sum of weights times
+errors. Take the variance of that sum, which is the sum of the squared
+weights times the individual error variances. Then stop, because there is no
+common $\sigma^2$ to pull out. Week 6 pulled it out in one line and never
+said that was a step; this is that step, refused. The result is the first
+formula on the slide, and the second formula is what you get by putting
+$\hat u_i^2$ where $\sigma_i^2$ stands. Why that substitution works is the
+interesting part: you cannot estimate $n$ variances from $n$ observations,
+but you never needed to — only one weighted sum of them.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- `plot(model, which = 1)`: residuals against fitted values, which is the
+  first thing to look at and the last thing anyone does.
+- `sandwich::vcovHC()` with `lmtest::coeftest()`, documented in
+  @zeileis2004econometric. Its default is HC3.
+- `estimatr::lm_robust()`, which reports HC2 with an adjusted degrees of
+  freedom out of the box.
+- `fixest::feols()` with `vcov = "hetero"`, if you are already using it.
+- Stata's `vce(robust)` is HC1, which is not the same choice; say which one
+  you used.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). Entries for this deck are staged in
+     bib/4-1.bib and merged into the shared file. A work mentioned only
+     inside a raw LaTeX block is invisible to citeproc - put the citation in
+     the markdown around the block.
+
+     The frame takes .allowframebreaks because the list outgrows one slide;
+     the theme blanks the continuation title so the breaks are invisible. -->

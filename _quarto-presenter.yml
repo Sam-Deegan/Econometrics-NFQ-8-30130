@@ -1,0 +1,17 @@
+# Presenter profile: quarto render --profile presenter
+#
+# Renders every deck into _presenter/ with speaker notes on a second screen.
+# The student PDFs are what a plain `quarto render` produces, beside each
+# .qmd, and they never show notes.
+#
+# This works because Quarto ACCUMULATES include-in-header from the extension,
+# the project and the document rather than overriding — which is already how
+# the Dublin theme files and each deck's roadmap include coexist today.
+
+project:
+  output-dir: _presenter
+
+format:
+  dublin-beamer:
+    include-in-header:
+      - _shared/presenter-notes.tex

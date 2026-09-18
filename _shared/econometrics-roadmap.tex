@@ -1,0 +1,100 @@
+% ---------------------------------------------------------------------------
+% ECONXXXXX Econometrics I course roadmap
+%
+% Adapted from the ECON42550 roadmap. Course-specific, not part of the Dublin
+% theme. Put this file in _shared/ and pull it in from the YAML header:
+%
+%   include-in-header: ../_shared/econometrics-roadmap.tex
+%
+% Then on any slide:
+%
+%   \roadmap{2.1}     the twelve-week map, with week 2.1 marked as today
+%   \roadmap{}        the same map with nothing marked (no deck uses this
+%                     now that the syllabus lives in 1.1; kept for handouts)
+%
+% Weeks before today's are greyed, today's is a green pill, later ones are set
+% in ink. Edit \rmitem lines to change titles; edit \rmregister if you add or
+% remove a week. The labels here must match the lecture titles and the section
+% names in the closing summary — the same three names in all three places.
+%
+% Numbering is block.week: 1.x foundations, 2.x simple regression,
+% 3.x multiple regression, 4.x limits.
+%
+% FOUR columns rather than ECON42550's three, so each column is narrower and a
+% label that wraps is visible. Every box is \raggedright: a \parbox justifies
+% by default, which stretches a wrapped line across its column and is what made
+% the first draft of this map look broken.
+% ---------------------------------------------------------------------------
+
+\makeatletter
+
+% --- position register -----------------------------------------------------
+\newcount\rm@pos
+\newcount\rm@cur
+\newcommand{\rmregister}[1]{\global\advance\rm@pos by 1
+  \expandafter\xdef\csname rm@ix@#1\endcsname{\the\rm@pos}}
+
+\rm@pos=0
+\rmregister{1.1} \rmregister{1.2} \rmregister{1.3} \rmregister{2.1} \rmregister{2.2} \rmregister{2.3} \rmregister{2.4} \rmregister{3.1} \rmregister{3.2} \rmregister{3.3} \rmregister{4.1} \rmregister{4.2}
+
+% --- one week line ---------------------------------------------------------
+\newcount\rm@this
+\newcommand{\rmitem}[2]{%
+  \rm@this=\@nameuse{rm@ix@#1}\relax
+  \ifnum\rm@this=\rm@cur
+    \colorbox{dgGreen}{%
+      \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+        \raggedright\color{white}\scriptsize\bfseries #1\hspace{0.45em}#2}}%
+  \else
+    \ifnum\rm@this<\rm@cur
+      \parbox{\linewidth}{\raggedright\color{dgMuted}\scriptsize #1\hspace{0.45em}#2}%
+    \else
+      \parbox{\linewidth}{\raggedright\color{dgInk}\scriptsize #1\hspace{0.45em}#2}%
+    \fi
+  \fi
+  \par\vspace{0.30em}}
+
+% --- one block column ------------------------------------------------------
+\newcommand{\rmhead}[1]{%
+  \parbox{\linewidth}{\raggedright\color{dgNavy}\footnotesize\bfseries #1}\par
+  \vspace{0.25em}{\color{dgRule}\rule{\linewidth}{0.4pt}}\par\vspace{0.45em}}
+
+% --- the map ---------------------------------------------------------------
+\newcommand{\roadmap}[1]{%
+  \def\rm@arg{#1}%
+  \ifx\rm@arg\@empty \rm@cur=0 \else \rm@cur=\@nameuse{rm@ix@#1}\relax \fi
+  \vspace{0.3em}
+  \noindent
+  \begin{minipage}[t]{0.23\linewidth}
+    \rmhead{1. Foundations}
+    \rmitem{1.1}{Data and Variation}
+    \rmitem{1.2}{Conditional Means}
+    \rmitem{1.3}{Sampling Variation}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.23\linewidth}
+    \rmhead{2. Simple Regression}
+    \rmitem{2.1}{Fitting a Line}
+    \rmitem{2.2}{Goodness of Fit}
+    \rmitem{2.3}{Bias and Precision}
+    \rmitem{2.4}{Reporting an Estimate}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.23\linewidth}
+    \rmhead{3. Multiple Regression}
+    \rmitem{3.1}{Adding Controls}
+    \rmitem{3.2}{Functional Form}
+    \rmitem{3.3}{Joint Tests}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.23\linewidth}
+    \rmhead{4. Limits}
+    \rmitem{4.1}{Diagnosing Violations}
+    \rmitem{4.2}{Limits of Regression}
+  \end{minipage}%
+  \par\vspace{0.3em}}
+
+% --- the term --------------------------------------------------------------
+% Quarto normalises a YAML `date:` into a calendar date, so "Autumn 2027"
+% comes out as 1 January 2027. The decks leave `date` out of their headers and
+% take it from here instead: change the term once, every deck follows.
+\AtBeginDocument{\date{PLACEHOLDER TERM}}
+
+\makeatother

@@ -1,0 +1,688 @@
+---
+#      LECTURE 4.2 - What Regression Cannot Do
+#
+#      The last lecture of the module, and the capstone. Decisions behind
+#      this deck are in the project note `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout. Symbols
+#         already taught do not get re-listed, which is why the generator
+#         slide lists only the six that are new.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Measurement Error
+#        2  Reverse Causality
+#        3  The Road to Part II
+#
+#      THE REVEAL IS THE SPINE, not an aside. Since week 1 the class has
+#      worked a sample of 120 from a population of 200,000 as though the
+#      population were unknown. The flaws were in the generator the whole
+#      time, switched off, one per later lecture. This is the lecture that
+#      lifts the curtain: the ability term that moves both schooling and
+#      pay, the reporting error in schooling, and the wage floor. Every
+#      section afterwards is one of those faults, taken apart.
+#
+#      The hinge of the whole deck is the pivot slide at the end of the
+#      reveal. 4.1 was faults visible in the residuals and answerable with
+#      a correction. These are faults no diagnostic reveals, because the
+#      residuals look fine. You cannot test your way out; you design your
+#      way out, and that is why Part II exists.
+#
+#      TIMING, 110 minutes of a two-hour slot. Two departures from the
+#      standard shape, both deliberate. The reveal gets its own eight-
+#      minute block before the first divider, and the standing question
+#      gets seven rather than five because this week it is the capstone
+#      and runs on a published paper. The three sections give up two
+#      minutes each to pay for it.
+#         0-6     retrieval - the whole term, answered back
+#         6-10    lecture plan
+#        10-18    the reveal: the generator that has been running all term
+#        18-38    Measurement Error
+#        38-40    pause
+#        40-62    Reverse Causality
+#        62-64    pause
+#        64-88    The Road to Part II
+#        88-95    the standing question, turned on a published paper
+#        95-104   application
+#       104-110   synthesis and exit ticket
+#
+#      FOUR ConcepTests: three drafted below, the fourth taken as a
+#      prediction before the app runs. Peer discussion is the active
+#      ingredient, so the revote is not optional.
+#
+#      FIGURES. None of the five exists yet. Each one needs a switch in
+#      _apps/regression/R/model.R turned on - the B_04 block - and a
+#      builder added to section D. Until they are built every exhibit
+#      points at ../_shared/placeholder.pdf, and a FIGURE comment under
+#      each says what to draw and which switch it needs. Once built,
+#      export them with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root. Do not edit a PNG: edit the builder.
+#
+#      CLOSING THE LOOP. Lecture 1.1 opened with a hook the room could not
+#      answer and was told it would come back in week 12. It comes back
+#      on the frame before the standing question, and the honest answer
+#      is that Part I has not given them the tool that settles it - it
+#      has given them the ability to say exactly what is missing.
+#
+title: "What Regression Cannot Do"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 4.2"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 4.2
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{4.2}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked. This is the last one.
+:::
+
+## Reasons the Estimated Return of 1.52 Might Be Wrong
+
+Since week 6 you have had a single estimate: a return of 1.52 euro an hour
+for each extra year of schooling.
+
+::: {.tablenotes}
+Three minutes with your neighbour. Write down every reason this module has
+given you for why 1.52 might not be the truth. Do not look anything up. In
+week 6 I asked you to keep a sentence on the least plausible assumption: find
+it.
+:::
+
+<!-- 0-6 min. Retrieval, and the only one all term that reaches back
+     further than a week. Expect sampling variation, omitted variables,
+     bad controls, functional form, heteroskedasticity. Take four answers
+     out loud and write them on the board - the list stays up all
+     session, because today adds three nobody will have. The week 6 note
+     was set in the pause slide of lecture 2.3, and most of the room will
+     have written down zero conditional mean. They were right. -->
+
+## Lecture Plan
+
+- **Measurement Error.** Noise in a regressor pulls its coefficient toward zero.
+- **Reverse Causality.** Regression is symmetric. Causation is not.
+- **The Road to Part II.** One design at a time, named by the problem it solves.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+## The Data-Generating Process Behind the Sample
+
+**The objective of these four lines:** show what has actually been producing
+the hundred and twenty rows you have worked with all term.
+
+```{=latex}
+\begin{align*}
+A_i     &= \text{ability, drawn once and never recorded} \\
+S_i     &= 13.5 + \gamma A_i + u_i \\
+Y_i     &= 9.50 + 1.30\,(S_i - 12) + \delta A_i + \varepsilon_i \\
+S^{*}_i &= S_i + m_i
+\end{align*}
+```
+
+and a person appears in your data only if $Y_i \ge f$.
+
+- $A_i$: ability, which nobody measured
+- $\gamma$: how much ability raises schooling
+- $\delta$: how much ability raises pay
+- $S^{*}_i$: the schooling the person reported
+- $m_i$: the reporting error
+- $f$: the wage floor
+
+<!-- 10-18 min. THE REVEAL. Do not soften this. Put the R source on the
+     screen beside it if the room wants proof. The true slope has been
+     1.30 all term and they have never once regressed on S. -->
+
+## The Generator as a Causal Diagram
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The generator as a causal diagram. Ability
+points at both schooling and earnings, and it is dashed because nobody
+measured it. Reported schooling hangs off actual schooling; the wage floor
+sits on earnings and decides who is in the data at all.}
+```
+
+<!-- FIGURE 4-2_dgp: the causal diagram of C_01_01_population_fn, drawn
+     rather than simulated. Boxes for A, S, S*, Y; solid arrows for the
+     measured paths, a dashed pair from A to S and A to Y, an arrow from
+     S to S* labelled with m, and a gate on Y labelled with the floor.
+     Needs B_04_01 ability_pay, B_04_02 ability_school, B_04_03
+     misreport_sd and B_04_06 wage_floor all non-inert so the caption and
+     the code agree. -->
+
+## The Estimated Return as the Ability Channel Strengthens
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The estimated return, against the strength
+of the ability channel along the bottom. The truth, 1.30, is the dashed green
+line. The estimate leaves it as soon as the channel opens.}
+```
+
+::: {.result}
+Nothing in the sample changed. The number moved because ability appears in
+both equations, and because it is a column nobody has.
+:::
+
+<!-- FIGURE 4-2_ability: sweep B_04_01 ability_pay and B_04_02
+     ability_school together from 0 to about 1.6, rebuild the population
+     at each value, draw the usual sample, fit, plot the slope. Green
+     dashed reference at B_03_02_true_slope_dbl. Mark the value used in
+     the diagram on the previous slide so the two figures agree. -->
+
+## Sample Selection Caused by the Wage Floor
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The population in grey with the wage floor
+drawn across it. Everyone below the line is missing. The fitted line through
+what survives is flatter than the line through everyone.}
+```
+
+::: {.caveat}
+This one is not a bias in the estimator. It is a fact about who got into the
+dataset, and no amount of care with the regression can undo it @heckman1979.
+:::
+
+<!-- FIGURE 4-2_floor: the population thinned to a few thousand points in
+     grey, a horizontal rule at B_04_06 wage_floor set somewhere near the
+     25th percentile of earnings, the surviving points in light blue, and
+     two fitted lines - the full-population line and the line through the
+     survivors. Subtitle carries both slopes. -->
+
+## Why These Faults Leave No Trace in the Residuals
+
+- **4.1** was heteroskedasticity, serial correlation, the wrong shape. Each
+  one leaves a signature in the residuals, and each one has a response.
+- **4.2** is ability, mismeasurement and selection. Each one leaves the
+  residual plot looking exactly as it should.
+
+::: {.takeaway title="The point of the whole session"}
+There is no diagnostic for today's faults, because a correctly specified
+regression of the wrong thing on the wrong thing fits beautifully. You cannot
+test your way out of this. You design your way out, and that is what Part II
+is for.
+:::
+
+# Measurement Error
+
+## What the Regression Recovers When Schooling Is Mismeasured
+
+**The goal of this section:** say what noise in a regressor does to its own
+coefficient, and why it does the opposite of what noise sounds like it should.
+
+**The objective of this expression:** say what the regression recovers when
+the $x$ you have is the $x$ you want plus noise.
+
+```{=latex}
+\begin{equation}
+\beta_1 \times \frac{\sigma_S^2}{\sigma_S^2 + \sigma_m^2}
+\end{equation}
+```
+
+- $\sigma_S^2$: the variance of actual schooling
+- $\sigma_m^2$: the variance of the reporting error
+
+<!-- IDEA 1. 18-38 min. The fraction has a name, the reliability ratio,
+     and it is worth saying out loud that it is a proportion of variance
+     that is signal. -->
+
+## Why the Reliability Ratio Shrinks the Estimate
+
+::: {.result}
+The fraction sits between zero and one. So the estimate is smaller than the
+truth in absolute value, and it is smaller every single time rather than on
+average. Noisier reporting, smaller coefficient. This is attenuation.
+:::
+
+::: {.tablenotes}
+At zero error the fraction is one and the estimate is the truth. If the
+reporting error had the same variance as schooling itself, you would recover
+half the return and your standard error would tell you nothing was wrong.
+:::
+
+## How the Estimate Falls as Reporting Error Grows
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The estimated return against the standard
+deviation of the reporting error. The dashed green line is the truth. The
+estimate decays toward zero and never crosses it.}
+```
+
+<!-- FIGURE 4-2_attenuation: sweep B_04_03 misreport_sd from 0 to about
+     3.5 years, draw the population once per value, fit, and plot the
+     slope. Green dashed reference at B_03_02_true_slope_dbl. One extra
+     series in light blue: the estimate from the same draws using
+     actual_yrs, which stays flat on the truth. -->
+
+## Where the Noise Lands in the Slope Formula
+
+The closed form you derived for homework in week 4 is a covariance over a
+variance. Adding independent noise to schooling leaves the covariance with
+earnings alone, because the noise has nothing to do with earnings. It adds to
+the variance underneath.
+
+::: {.caveat title="This is the counter-intuitive bit"}
+Noise in a regressor does two things, not one. It widens the sampling
+distribution, which you expected. It also drags the centre of that
+distribution toward zero, which you did not, and the drag is in the same
+direction every time.
+:::
+
+## Three Cases Where Attenuation Does Not Apply
+
+- **Noise in $y$** does not bias the slope at all. It inflates the standard
+  error and leaves the coefficient where it was.
+- **Noise in a control** in a multiple regression can push the coefficient you
+  care about in either direction.
+- **Non-classical error** breaks the result outright: people who round their
+  schooling up are not a random selection @bound2001.
+
+::: {.tablenotes}
+The classical case is the one with a clean answer, and the literature on the
+return to schooling has argued about exactly this since @griliches1977. It is
+also why the twin studies are awkward: differencing two siblings removes the
+family, but it removes far more real schooling than reporting error, so the
+differenced estimate is the more attenuated one @ashenfelter1994.
+:::
+
+## Vote: Which Survey Gives the Smaller Estimate?
+
+Two surveys measure the same return. In one, people report their own years of
+schooling. In the other, the years come from the school register.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: is the difference between
+them a matter of luck, or would it come out the same way again?
+:::
+
+<!-- ConcepTest 1. Self-reported, systematically, and it would come out
+     the same way again. Rooms that have understood sampling variation
+     often reach for "either, it is random" - that is the misconception
+     this question is built to surface. Do not adjudicate. -->
+
+## Pause
+
+<!-- 38-40 min. -->
+
+::: {.tablenotes}
+Two minutes. Name a variable in something you have studied that is certainly
+measured with error, and say which way you now think its coefficient is wrong.
+:::
+
+# Reverse Causality
+
+## The Same Data Fitted in Both Directions
+
+**The goal of this section:** show that the regression is symmetric in its two
+variables, that causation is not, and that the output cannot tell them apart.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The same hundred and twenty people, with
+earnings on schooling in navy and schooling on earnings in green. Both are
+least squares. Both are correct. They are different lines.}
+```
+
+<!-- IDEA 2. 40-62 min. No switch needed - this is C_02_05_sample_df with
+     the axes swapped and the second fit drawn back on the original axes. -->
+
+<!-- FIGURE 4-2_reversed: scatter of the working sample, the y-on-x fit,
+     and the x-on-y fit inverted onto the same axes. Subtitle carries both
+     implied returns so the room sees two numbers, not two lines. -->
+
+## The Algebra Behind the Two Fitted Slopes
+
+**The objective of these two expressions:** show that the difference between
+the two fits is arithmetic rather than rhetorical.
+
+```{=latex}
+\begin{equation}
+\hat{\beta}_{Y \mid S} = \frac{s_{SY}}{s_S^2}
+\qquad\qquad
+\hat{\beta}_{S \mid Y} = \frac{s_{SY}}{s_Y^2}
+\end{equation}
+```
+
+- $\hat{\beta}_{Y \mid S}$: the slope from regressing earnings on schooling
+- $\hat{\beta}_{S \mid Y}$: the slope from regressing schooling on earnings
+- $s_{SY}$: the sample covariance of schooling and earnings
+- $s_S^2$: the sample variance of schooling
+- $s_Y^2$: the sample variance of earnings
+
+::: {.result}
+The numerator is the same in both. The two slopes differ only in which
+variance sits underneath, and their product is the R-squared you learned to
+read in week 5.
+:::
+
+## Simultaneity: When Causation Runs in Both Directions
+
+Sometimes the honest picture is not one direction or the other but both.
+Price and quantity are settled together, so a regression of quantity on price
+traces out neither the demand curve nor the supply curve @working1927. Naming
+that problem is what founded the subject @haavelmo1943.
+
+::: {.caveat title="And in our own example"}
+If you stay in school longer because you expect to earn more, then earnings
+expectations cause schooling at the same time as schooling causes earnings.
+Both arrows are live, and the slope is a blend of the two.
+:::
+
+## The Regression Output Is Identical Either Way
+
+- The R-squared is identical whichever variable you called $y$.
+- The t-statistic is identical.
+- The residual plot is clean in both directions.
+- A larger sample makes both answers more precise and neither more correct.
+
+::: {.takeaway}
+Direction is not in the data. It comes from timing, from institutions, from
+what could not possibly have caused what - and, in Part II, from a design
+built to make one direction the only one available.
+:::
+
+## Vote: Do More Police Cause More Crime?
+
+Areas with more police officers per head have more recorded crime.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would settle
+it, and could any regression on these two columns ever produce that evidence?
+:::
+
+<!-- ConcepTest 2. Both, plus a third story where a confounder drives
+     each. The second question is the one that matters: no, and that is
+     the whole argument for section three. Do not adjudicate. -->
+
+## Pause
+
+<!-- 62-64 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down a published claim you have met this year where you now
+suspect the arrow runs the other way. Keep it for the next slide but one.
+:::
+
+# The Road to Part II
+
+## Instrumental Variables, for a Confounder Nobody Measured
+
+**The goal of this section:** name each remaining problem and the design that
+exists to answer it. One idea each, and no technique.
+
+::: {.defn title="The idea"}
+Find something that moves schooling and has no other route to earnings. Use
+only the part of schooling that it moves, and throw the rest away.
+:::
+
+Compulsory-schooling laws move how long some people stay in school without
+having anything else to do with their wages @angrist1991. The schooling
+literature is largely a long argument about which of these candidates
+survives scrutiny @card1999.
+
+<!-- IDEA 3. 64-88 min. One frame per design. Name the problem, state the
+     idea in a sentence, give one real study. No estimator, no algebra,
+     no two-stage anything - that is Part II's first month. -->
+
+## Difference-in-Differences and Fixed Effects, for What Is Constant
+
+::: {.defn title="The idea"}
+If the thing you cannot see does not change, compare a unit with itself over
+time, or compare the change in a treated group against the change in an
+untreated one. Whatever is constant subtracts out.
+:::
+
+Employment in fast-food restaurants either side of a state border, before and
+after one state raised its minimum wage @cardkrueger1994. Or two siblings with
+the same parents and different schooling @ashenfelter1994.
+
+::: {.tablenotes}
+What is differenced away never has to be measured. That is the whole trick,
+and it is also the whole limitation: anything that changes is still there.
+:::
+
+## Regression Discontinuity, for a Rule That Assigns Treatment
+
+::: {.defn title="The idea"}
+When a published threshold decides who is treated, the people just above and
+just below it are otherwise alike. The jump at the cutoff is the effect.
+:::
+
+The design was invented to evaluate scholarship awards handed out on a test
+score @thistlethwaite1960, and economics found it again in a class-size rule
+that splits a year group once it passes forty pupils @angrist1999. The survey
+to start from is @lee2010.
+
+## What the Three Designs Share and What They Cost
+
+- Each one buys a comparison you can defend out loud.
+- Each one pays for it with a narrower question and fewer people it applies to.
+- None of them is a better estimator. Least squares is usually still what runs.
+
+::: {.takeaway}
+The change is in where the credibility comes from. It stops coming from the
+model and starts coming from how the data were generated. That argument was
+made against the regressions of the day by @leamer1983con, taken up as a
+programme by @angrist2010, and given a Nobel lecture by @card2022.
+:::
+
+## Why These Designs Are Left Until Part II
+
+@angrist2017undergraduate argue that a first course built on assumptions and
+corrections leaves students unable to read a modern applied paper, and the
+survey evidence is that most first courses still look much like that
+@harter2022. Against them: @sims2010, that an approach which answers only the
+questions an experiment can reach leaves most of economics unanswered;
+@keane2010, that a design rests on assumptions too, only unstated ones; and
+@deaton2010, that an estimate you can defend here is not one you can carry
+elsewhere.
+
+::: {.caveat title="Where this module stands"}
+You cannot judge an instrument without knowing what a standard error is, and
+you cannot see why a design is needed until you have watched a regression
+fail. Part I was that, deliberately. Part II is where the designs are taught.
+:::
+
+## Vote: Which Design Would You Reach For?
+
+A maintenance grant is paid to every student whose Leaving Certificate points
+fall below a published cut-off. Does the grant raise graduation rates?
+
+::: {.tablenotes}
+Vote between the three, argue with your neighbour, vote again. Then: what
+would have to be true about students either side of the cut-off?
+:::
+
+<!-- ConcepTest 3. The cutoff makes it a discontinuity, and most rooms get
+     there. The second question is the real one - that nobody is sitting
+     exactly on the line by choice - and it is the assumption Part II
+     spends a fortnight on. Do not adjudicate. -->
+
+## Returning to the Opening Question From Week 1
+
+[The hook from 1.1, restated word for word as it was put in week 1.]
+
+::: {.tablenotes}
+You split on it in September and could not say why. Say why now, in one
+sentence each, using this term's vocabulary.
+:::
+
+<!-- 88-95 min, first half. Closing the loop is the whole point of the
+     slide, so let them answer before you say anything. The honest
+     conclusion is the one below: Part I has not given them the tool that
+     settles it. It has given them the ability to name what is missing,
+     which in September they could not do. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: one published estimate, circulated in advance. Groups of
+four, seven minutes, four questions.]
+
+1. What is the number, in its units, and what does the sentence around it claim?
+2. What would have to be true of the population for that sentence to be right?
+3. Which of this term's faults is the most plausible story where it isn't?
+4. What design would answer it, and what would that design cost you?
+
+<!-- 88-95 min, second half. The capstone version. Twelve weeks of the
+     same question, and this is the week it is asked of somebody else's
+     work rather than ours. Pick a paper whose identification is arguable
+     but not indefensible - a hatchet job teaches nothing. -->
+
+## Application
+
+Open the generator and turn the switches on one at a time.
+
+::: {.tablenotes}
+Vote first, before anything runs: if I dial the reporting error up, does the
+estimate get noisier, get smaller, or both? Take the vote, then run it.
+:::
+
+Then the second run, and it is the one that matters. Turn ability on, refit,
+and put last week's diagnostics on the result. Every test passes.
+
+<!-- 95-104 min. ConcepTest 4 is the vote above, and the answer is both.
+     The second run is the argument of the whole lecture, made by the
+     software rather than by you: the residual plot from a badly
+     confounded regression is indistinguishable from a clean one. Lab
+     this week: break the generator yourself and try to catch it. -->
+
+## What Regression Cannot Do
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Measurement Error.** Noise in a regressor pulls its coefficient toward zero, and it does so every time rather than on average.
+2. **Reverse Causality.** Regression is symmetric and causation is not, and no line of the output records which direction you meant.
+3. **The Road to Part II.** Each design exists because one of these faults cannot be diagnosed, only designed around.
+:::
+
+::: {.tablenotes}
+Part II begins where this stopped: not with a better estimator, but with a
+better reason to believe the comparison.
+:::
+
+<!-- 104-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this, and it is the last one:
+     what was the muddiest point of the module? The answers go into next
+     year's week 1. -->
+
+## What to Read and Do Before Part II
+
+- **Read** @angrist2017undergraduate on what a first course owes you, then one
+  of @sims2010, @keane2010 or @hansen2017 on what it would cost to give you
+  only that. Two hundred words on which you find more persuasive, and why.
+- **Do** the appendix derivation. It is the one result from today that you can
+  get to in four lines from the slope formula in week 4.
+- **Try** the app with every switch on at once, and see whether any diagnostic
+  you know would have caught it.
+
+::: {.defn title="Problem set 4"}
+[Out this week, due week n. Covers 4.1 and 4.2, and the last question is the
+standing question asked of a paper you choose yourself.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Attenuation From Classical Measurement Error
+
+Write the slope as a covariance over a variance, substitute reported
+schooling for actual schooling, and see which of the two pieces the noise
+touches.
+
+::: {.tablenotes}
+Three steps. Substitute $S^{*} = S + m$ into the numerator and use the
+assumption that $m$ is independent of everything else, so the numerator does
+not change. Substitute it into the denominator, where the variances add.
+Divide. The step that does the work is the second, and the whole result is
+that the noise lands underneath and not on top.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- `_apps/regression/R/model.R`, block B_04: the switches, and what each one does.
+- The measurement-error app, and the script that sweeps the reporting error.
+- `lm(y ~ x)` and `lm(x ~ y)` on the same data, which is a two-line demonstration.
+- The reading list for Part II, on the module page.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). Entries for this deck are drafted in
+     bib/4-2.bib and must be merged into the shared file before this
+     renders. `angrist2017undergraduate` is already there from lecture
+     1.3 and is not repeated in bib/4-2.bib.
+
+     A work mentioned only inside a raw LaTeX block is invisible to
+     citeproc, which is why every citation on this deck sits in markdown
+     prose and none sits in a figure caption. A key named inside an HTML
+     comment like this one is equally invisible, which is deliberate.
+
+     Twenty-one works are cited, which is long for one frame. It takes
+     .allowframebreaks because the list outgrows one slide; the theme
+     blanks the continuation title so the breaks are invisible. -->

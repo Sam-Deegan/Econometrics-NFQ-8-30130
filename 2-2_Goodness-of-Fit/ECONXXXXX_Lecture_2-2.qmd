@@ -1,0 +1,450 @@
+---
+#      LECTURE 2.2 - Goodness of Fit
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Fitted Values and Residuals
+#        2  Sums of Squares
+#        3  What R-Squared Will Not Tell You
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Fitted Values and Residuals
+#        35-38    pause
+#        38-63    Sums of Squares
+#        63-66    pause
+#        66-92    What R-Squared Will Not Tell You
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
+#      written by _apps/export_figures.R. Rebuild with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, and every slide follows on the next render. Do
+#      not edit a PNG: edit the builder.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it. The flaws are in the generator
+#      already, switched off, and each later lecture turns one on.
+#
+title: "Goodness of Fit"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 2.2"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 2.2
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{2.2}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## How Small Is a Small Sum of Squared Residuals?
+
+Last week we chose the line that makes the sum of squared residuals as small
+as it can be.
+
+::: {.tablenotes}
+Two minutes with your neighbour. Small compared to what? If I tell you the SSR
+for a regression is 2,700, have I told you anything?
+:::
+
+<!-- 0-6 min. Retrieval. The honest answer is no, and that is today. -->
+
+## Lecture Plan
+
+- **Fitted Values and Residuals.** Splitting each person into the part the line gets and the part it misses.
+- **Sums of Squares.** Adding those parts up across everyone, and the identity that links them.
+- **What R-Squared Will Not Tell You.** What a high or a low number does and does not license.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+# Fitted Values and Residuals
+
+## Decomposing an Observation Into Fitted Value and Residual
+
+**The goal of this section:** separate what the line accounts for from what it
+does not, one person at a time.
+
+For each person the line produces a **fitted value**, and what is left over is
+their **residual**.
+
+```{=latex}
+\begin{equation}
+y_i = \hat{y}_i + \hat{u}_i
+\end{equation}
+```
+
+- $y_i$: what person $i$ actually earns
+- $\hat{y}_i$: what the fitted line says they earn
+- $\hat{u}_i$: the difference between the two
+- $\bar{y}$: the average of $y$ across the sample
+
+::: {.caveat title="A residual is not an error"}
+$u_i$ is the population's error and we never see it. $\hat{u}_i$ is a leftover
+we computed. Same hat convention as last week, same reason.
+:::
+
+<!-- IDEA 1. 10-35 min. -->
+
+## The Decomposition Shown on the Scatter Plot
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_split.png}{The person furthest from the line,
+split into the part the line explains and the part it does not.}
+```
+
+::: {.tablenotes}
+The dashed line is $\bar{y}$. Everything today is built from the distance
+between a person, the line, and that average.
+:::
+
+## Vote: Can a Residual Be Useful?
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: if one person's residual is very large, is that
+a fact about them or about the model?
+:::
+
+<!-- ConcepTest 1. Both, and separating them is what week 11 is about. Do
+     not adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down, without the slide, what the residual for a single
+person is. Then compare with your neighbour.
+:::
+
+# Sums of Squares
+
+## Total Sum of Squares
+
+**The goal of this section:** turn a person-by-person split into three formal
+quantities, and show that two of them add to the third.
+
+How much does earnings vary in this sample at all, before schooling is
+mentioned?
+
+```{=latex}
+\begin{equation}
+\mathrm{TSS} = \sum_{i=1}^{n} \left( y_i - \bar{y} \right)^2
+\end{equation}
+```
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_tss.png}{Each segment runs from a person to the
+sample mean. The total sum of squares adds up their squares.}
+```
+
+<!-- IDEA 2. 38-63 min. -->
+
+## Explained Sum of Squares
+
+How much of that variation does the fitted line reproduce?
+
+```{=latex}
+\begin{equation}
+\mathrm{ESS} = \sum_{i=1}^{n} \left( \hat{y}_i - \bar{y} \right)^2
+\end{equation}
+```
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_ess.png}{Now each segment runs from the line to the
+mean. Where the line is flat, this contributes nothing.}
+```
+
+## Residual Sum of Squares
+
+What is left over once the line has done its work?
+
+```{=latex}
+\begin{equation}
+\mathrm{RSS} = \sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2
+             = \sum_{i=1}^{n} \hat{u}_i^{\,2}
+\end{equation}
+```
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_rss.png}{The same segments least squares made as
+small as it could last week.}
+```
+
+::: {.tablenotes}
+This is the quantity we minimised in 2.1. Goodness of fit and the choice of
+line are the same arithmetic, asked twice.
+:::
+
+## The Identity Linking the Three Sums of Squares
+
+```{=latex}
+\begin{equation}
+\mathrm{TSS} = \mathrm{ESS} + \mathrm{RSS}
+\end{equation}
+```
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_bars.png}{The three totals as bars. The first
+is the height of the other two.}
+```
+
+## Defining R-Squared From the Sums of Squares
+
+```{=latex}
+\begin{equation}
+R^2 = \frac{\mathrm{ESS}}{\mathrm{TSS}} = 1 - \frac{\mathrm{RSS}}{\mathrm{TSS}}
+\end{equation}
+```
+
+::: {.result}
+$R^2$ is the share of the variation in earnings that moves with schooling in
+this sample. It lies between nought and one only because the identity above
+holds, and that identity holds only because of the first-order condition you
+derived in 2.1.
+:::
+
+## Vote: Which Model Has the Higher R-Squared?
+
+Two regressions on the same people: earnings on schooling, and earnings on
+schooling plus their height in centimetres.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: does your answer depend on whether height
+matters?
+:::
+
+<!-- ConcepTest 2. It does not. Adding any variable cannot lower R-squared,
+     which is the first crack in using it to choose a model, and week 10
+     comes back to it. Do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. In one sentence with no symbols: what would an R-squared of zero
+mean? Then compare with your neighbour.
+:::
+
+# What R-Squared Will Not Tell You
+
+## A High R-Squared With a Negligible Effect
+
+**The goal of this section:** stop a number that measures spread being read as
+a verdict on the model.
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_rsq-tight.png}{Almost all the variation is
+accounted for, and the effect is worth six cent an hour.}
+```
+
+::: {.tablenotes}
+Precise, and unimportant. If you chose between models on R-squared you would
+pick this one.
+:::
+
+<!-- IDEA 3. 66-92 min. -->
+
+## A Low R-Squared With an Important Effect
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_rsq-loose.png}{Almost none of the variation
+is accounted for, and the effect is worth nearly two euro an hour.}
+```
+
+::: {.tablenotes}
+Noisy, and important. Most of what moves earnings is not schooling, which is
+a fact about the world rather than a fault in the regression.
+:::
+
+## A High R-Squared With a Misspecified Functional Form
+
+```{=latex}
+\figsmall{../_shared/figures/2-2_rsq-curved.png}{Earnings rise to about
+fifteen years and then fall. The straight line reports a positive slope
+throughout.}
+```
+
+::: {.caveat}
+This is the dangerous one, because nothing about the number tells you it is
+happening. You have to look at the picture.
+:::
+
+## Measuring Fit on a Hold-Out Sample
+
+```{=latex}
+\figpair{../_shared/figures/2-2_fit-sample.png}{The 120 the line was fitted
+on.}{../_shared/figures/2-2_fit-holdout.png}{120 more from the same
+population, which the line has never seen.}
+```
+
+::: {.tablenotes}
+We held a second sample back before fitting anything. Fit measured on the data
+you chose the line with is a claim about that data. Checking it somewhere else
+is a different and harder claim.
+:::
+
+## Vote: Would You Publish This Regression?
+
+An $R^2$ of 0.04, a slope of 1.9 euro a year, and 20,000 observations.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: which of the three numbers did you use?
+:::
+
+<!-- ConcepTest 3. Most will use the R-squared and should be using the other
+     two. Do not adjudicate; it comes back in 2.4. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: a high R-squared is compatible with a useless
+model, and a low one with an important effect. The number tells you about
+spread, and you were asked about importance.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. Not that causation is hard in the abstract, but that THIS
+     estimate rests on something nameable that may well be false. -->
+
+## Application
+
+Fit the line on our sample, then predict for the hold-out.
+
+::: {.tablenotes}
+Vote first: will the R-squared computed on the hold-out be higher, lower, or
+about the same? Take the vote before anything is run.
+:::
+
+Lab this week: residual plots, and computing R-squared by hand before checking
+it against `summary()`.
+
+<!-- 97-105 min. ConcepTest 4. -->
+
+## Summary: The Three Parts of Goodness of Fit
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Fitted Values and Residuals.** Every person splits into a fitted value and a residual.
+2. **Sums of Squares.** The sums of squares add up, which is what makes R-squared a share.
+3. **What R-Squared Will Not Tell You.** A share of variation is not a verdict on the model.
+:::
+
+::: {.tablenotes}
+Next week: whether the line we fitted is any good as an estimate, which is a different question from whether it fits.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 2.3
+
+- **Read** [chapter].
+- **Do** the appendix derivation. It is two lines once you know which fact to
+  use, and the whole of R-squared rests on it.
+- **Try** the app: drag a point and watch R-squared and the slope move by
+  different amounts.
+
+::: {.defn title="Problem set 1"}
+[Due this week. Covers 2.1 and 2.2.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Why the Sums of Squares Add Up
+
+Show that the total sum of squares equals the explained plus the residual sum
+of squares.
+
+::: {.tablenotes}
+Two steps and a fact. Write the deviation of $y_i$ from its mean as the sum of
+two pieces, square it, and sum. The step that does the work is the cross
+term: it vanishes, and it vanishes because of the first-order condition you
+derived last week. That is the only reason R-squared behaves like a share.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The app, and this week's lab script.
+- `summary()`, `fitted()`, `resid()` in R.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::

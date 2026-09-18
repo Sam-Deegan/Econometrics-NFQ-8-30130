@@ -1,0 +1,409 @@
+---
+#      LECTURE 2.1 - Fitting a Line
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  The Line and What It Is For
+#        2  Least Squares
+#        3  Reading the Slope
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    The Line and What It Is For
+#        35-38    pause
+#        38-63    Least Squares
+#        63-66    pause
+#        66-92    Reading the Slope
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
+#      written by _apps/export_figures.R. Rebuild with
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, and every slide follows on the next render. Do
+#      not edit a PNG: edit the builder.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      truth is known because we wrote it. The flaws are in the generator
+#      already, switched off, and each later lecture turns one on.
+#
+title: "Fitting a Line"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 2.1"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 2.1
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{2.1}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## What We Said Last Week About Conditional Expectations
+
+Last week we said the best guess of earnings given schooling is a
+**conditional expectation**, and that an estimate has a distribution.
+
+::: {.tablenotes}
+Two minutes with the person beside you. If I gave you the schooling of one
+person and nothing else, what would you guess they earn, and what would you
+need to know to make that guess?
+:::
+
+<!-- 0-6 min. Retrieval, not recap. Take two or three answers out loud. Do
+     not resolve them - the answer is the whole of today. -->
+
+## Lecture Plan
+
+- **The Line and What It Is For.** A line is a claim about the average earnings of people with a given schooling.
+- **Least Squares.** Out of every line we could draw, why this one.
+- **Reading the Slope.** What the number means, in the units the data came in.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+# The Line and What It Is For
+
+## A Line Is the Simplest Conditional Expectation
+
+**The goal of this section:** say what a line drawn through a scatter of
+people is actually claiming.
+
+Last week's conditional expectation function could be any shape. A line
+commits to the simplest one there is: whatever schooling you have, your
+expected earnings move by the same amount for one more year.
+
+::: {.defn title="What we want from it"}
+Given a person's years of schooling and nothing else, what is our best guess
+of their hourly earnings?
+:::
+
+<!-- IDEA 1. 10-35 min. -->
+
+## The Simple Regression Model and Its Notation
+
+```{=latex}
+\begin{equation}
+y_i = \beta_0 + \beta_1 (x_i - 12) + u_i
+\end{equation}
+```
+
+- $y_i$: hourly earnings of person $i$, in euro
+- $x_i$: years of schooling of person $i$
+- $\beta_0$: expected earnings at twelve years of schooling
+- $\beta_1$: the change in expected earnings for one more year
+- $u_i$: everything else that moves person $i$'s earnings
+
+::: {.caveat title="Why subtract twelve"}
+Without it, $\beta_0$ would be expected earnings for a person with no
+schooling at all, and nobody in this population has that. Centring buys a
+constant you can read out loud.
+:::
+
+## Hat Notation: Population Parameter Versus Sample Estimate
+
+::: {.defn title="The convention, once, before any algebra"}
+$\beta_1$ is the number in the population. We will never see it.
+$\hat{\beta}_1$ is what we compute from a sample. It is a different object,
+it changes every time we draw a new sample, and the whole of week 6 is about
+the relationship between the two.
+:::
+
+::: {.tablenotes}
+Watch for this in your own writing. A sentence containing $\beta_1$ is a claim
+about the world; a sentence containing $\hat{\beta}_1$ is a claim about your
+data.
+:::
+
+## Vote: What Are the Units of the Slope?
+
+Earnings are in euro per hour. Schooling is in years.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what would a slope of
+$-0.4$ mean, in a sentence with no symbols in it?
+:::
+
+<!-- ConcepTest 1. Take answers, do not adjudicate. The revote is the
+     point - peer discussion does the work, not the extra time. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Sketch the scatter you expect for schooling and earnings, and
+draw the line you would fit by eye. Keep it - we come back to it at the end.
+Then compare with your neighbour.
+:::
+
+# Least Squares
+
+## Comparing Candidate Lines Through the Same Scatter
+
+**The goal of this section:** choose one line out of all the lines we could
+draw, and be honest that it is a choice.
+
+```{=latex}
+\figsmall{../_shared/figures/2-1_candidates.png}{Three lines through the same 120
+people. The sum of squared residuals is printed beside each.}
+```
+
+<!-- IDEA 2. 38-63 min. -->
+
+## The Least-Squares Criterion
+
+For any candidate line, every person has a **residual**: the gap between
+what they earn and what the line says they earn.
+
+```{=latex}
+\begin{equation}
+\mathrm{SSR}(b_0, b_1) = \sum_{i=1}^{n}
+  \bigl(y_i - b_0 - b_1 (x_i - 12)\bigr)^2
+\end{equation}
+```
+
+- $b_0, b_1$: any candidate pair, not yet the chosen ones
+- $\mathrm{SSR}$: the total of the squared gaps
+
+::: {.result}
+Least squares is the pair that makes this number as small as possible. That
+is the entire definition. It is a criterion someone chose, not a law.
+:::
+
+## Residuals as Vertical Distances From the Fitted Line
+
+```{=latex}
+\figsmall{../_shared/figures/2-1_residuals.png}{The fitted line and all 120
+residuals. Least squares makes the total of their squares as small as it can
+be.}
+```
+
+::: {.tablenotes}
+The segments are the figure. A scatter with a line through it hides the thing
+least squares is actually about.
+:::
+
+## Vote: Why Squares and Not Absolute Values?
+
+We could have minimised the total absolute gap instead.
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: what does squaring do to one person who is very
+far from the line?
+:::
+
+<!-- ConcepTest 2. The honest answer has three parts - it is differentiable,
+     it has a closed form, and it punishes large misses harder. The third is
+     the one that matters for the next section. Do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down, without the slide, what a residual is and whose it
+is. Then compare with your neighbour.
+:::
+
+# Reading the Slope
+
+## The Slope Is Euro Per Year
+
+**The goal of this section:** say what the number means in the units the data
+came in, and then say what it does not mean.
+
+::: {.worked title="Reading this estimate out loud"}
+Comparing two people whose schooling differs by one year, the one with more
+schooling earns about $\hat{\beta}_1$ euro more per hour, on average, in this
+sample.
+:::
+
+::: {.caveat}
+Notice what that sentence does not say. It does not say that giving a person
+another year of school would raise their pay by that amount. Nothing we have
+done today licenses that, and week 12 is about why.
+:::
+
+<!-- IDEA 3. 66-92 min. -->
+
+## How a Few High Earners Shift the Fitted Line
+
+```{=latex}
+\figsmall{../_shared/figures/2-1_leverage.png}{The same population with a handful
+of very high earners switched on. Green is the line without them, dashed navy
+the line with.}
+```
+
+::: {.tablenotes}
+Squaring the residuals is what does this. One person a long way from the line
+contributes more to the SSR than twenty people close to it, so the line moves
+to accommodate them.
+:::
+
+## Vote: Should We Drop the Highest Earners?
+
+::: {.tablenotes}
+Vote, argue, vote again. Then: what would you need to know about those people
+before you could answer?
+:::
+
+<!-- ConcepTest 3. The answer is that it depends entirely on whether they
+     belong in the population you are asking about. "It is an outlier" is a
+     statement about a plot; "this person is not who I am asking about" is a
+     statement about the question. Do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: the line fits whether or not schooling causes
+earnings. Least squares has no opinion on the matter, and neither does the
+R output.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then
+     you. Not that causation is hard in the abstract, but that THIS
+     estimate rests on something nameable that may well be false. -->
+
+## Application
+
+Open the app and move the line by hand before the fitted one appears.
+
+::: {.tablenotes}
+Vote first, then run it: if we drop the three highest earners, does the slope
+go up, down, or stay put? Take the vote before anything is run - a
+demonstration nobody predicted is passive.
+:::
+
+Lab this week: first regression in R. `lm()`, coefficients, fitted values.
+
+<!-- 97-105 min. ConcepTest 4 lives here. -->
+
+## Summary: The Three Ideas in Today's Lecture
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **The Line and What It Is For.** A line is the simplest conditional expectation there is.
+2. **Least Squares.** Least squares is a criterion, and someone chose it.
+3. **Reading the Slope.** The slope is a rate, in euro per year, and it is fragile.
+:::
+
+::: {.tablenotes}
+Next week: how much of the variation that line actually accounts for, and why that is a smaller claim than it sounds.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap. Exit ticket after this: what was the muddiest
+     point? The answers set next week's retrieval questions. -->
+
+## Before Lecture 2.2
+
+- **Read** [chapter].
+- **Do** the derivation in the appendix. It is short, and week 6 assumes you
+  have seen it once.
+- **Try** the app: fit a line by eye, then reveal the least-squares one and
+  see how close you were.
+
+::: {.defn title="Problem set 1"}
+[Out this week, due week n. Covers 2.1 and 2.2.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: The Least-Squares Estimators
+
+Minimise the sum of squared residuals with respect to the two unknowns, set
+both derivatives to zero, and solve the pair.
+
+::: {.tablenotes}
+Three steps. Differentiate, set to zero, solve. The step that does the work is
+the second: setting the derivative to zero is what makes the residuals sum to
+zero and be uncorrelated with schooling, and those two facts are what every
+result in weeks 5 and 6 rests on.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The app, and the lab script for this week.
+- `lm()` and `coef()` in R. Everything else can wait.
+
+::: {.tablenotes}
+Link only what has a stable public URL; Brightspace carries the rest.
+:::
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::

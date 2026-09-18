@@ -1,0 +1,624 @@
+---
+#      LECTURE 3.3 - Joint Tests and Model Choice
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. The one that matters in this module is the hat: a student
+#         who reads beta-hat and beta as the same object cannot be taught
+#         sampling variation.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Testing Restrictions
+#        2  Choosing a Specification
+#        3  Multicollinearity
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Testing Restrictions
+#        35-38    pause
+#        38-63    Choosing a Specification
+#        63-66    pause
+#        66-92    Multicollinearity
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. None of this week's four exist yet. Each exhibit is a
+#      \figsmall on ../_shared/placeholder.pdf followed by an HTML comment
+#      saying what has to be drawn. When they are built they belong in
+#      _apps/regression/R/model.R and are written out by
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root, as every other week's are. Do not edit a PNG:
+#      edit the builder.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it, and a hold-out of another 120. The
+#      true return is 1.30 euro an hour per year of schooling. The
+#      hold-out was introduced in 2.2 and earns its keep again today, in
+#      the application.
+#
+#      WHAT EARLIER WEEKS LEFT HERE. 2.2 showed that R-squared cannot
+#      fall when a variable is added, and its ConcepTest says explicitly
+#      that week 10 comes back to it - this is that week. 2.4 separated
+#      significance from size. 3.1 gave partialling out and omitted
+#      variable bias, which section 3 needs. 3.2 gave the block of
+#      dummies that section 1 opens on.
+#
+title: "Joint Tests and Model Choice"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 3.3"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 3.3
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{3.3}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## Last Week's Block of Region Dummies
+
+Region went into the earnings equation last week as a set of dummies, one
+region left out as the base.
+
+::: {.tablenotes}
+Two minutes with your neighbour. Which coefficient gives the gap between two
+regions that are both in the model? And if none of the four dummies has a
+t-statistic above two, does region belong in the equation at all?
+:::
+
+<!-- 0-6 min. Retrieval. The first question they can do and should. The
+     second has no answer yet with the tools they have, which is the whole
+     of the next twenty-five minutes. Do not resolve it. -->
+
+## Lecture Plan
+
+- **Testing Restrictions.** Asking about several coefficients at once, and why that is not the same as asking about each.
+- **Choosing a Specification.** What adjusted $R^2$ charges for a variable, and what searching across specifications costs.
+- **Multicollinearity.** What correlated regressors do to a standard error, and what they leave completely alone.
+
+::: {.tablenotes}
+Reading: [chapter], and @leamer1983con, which is eleven pages, forty years old
+and still the sharpest statement of the problem in the middle section.
+:::
+
+# Testing Restrictions
+
+## Why Separate T-Tests Cannot Answer a Joint Question
+
+**The goal of this section:** ask a question about several coefficients at
+once, and see why the answer is not the separate answers collected together.
+
+Two situations, and the t-statistics you already have settle neither:
+
+1. Region belongs in the equation as a **block** or not at all. Four dummies
+   give you four answers and no verdict.
+2. Two coefficients, each unimpressive on its own, where dropping either one
+   makes the other significant.
+
+::: {.caveat}
+Four tests at the five per cent level is not a five per cent test of the four
+together. Each test gets its own chance to reject, and those chances
+accumulate. Hold on to that sentence: the middle section of today is the same
+arithmetic, run deliberately.
+:::
+
+<!-- IDEA 1. 10-35 min. -->
+
+## Restricted and Unrestricted Fits of the Same Model
+
+A joint hypothesis is a claim that several coefficients are zero at the same
+time. Impose it and you are simply fitting a smaller equation. So fit both.
+
+- The **unrestricted** fit: everything in.
+- The **restricted** fit: the coefficients under test set to zero, everything
+  else re-estimated around them.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The same 120 people fitted twice. The
+restricted fit leaves more unexplained, and the difference between the two
+residual sums of squares is what the restriction cost.}
+```
+
+<!-- FIGURE 3-3_restricted-unrestricted: two panels sharing a y-axis. Left,
+     the unrestricted fit with residual segments drawn; right, the restricted
+     fit with the region dummies forced to zero and its residual segments
+     drawn. Underneath, two bars giving RSS_u and RSS_r on a common scale,
+     with the gap between them shaded and labelled. The point to see is that
+     the gap is small, not that it exists. Needs: the same sample and the
+     same vertical scale in both panels, or the comparison is theatre. -->
+
+## Defining the F-Statistic From Two Residual Sums of Squares
+
+**What the next equation answers:** how much fit did the restriction cost, per
+restriction, measured against how much is left unexplained anyway?
+
+```{=latex}
+\begin{equation}
+F = \frac{\left( \mathrm{RSS}_r - \mathrm{RSS}_u \right) / q}
+         {\mathrm{RSS}_u / (n - k - 1)}
+\end{equation}
+```
+
+- $\mathrm{RSS}_r$: residual sum of squares from the restricted fit
+- $\mathrm{RSS}_u$: residual sum of squares from the unrestricted fit
+- $q$: how many coefficients the restriction sets to zero
+- $n$: the number of people in the sample
+- $k$: the number of slopes in the unrestricted fit
+
+::: {.result}
+$\mathrm{RSS}_r$ can never be smaller than $\mathrm{RSS}_u$, for exactly the
+reason $R^2$ could not fall in 2.2. So the numerator is never negative, and
+the only question is whether the fit you gave up is more than chance would
+have taken from you.
+:::
+
+## Joint Confidence Regions Versus Separate Intervals
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Two coefficients at once. Each interval
+on its own axis contains zero. The region that treats them jointly does not.}
+```
+
+::: {.takeaway}
+Nothing here is contradictory. The separate intervals answer separate
+questions, one coefficient at a time. The joint region answers the question
+you actually asked, which was about both.
+:::
+
+<!-- FIGURE 3-3_joint-region: axes are the two coefficient estimates. Draw
+     the joint confidence region as a tilted ellipse, the origin plainly
+     outside it, and the two marginal intervals as a horizontal and a
+     vertical band that each straddle zero. Shade where the bands cross so
+     the box-versus-ellipse difference is visible. Needs: enough tilt that
+     the correlation between the two estimates is obvious - this figure is
+     also the visual for section 3, and it should be recognisably the same
+     picture when it comes back. -->
+
+## Vote: Does Region Belong in the Equation?
+
+The four region dummies from last week, each with a t-statistic of about 1.4.
+Does region belong in the equation?
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what evidence would settle
+it?
+:::
+
+<!-- ConcepTest 1. The honest answer is that four t-statistics cannot tell
+     you, and the F-test is the question they were reaching for. Some will
+     say drop all four, some will say keep all four, and both camps are
+     answering a question nobody asked. Do not adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down a hypothesis about this earnings equation that a
+t-test cannot express. Then compare with your neighbour.
+:::
+
+# Choosing a Specification
+
+## Why R-Squared Cannot Choose Between Specifications
+
+**The goal of this section:** choose between specifications, and be honest
+about what the choosing costs.
+
+In 2.2 you voted on whether adding height in centimetres could lower $R^2$. It
+cannot. Which means a rule that picks the specification with the highest $R^2$
+picks the largest specification, every time, on every dataset, forever.
+
+::: {.tablenotes}
+That is not a subtle flaw. It is the selection rule refusing to select.
+:::
+
+<!-- IDEA 2. 38-63 min. -->
+
+## Adjusted R-Squared and Its Degrees-of-Freedom Penalty
+
+**What the next equation answers:** how well does this specification fit, per
+degree of freedom it spent getting there?
+
+```{=latex}
+\begin{equation}
+\bar{R}^2 = 1 - \frac{\mathrm{RSS} / (n - k - 1)}
+                     {\mathrm{TSS} / (n - 1)}
+\end{equation}
+```
+
+- $\mathrm{RSS}$: residual sum of squares
+- $\mathrm{TSS}$: total sum of squares
+- $n$: the number of people in the sample
+- $k$: the number of slopes in this specification
+
+::: {.caveat title="What the penalty is worth"}
+It can fall, which is the point of it, and it can go negative, which is
+occasionally instructive. What it cannot do is decide for you. Adding one
+variable raises $\bar{R}^2$ whenever that variable's t-statistic exceeds one
+in absolute value, and one is not a standard of evidence anybody would defend
+out loud.
+:::
+
+::: {.tablenotes}
+The statistic is Theil's [-@theil1961economic], and it was built to compare
+forecasting equations, not to license a specification.
+:::
+
+## The Smallest P-Value Across Twenty Specifications
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Twenty specifications fitted to an
+outcome with no signal in it, the smallest p-value kept, and the whole
+exercise repeated a thousand times. The dashed line is 0.05.}
+```
+
+::: {.tablenotes}
+@freedman1983note made the point with pure noise: screen enough regressors on
+data with nothing in it and the surviving equation looks entirely
+presentable. The arithmetic is correct throughout. What is wrong is the
+sentence attached to it.
+:::
+
+<!-- FIGURE 3-3_minp: histogram of the MINIMUM p-value across twenty
+     specifications, over a thousand searches, with a dashed vertical rule
+     at 0.05 and the mass below it shaded. Beside it, faint, the uniform
+     histogram of a single pre-specified p-value on the same axes, so the
+     shift is the story rather than the shape. Annotate the shaded share -
+     it is about two thirds. Needs: the true effect set to zero in the
+     generator, and the caption to say so, or the figure proves nothing. -->
+
+## Why P-Values Do Not Account for Specification Search
+
+::: {.caveat}
+A p-value of 0.04 says something about a test chosen before the data were
+seen. If you fitted twenty specifications and reported the one that came in
+under five per cent, the number on your slide is not that p-value, and there
+is no correction printed anywhere in the output that repairs it.
+:::
+
+::: {.tablenotes}
+Economics has measured this. @brodeur2016star and @brodeur2020methods find
+published test statistics bunching just past the conventional thresholds, in
+quantities no honest distribution would put there. @simmons2011false show how
+few choices it takes; @gelman2014garden makes the harder version, that the
+search can happen without you ever feeling that you searched.
+:::
+
+## Research Practices That Make the Search Visible
+
+- **Say what you will do before you look.** A pre-analysis plan fixes the
+  specification and the outcome in advance [@olken2015promises].
+- **Report the specifications you ran, not the one that worked.** Show the
+  whole set and let the reader see the spread [@simonsohn2020specification].
+- **Publish the code and the data,** so the search is visible to somebody who
+  did not run it [@christensen2018transparency].
+
+::: {.caveat title="Not a rule against looking"}
+Pre-specification costs something real, and nobody serious pretends otherwise
+-- it forecloses things you would have learned by looking [@coffman2015pre].
+Exploring is not dishonest. Exploring and then reporting it as confirmation
+is. A results table with exactly one column is a claim that exactly one
+specification was ever fitted, and you are entitled to ask whether that is
+true.
+:::
+
+## Vote: Would You Keep This Variable?
+
+You add a variable. Schooling's coefficient barely moves, $\bar{R}^2$ rises by
+0.004, and the new variable's t-statistic is 1.2.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: does your answer change
+depending on whether you decided to add it before or after seeing the output?
+:::
+
+<!-- ConcepTest 2. Adjusted R-squared rose because 1.2 clears one, so the
+     statistic is telling them nothing they did not already know. The whole
+     answer turns on when the decision was made, which is not in the output
+     and never will be. Do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down one specification decision you made in last week's lab
+that you could defensibly have made the other way. Then compare with your
+neighbour.
+:::
+
+# Multicollinearity
+
+## Two Regressors Carrying Nearly the Same Information
+
+**The goal of this section:** say precisely what correlated regressors do to
+an estimate, and then resist the reaction almost everybody has.
+
+Schooling and years of potential experience move together in this population.
+Put both in and least squares has to work out which of them is moving
+earnings, using only the part of each that the other cannot account for --
+the partialling out from 3.1. When that leftover part is small, there is very
+little left to learn from.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The correlation between two regressors
+raised from nought to 0.98. The standard error on the coefficient of interest
+climbs; the fitted line and $R^2$ barely move.}
+```
+
+<!-- FIGURE 3-3_collinear-se: x-axis the correlation between the two
+     regressors, from 0 to 0.98. Two panels sharing that axis. Top, the
+     standard error on the coefficient of interest, rising steeply at the
+     right-hand end. Bottom, R-squared and the point estimate, both close to
+     flat, with the estimate's confidence band widening around an unmoving
+     centre. Needs: the same true coefficient throughout, stated in the
+     caption, so that the flat centre line reads as unbiasedness rather than
+     as an accident. -->
+
+<!-- IDEA 3. 66-92 min. -->
+
+## Collinearity Widens Standard Errors Without Breaking Assumptions
+
+::: {.result}
+Collinearity breaks no assumption. The estimates are still unbiased, the
+fitted values and $R^2$ are hardly touched, Gauss-Markov still holds, and the
+standard errors are still right. They are simply large -- because the data
+genuinely cannot separate two things that move together.
+:::
+
+::: {.tablenotes}
+@goldberger1991course made the point by inventing a matching disease,
+*micronumerosity*, meaning not enough observations, and giving it the same
+solemn treatment textbooks give collinearity. Both are statements that your
+sample carries less information than you wanted. Nobody writes a diagnostics
+section about having a small sample.
+:::
+
+## Why Dropping a Collinear Regressor Introduces Bias
+
+::: {.caveat}
+The instinct is to drop one of the two. That does narrow the standard error,
+and it narrows it by declining to answer the question: the surviving
+coefficient now carries the omitted variable bias of 3.1, and it is no longer
+the partial effect you set out to estimate. You have traded a wide interval
+for a narrow one in the wrong place.
+:::
+
+::: {.tablenotes}
+@lindner2020misconceptions trace how routinely this is done in published work,
+and what it does to the estimates. @vanhove2021collinearity works through the
+rest of the standard remedies and finds each of them quietly answering a
+different question from the one that was asked.
+:::
+
+## Variance Inflation Factors and Their Conventional Thresholds
+
+- A variance inflation factor says how much wider a standard error is than it
+  would be if that regressor were uncorrelated with the others. A real
+  quantity, and worth looking at.
+- The thresholds -- five, ten -- are conventions, not results. Whether an
+  inflated standard error is a problem depends on whether the interval is
+  still narrow enough to answer your question [@obrien2007caution].
+- What actually helps is what helped in 2.3: more people, or more spread in
+  the regressor you care about.
+
+::: {.takeaway}
+Collinearity is a fact about your data, not a fault in your model. The
+regression is not misbehaving. It is reporting what it does not know.
+:::
+
+## Vote: Is This a Collinearity Problem?
+
+Schooling and experience correlate at 0.85. Schooling's coefficient is 1.4
+with a standard error of 0.9, and $R^2$ is 0.31.
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what would you have to
+change about the data, rather than about the model, to narrow that interval?
+:::
+
+<!-- ConcepTest 3. Collinearity is plainly present and is not a failure.
+     Whether it is a PROBLEM depends entirely on what width of interval
+     would have settled the question they came to answer, and they have not
+     been told what that question is. That omission is deliberate. Do not
+     adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: this is the only specification we fitted, and we chose
+it before we saw the estimate. Every claim the p-value makes rests on that,
+and nothing in the table can tell you whether it is so.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then you.
+     Not that research practice is hard in the abstract, but that THIS
+     number rests on a claim about the past that the output cannot carry. -->
+
+## Application
+
+Search on purpose, on data you know has nothing in it.
+
+::: {.tablenotes}
+Vote first: out of twenty specifications fitted to an outcome with no signal,
+how many come in under five per cent? Take the vote before anything is run.
+:::
+
+Lab this week: generate an outcome unrelated to everything, fit twenty
+specifications, keep the smallest p-value, repeat. Then take the model that
+survived and fit it on 2.2's hold-out sample, which it has never seen.
+
+<!-- 97-105 min. ConcepTest 4. The modal guess is one, which is the right
+     expected count and the wrong thing to be looking at: the chance that at
+     least one clears is about two thirds. The hold-out step is the payoff -
+     the surviving model almost never survives twice. -->
+
+## Summary: Joint Tests, Model Choice and Collinearity
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Testing Restrictions.** An F-test compares a restricted fit against an unrestricted one, and answers a question the separate t-tests cannot.
+2. **Choosing a Specification.** Adjusted R-squared charges for a variable, but no fit statistic charges for the search that found the specification.
+3. **Multicollinearity.** Correlated regressors widen standard errors and break nothing, and dropping one buys its precision with bias.
+:::
+
+::: {.tablenotes}
+Next week: the Gauss-Markov assumptions from 2.3, and how you would notice one
+of them failing in data you did not simulate yourself.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which
+     match the roadmap.
+
+     The .contributions component sets the bold lead on one line and the
+     body on the next, so the lead has to be a complete label and the body
+     a complete sentence. An em dash opening the body leaves a dangling
+     dash on the second line.
+
+     Exit ticket after this: what was the muddiest point? The answers set
+     next week's retrieval questions. -->
+
+## Before Lecture 4.1
+
+- **Read** [chapter], and @leamer1983con, which is short.
+- **Do** the appendix derivations. There are two, and the first is where the
+  F-statistic stops being a formula and becomes a comparison.
+- **Try** the specification-search app: set the true effect to zero, fit
+  twenty specifications, and watch the smallest p-value.
+
+::: {.defn title="Problem set 3"}
+[Out this week, due week n. Covers 3.2 and 3.3, and carries one question back
+from problem set 2.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck and can be walked to if a question needs them.
+
+     The divider is the .appendix div on a plain frame, NOT a level-one
+     "# Appendix" heading - the div calls \appendixcontent, which is what
+     switches the counter.
+
+     One list per frame. Eight reference entries plus sub-headings
+     overran a single frame in ECON42550 and broke the render.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: The F-Statistic as Restricted Against Unrestricted Fit
+
+Fit the equation twice, once with the restriction imposed and once without,
+and write the cost of the restriction as a ratio of two separate estimates of
+the same error variance.
+
+::: {.tablenotes}
+Four steps. Write the restricted equation as the unrestricted one with $q$
+coefficients set to zero; show that the restricted residual sum of squares
+cannot be the smaller of the two; divide the difference by $q$ and the
+unrestricted residual sum of squares by $n - k - 1$; show that under the null
+both of those are estimating the same error variance, so their ratio follows
+an $F$ distribution with $q$ and $n - k - 1$ degrees of freedom. The step that
+does the work is the last one, and it is the step that needs the assumptions
+of 2.3 and normal errors on top of them.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Derivation: When Adjusted R-Squared Rises
+
+Show that adding one variable raises $\bar{R}^2$ if and only if that
+variable's t-statistic is greater than one in absolute value.
+
+::: {.tablenotes}
+Two steps and no new machinery. Write $\bar{R}^2$ for the small and the large
+equation in terms of their residual sums of squares, take the difference, and
+recognise what is left as the square of a t-statistic compared with one. The
+result is the justification for the caveat in section two: the threshold
+$\bar{R}^2$ imposes is real, and it is far below anything you would call
+evidence.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- `anova(fit_restricted, fit_unrestricted)` in R, which is the whole of
+  section one in one line.
+- `car::linearHypothesis()` for restrictions that are not "all zero".
+- `summary(fit)$adj.r.squared`, and `car::vif()` -- read the second alongside
+  @obrien2007caution rather than against a threshold.
+- The specification-search script, and 2.2's hold-out sample.
+- On where this module sits in the wider argument about what a first
+  econometrics course should spend its hours on: @angrist2017undergraduate.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). This week's entries were drafted in
+     bib/3-3.bib and merged into the shared file; add to the .bib and cite
+     it, or it will not appear. A work mentioned only inside a raw LaTeX
+     block is invisible to citeproc - put the citation in the markdown
+     around the block, or add it under nocite.
+
+     The frame takes .allowframebreaks because the list outgrows one slide;
+     the theme blanks the continuation title so the breaks are invisible. -->

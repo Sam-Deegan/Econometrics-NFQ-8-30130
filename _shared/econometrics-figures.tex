@@ -1,0 +1,34 @@
+% ---------------------------------------------------------------------------
+% ECONXXXXX Econometrics I: a shorter figure box
+%
+% Course-specific, not part of the Dublin theme. Pull it in beside the
+% roadmap, in the YAML header:
+%
+%   include-in-header:
+%     - ../_shared/econometrics-roadmap.tex
+%     - ../_shared/econometrics-figures.tex
+%
+% WHY THIS EXISTS. The theme's \fig gives an exhibit up to 0.56\textheight.
+% That is right for a macro deck where the figure is the slide. Here almost
+% every exhibit is followed by a note explaining what to look at, and at
+% 0.56 there is no room left for one. \figsmall caps the same content at
+% 0.34\textheight, which leaves room for the frame title above and a full
+% callout box underneath rather than a single line of caption.
+%
+%   \figsmall{../_shared/figures/2-2_tss.png}{The caption.}
+%
+% Same two arguments as \fig, same caption styling - it calls the theme's
+% own \figcaption - so switching between them is a one-word edit. Use \fig
+% when the figure genuinely is the whole slide, \figsmall when something has
+% to sit under it.
+%
+% The exported PNGs are drawn flatter than the macro ones for the same
+% reason: see the shapes in _apps/export_figures.R, section B_03.
+% ---------------------------------------------------------------------------
+
+\newcommand{\figsmall}[2]{%
+  {\centering
+   \includegraphics[width=\linewidth, height=0.34\textheight,
+                    keepaspectratio]{#1}\par}%
+  \ifx\relax#2\relax\else\vspace{0.45em}\figcaption{#2}\fi
+}

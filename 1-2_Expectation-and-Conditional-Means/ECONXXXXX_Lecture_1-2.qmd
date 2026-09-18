@@ -1,0 +1,1219 @@
+---
+#      LECTURE 1.2 - Expectation and Conditional Means
+#
+#      Week two of twelve. Decisions behind this deck are in the project
+#      note `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. A symbol is
+#         introduced ONCE in the whole deck and never re-listed.
+#
+#      2. Every equation is preceded by a plain sentence saying what it is
+#         for. Not "The goal of this section:" - that opening is banned.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. This is the week where the population/sample distinction
+#         first bites, in its earlier form: E[y] is the population average
+#         and a bar is the sample one.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      6. NO PAUSE FRAMES AND NO VOTES. A question to the room is a frame
+#         titled by the question's subject, carrying the question in a
+#         .defn titled "Question", with answers taken out loud and not
+#         adjudicated. Where the answer is a sign or a direction, answers
+#         come BEFORE the app is opened.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Expectation
+#        2  The Algebra of Expectations
+#        3  The Conditional Expectation Function
+#
+#      WHY THIS ORDER. Section 3 is the one the module needs. Stating the
+#      CEF in week 2 is what makes the line fitted in Lecture 2.1 an
+#      approximation to something that already exists, rather than an
+#      arbitrary summary chosen because it is easy to draw. Sections 1 and
+#      2 exist to make section 3 sayable.
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     Last Week's Lecture, retrieval
+#         6-10    lecture plan
+#        10-33    Expectation
+#        33-36    question to the room: which average can change
+#        36-60    The Algebra of Expectations
+#        60-63    question to the room: the average of a product
+#        63-90    The Conditional Expectation Function
+#        90-95    the standing question
+#        95-105   application
+#       105-110   synthesis and exit ticket
+#
+#      SHELF LOCATORS THIS DECK RESTS ON. Wooldridge is the seventh
+#      edition (c) 2020, cited @wooldridge2020, and the seventh edition
+#      calls these Math Refresher B, not Appendix B.
+#
+#        B-3a  Expected value, discrete sum and continuous integral  p.691
+#        B-3b  Properties of expected values: E.1, E.2, E.3          p.692
+#        B-3e  Variance, and Var(X) = E(X^2) - (E(X))^2              p.695
+#        B-4b  Covariance, Cov.1, Cov.2, Cov.3                       p.697
+#        B-4c  Correlation, and uncorrelated random variables        p.698
+#        B-4d  Variance of sums: Var.3 and Var.4                     p.699
+#        B-4e  Conditional expectation, and nonlinear CEFs           p.700
+#        B-4f  CE.1 to CE.6, iterated expectations, best predictor   p.702
+#        B-4g  Conditional variance                                  p.704
+#        C     Math Refresher C, the reading for Lecture 1.3         p.714
+#
+#      Mastering Metrics, cited @angrist2015:
+#
+#        Appendix: Regression Theory, the CEF and the line   p.82
+#        6.1 Schooling, Experience, and Earnings             p.209
+#
+#      CORRECTIONS MADE IN THIS PASS. Each is also noted on its frame.
+#
+#        - "The Four Rules of Expectation Algebra" claimed four rules and
+#          displayed three. Wooldridge B-3b states exactly three
+#          properties of expected values (E.1, E.2, E.3). The fourth item
+#          the deck was counting, Var(y) = E[y^2] - (E[y])^2, is B-3e
+#          equation (B.24), a property of the variance. The frame, the
+#          closing summary and the appendix now all say three.
+#        - Additivity is now stated with its generality: E.3 holds for any
+#          constants and any number of variables, with no independence
+#          assumption anywhere in it.
+#        - "E[yx] equals E[y]E[x] only when the covariance is zero" was
+#          true but one-directional. From B-4b (B.27) it is an equivalence,
+#          so the frame now says "exactly when", and adds that independence
+#          is sufficient but not necessary (Cov.1, and its converse fails).
+#        - A frame for B-4d was missing entirely, so the deck had no
+#          statement of Var(y + z) while promising a standard error built
+#          from it. Var.3 is now on its own frame, with the covariance term
+#          present and the condition stated as UNCORRELATED, not
+#          independent (B-4d, p.699-700).
+#        - The best-predictor claim was stated over "every possible way of
+#          guessing". CE.6 requires E(Y^2) and E[g(X)^2] finite, so the
+#          comparison class is now stated with that condition.
+#        - "Every extra year of schooling moves the average by 1.30 euro"
+#          used a banned directionless verb; it now names the direction.
+#        - "Half the people at twelve years of schooling are not close to
+#          9.50" was not derivable from anything we hold. Replaced by the
+#          conditional standard deviation, which is in the generator.
+#        - @stockwatson2019 is cited in the bib but is NOT on the shelf.
+#          Its one citation is gone, redirected to @wooldridge2020.
+#          @angrist2009, @angrist2017undergraduate, @card1999 and
+#          @mincer1974 are also off the shelf; where the point survives it
+#          is now carried by @angrist2015, which is on the shelf.
+#        - Calendar-week references ("week 4", "week 6", "week 12") are now
+#          lecture numbers, matching _shared/econometrics-roadmap.tex.
+#
+#      FIGURES. None built. Four exhibits are marked with
+#      ../_shared/placeholder.pdf and an HTML comment saying what to draw
+#      and what data it needs. The builder when it exists is the CEF
+#      explorer in _apps/cef/, exported by
+#
+#        source("_apps/export_figures.R")
+#
+#      from the repo root. Do not edit a PNG: edit the builder. Every
+#      figure frame is title, exhibit, one-line caption, titled two-line
+#      .tablenotes, and nothing else.
+#
+#      THE POPULATION. One simulated population of 200,000 people, a
+#      sample of 120 drawn from it. Schooling in years, hourly earnings in
+#      euro. The true return is 1.30 per year of schooling, expected
+#      earnings are 9.50 at twelve years, and the error has a standard
+#      deviation of 4.50. So E[y|x] = 9.50 + 1.30(x - 12), giving 6.90 at
+#      ten years and 14.70 at sixteen. The truth is known because we wrote
+#      it. The flaws are in the generator already, switched off, and each
+#      later lecture turns one on.
+#
+#      REFERENCES. Entries for this deck are in bib/1-2.bib and must be
+#      merged into ../_shared/econometrics.bib before rendering.
+#
+title: "Expectation and Conditional Means"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 1.2"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 1.2
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{1.2}
+```
+
+## Last Week's Lecture
+
+Lecture 1.1 set the module's question and the vocabulary for describing data:
+
+::: {.contributions}
+1.  **How This Module Works.** What the term covers, how it is assessed, and the standing question.
+2.  **Populations and Samples.** The question is about a population; the data is a sample.
+3.  **Describing One Variable.** Centre, spread and shape, and what each one hides.
+4.  **Describing Two Variables.** Covariance, correlation, and what one number cannot show.
+:::
+
+::: {.notes}
+0-6 min. Retrieval, not recap. Two minutes with a neighbour, on last week's
+120 people: every one of those numbers was computed from the sample, so which
+of them were you hoping would tell you something about the other 199,880, and
+what were you assuming when you hoped it?
+
+Take two or three answers out loud and do not resolve them. They already
+believe the sample average stands in for something; today names the something.
+:::
+
+```{=html}
+<!-- This list is Lecture 1.1's Lecture Plan, copied verbatim. If a tagline
+     is fixed there it must be fixed here, and vice versa, or the two frames
+     disagree about what last week said. Check with a diff, not by eye. -->
+```
+
+## Lecture Plan
+
+::: {.contributions}
+1.  **Expectation.** A property of a distribution, not of a sample.
+2.  **The Algebra of Expectations.** The rules every derivation in this module spends.
+3.  **The Conditional Expectation Function.** The best guess of earnings given schooling.
+:::
+
+::: {.notes}
+6-10 min. Reading for today is the probability material in Wooldridge, Math
+Refresher B. Most textbooks treat it as a preliminary; we are treating it as
+the point, which is why it has a whole slot rather than an appendix.
+:::
+
+```{=html}
+<!-- Lecture 1.3 copies this block verbatim into its "Last Week's Lecture"
+     frame. Do not reword an item here without changing it there.
+
+     The reading note previously cited @stockwatson2019, which is in the bib
+     but not on the shelf. Redirected to @wooldridge2020, Math Refresher B,
+     p.684, which covers the same material. -->
+```
+
+# Expectation
+
+## Defining the Expectation of a Random Variable
+
+A random variable is a quantity the draw decides. Its expectation says where
+the distribution sits, before any sample:
+
+$$
+E[y] \;=\; \sum_{k} y_k \, p_k
+$$
+
+- $y$: the variable, here hourly earnings in euro
+- $y_k$: one value that $y$ can take
+- $p_k$: the share of the population sitting at that value
+- $E[y]$: the population average of $y$, here 11.52 euro
+
+::: {.notes}
+IDEA 1. 10-33 min. Weight each value by how common it is. That is the whole
+content; the sum is not the idea.
+
+Say on the board that for a variable taking a continuum of values the sum
+becomes an integral, and that nothing on this slide changes when it does. We
+will not compute an integral in this module, but they should not leave
+believing an expectation is only defined for a short list of values.
+:::
+
+```{=html}
+<!-- Wooldridge B-3a, p.691, equation (B.17) for the discrete sum and (B.18)
+     for the continuous integral. The slide gives the discrete case only,
+     which is the special case; the note says so out loud rather than the
+     slide carrying an integral this module never uses. -->
+```
+
+## Notation for the Population Mean and the Sample Mean
+
+One average is a fixed fact; the other changes with every sample drawn.
+
+::: {.defn title="The Population Mean Does Not Move"}
+$E[y]$ is the population average: one fixed number, a property of the
+distribution. $\bar y$ is the sample average, 12.25 in our 120. Draw a different
+120 and $\bar y$ is a different number.
+:::
+
+::: {.notes}
+This distinction is the one that has to survive the term. A bar means computed
+from a sample; a bare letter means true of the population. A student who reads
+the two as the same object cannot be taught sampling variation, which is the
+whole of Lecture 1.3.
+
+Later in the module the bar gives way to a hat on quantities that estimate a
+parameter. Do not promise a week for that here; the two deck headers disagree
+about whether it lands in 1.3 or 2.1, and it is not settled.
+:::
+
+```{=html}
+<!-- Wooldridge B-3a, p.691: "Sometimes, the expected value is called the
+     population mean, especially when we want to emphasize that X represents
+     some variable in a population."
+
+     The old frame carried a .caveat as well as this .defn - two callouts on
+     one frame. The caveat's content is now in the notes. It also asserted
+     "next week the bar becomes a hat", which contradicts Lecture 1.1's
+     header comment ("The hat is NOT introduced here - it first bites in
+     2.1"). Flagged rather than picked. -->
+```
+
+## The Population Mean Is Not Directly Observable
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Population earnings in grey, the sample of 120 in colour, both means marked.}
+```
+
+::: {.tablenotes title="Only the Sample Mean Changes"}
+Redraw the 120: the dashed line leaves 12.25, the solid stays at 11.52.
+$E[y]$ belongs to the population, not to the draw.
+:::
+
+::: {.notes}
+Walk it: grey density is all 200,000, solid rule is $E[y]$, coloured histogram
+is our 120, dashed rule is their average. Point at the gap between the two
+rules and say that the gap has a name, a distribution and a formula, and that
+Lecture 1.3 is about it.
+
+We wrote this population, so we know where the solid line is. In every week
+after this one we will not.
+:::
+
+<!-- FIGURE 1-2_expectation: the population earnings density in grey with a
+     vertical rule at the population mean, overlaid with the histogram of the
+     sample of 120 and a second, dashed vertical rule at the sample mean.
+     Needs the full population and the standing sample of 120. -->
+
+```{=html}
+<!-- Figure frame shape per the skill: title, exhibit, one-line caption,
+     titled two-line .tablenotes, nothing above the exhibit. The old caption
+     ran to three lines and the box toured the picture; the tour is now in
+     the notes. Caption is 76 characters. -->
+```
+
+## The Gap Between the Two Lines Has Its Own Distribution
+
+Every claim this module makes is about the solid line. Every number we compute
+comes from the dashed one.
+
+::: {.takeaway title="Lectures 1.3 and 2.3 Measure the Gap"}
+The 0.73 between 12.25 and 11.52 is not a mistake to be removed. That gap
+changes with every sample drawn. A standard error puts a number on it.
+:::
+
+::: {.notes}
+Three averages of hourly earnings are now in play: our 120 people, E[y], and
+all 200,000. Only the first can change. This used to be a question frame
+straight after this one, cut because the point had already been made on three
+consecutive frames and did not need a fourth.
+
+This is also why an expectation is not "the average of a big enough dataset".
+It is a feature of the process that generated the data. Our population happens
+to be finite, so its own average and $E[y]$ coincide here; that is a property
+of how we built it, not of expectations.
+:::
+
+```{=html}
+<!-- Wooldridge B-3a, p.691. "Weeks 3 and 6" replaced by "Lectures 1.3 and
+     2.3", the roadmap's own names for those slots. Second callout on this
+     frame moved to notes; one callout per frame. -->
+```
+
+# The Algebra of Expectations
+
+## The Three Rules of Expectation Algebra
+
+Three rules give the average of a combination without knowing its distribution:
+
+$$
+E[c] = c \qquad\qquad E[a + b\,y] = a + b\,E[y] \qquad\qquad E[y + z] = E[y] + E[z]
+$$
+
+- $c$, $a$, $b$: constants, taking the same value in every draw
+- $z$: a second random variable, taking a different value in every draw, as
+  $y$ does
+
+::: {.defn title="A Constant Is the Same in Every Draw"}
+An expectation averages across draws. A constant does not change from one draw
+to the next, so averaging it returns it unchanged, and a multiplier that is the
+same in every draw factors straight out of the sum. On the right-hand side only
+$y$ and $z$ still carry an $E$, because only they vary.
+:::
+
+::: {.notes}
+IDEA 2. 36-60 min. Say each one out loud in words, and say what it buys, before
+any symbols go up.
+
+Answer the question on the box before it is asked, because it is the one that
+stops people. Why does the $E$ come off $a$ and $b$ and stay on $y$? Because an
+expectation is an average over draws, and only things that change from draw to
+draw have anything to average. Draw a person, draw another, draw a third: their
+earnings differ, the tax rate does not.
+
+Say plainly what a constant is NOT. It is not a number we happen to know. A
+population slope is a constant and nobody knows it, and it still comes out of
+an expectation, because it is one fixed number for the whole population rather
+than something that varies person to person. That distinction is the reason
+Lecture 2.3 can write $E[\hat{\beta}] = \beta$ at all, so plant it here.
+
+The constant rule: a fee or a tax rate comes through the average untouched and
+needs no distribution at all. The linear rule: report earnings in cents instead
+of euro and the average rescales by 100, without going back to the 200,000
+people. Additivity: the average of a total is the total of the averages, so an
+estimator built by adding up 120 draws can be averaged one draw at a time.
+
+Without the three, every new combination of variables would need its own
+distribution worked out from scratch. That is the work they save.
+
+ADDITIVITY NEEDS NO INDEPENDENCE, and this is now the only place it is said, so
+say it. Averages add whatever the joint distribution is: $y$ and $z$ may be
+dependent and the third rule still holds. Wooldridge states it for any number of
+variables with any constants in front of them, with no independence assumption
+anywhere. Worth the extra thirty seconds, because next week they meet a variance
+rule that does need a condition, and the contrast is the point.
+:::
+
+```{=html}
+<!-- Wooldridge B-3b, p.692-693. Property E.1: E(c) = c. Property E.2:
+     E(aX + b) = aE(X) + b. Property E.3: E(sum a_i X_i) = sum a_i E(X_i),
+     equation (B.21), with (B.22) the special case a_i = 1 shown here.
+
+     CORRECTION. The frame was titled "The Four Rules of Expectation Algebra"
+     and displayed three equations. B-3b states three properties, not four.
+     The item being counted as a fourth, Var(y) = E[y^2] - (E[y])^2, is B-3e
+     equation (B.24) on p.695 - a property of the variance, not of expected
+     values. Retitled, and the count fixed in the closing summary and in the
+     appendix derivation frame too.
+
+     CORRECTION, second pass. The frame displayed three rules in which the E
+     comes off a, b and c and stays on y, and never said why. The gloss read
+     "constants, fixed before any data arrive", which names them without
+     giving the mechanism, and is also loose: a population slope is a constant
+     and is not fixed before anything, nor known at all. The defining property
+     is that it does not vary from draw to draw, which is what makes the
+     average of it itself. The bullets now say that, the box states the
+     mechanism, and the notes plant the link to E[beta-hat] = beta in 2.1,
+     where the same property is what lets beta out of the expectation.
+
+     The box that stood here, "Additivity Needs No Independence", moved into
+     the notes. One box per frame, and of the two claims the mechanism is the
+     one students get stuck on; additivity was already restated in the notes
+     and is now made explicit there as the only place it is said. -->
+```
+
+## Variance and Covariance Written as Expectations
+
+Spread and co-movement are themselves averages, so the three rules reach them:
+
+$$
+\operatorname{Var}(y) \;=\; E\big[(y - E[y])^2\big] \;=\; E[y^2] - \big(E[y]\big)^2
+$$
+
+$$
+\operatorname{Cov}(y, x) \;=\; E\big[(y - E[y])(x - E[x])\big] \;=\; E[yx] - E[y]\,E[x]
+$$
+
+- $x$: years of schooling
+- $\operatorname{Var}(\cdot)$: the variance of whatever sits inside
+- $\operatorname{Cov}(\cdot,\cdot)$: the covariance of the two inside
+
+::: {.notes}
+$\operatorname{Var}(y)$ is the population spread of $y$ and $\operatorname{Cov}(y,x)$
+is the population co-movement of $y$ and $x$; both were defined last week on the
+sample, and these are the population versions.
+
+The right-hand forms are the ones used for calculation. Point at the second
+line and say that the last term is what the next frame is about.
+:::
+
+```{=html}
+<!-- Wooldridge B-3e, p.695: Var(X) = E[(X - mu)^2], equation (B.23), and the
+     computational form (B.24), Var(X) = E(X^2) - mu^2. B-4b, p.697:
+     Cov(X,Y) = E[(X - mu_X)(Y - mu_Y)], equation (B.26), and (B.27),
+     Cov(X,Y) = E(XY) - mu_X mu_Y. Both re-derived; both as stated.
+
+     The gloss lines for Var and Cov moved to notes: the equations define
+     them, and five notation lines is a third of the frame. -->
+```
+
+## Why Expectations Do Not Pass Through a Product
+
+An expectation passes through sums, constants and scalings, and not through a
+product. Independent means knowing one variable tells you nothing about the
+other. Here earnings rise 1.30 euro with each extra year of schooling. So
+schooling and earnings have a positive covariance.
+
+::: {.takeaway title="The Product Rule Needs Zero Covariance"}
+$E[yx]$ equals $E[y]E[x]$ exactly when $\operatorname{Cov}(y,x)$ is zero.
+Independence delivers zero covariance, and the equality does not require independence.
+:::
+
+::: {.notes}
+Read it off the line above: $\operatorname{Cov}(y,x) = E[yx] - E[y]E[x]$, so the
+product rule fails by exactly the covariance and holds exactly when the
+covariance vanishes. It is an equivalence in both directions.
+
+Independent variables are uncorrelated, so independence is enough. Uncorrelated
+variables need not be independent, so independence is not required. Wooldridge
+gives the standard counter-example: a variable with mean zero and zero third
+moment has zero covariance with its own square, and a variable and its square
+are about as dependent as two variables get.
+
+Last week they measured a positive covariance between schooling and earnings in
+this sample, so for these two the product rule fails in a direction they can
+already sign. Do not sign it for them here: the question frame later in this
+section is exactly that, and the slide gives them the covariance and the
+equivalence, which is everything they need to do it themselves.
+:::
+
+```{=html}
+<!-- Wooldridge B-4b, p.697-698. Equation (B.27) gives the equivalence.
+     Property Cov.1: independence implies zero covariance. The converse is
+     stated as false on p.698, with the X and X^2 counter-example.
+
+     CORRECTION. The frame said E[yx] = E[y]E[x] "only when the covariance is
+     zero" - true, but one-directional, and the deck then used it in both
+     directions on the question frame below. Now stated as an equivalence,
+     with independence named as sufficient and not necessary. -->
+```
+
+## The Variance of a Sum Carries a Covariance Term
+
+Adding two random variables does not add their variances:
+
+$$
+\operatorname{Var}(y + z) \;=\; \operatorname{Var}(y) + \operatorname{Var}(z) + 2\operatorname{Cov}(y, z)
+$$
+
+::: {.takeaway title="Zero Covariance Drops the Term"}
+The covariance term drops out when $y$ and $z$ are uncorrelated. Independence is
+stronger than this rule asks for.
+:::
+
+::: {.notes}
+Two things to say. First, the sign: a positive covariance makes the sum more
+variable than the two variances suggest, a negative one makes it less. Second,
+the condition: uncorrelated is enough, and the commonest error in a first
+course is to write independence here because independence is the condition that
+was met in the example.
+
+The same rule for a difference still adds the variances: subtracting a variable
+does not subtract its spread. Worth putting on the board.
+
+This is the rule Lecture 2.3 spends to get a standard error, so it is stated
+here rather than assumed there.
+:::
+
+```{=html}
+<!-- Wooldridge B-4d, p.699. Property Var.3:
+     Var(aX + bY) = a^2 Var(X) + b^2 Var(Y) + 2ab Cov(X,Y), shown here with
+     a = b = 1. Equations (B.30) and (B.31) on p.700 give the uncorrelated
+     case for the sum and the difference. Property Var.4, p.700, is the
+     n-variable version and requires PAIRWISE UNCORRELATED, not independent;
+     Wooldridge's own sentence is "if X and Y are uncorrelated - so that
+     Cov(X,Y) = 0".
+
+     NEW FRAME. The deck had no statement of the variance of a sum anywhere,
+     while a later bullet promised that "the variance rule" produces a
+     standard error. It does not: the computational formula (B.24) does not,
+     and Var.4 does. -->
+```
+
+## Where Each Rule Is Used Later in the Module
+
+The rules are not conventions, and each one buys something later:
+
+- **Linearity:** cuts the Lecture 2.3 proof of unbiasedness to two lines from twenty.
+- **The Variance of a Sum:** builds the standard error in Lecture 2.3.
+- **Covariance Over Variance:** is the slope Lecture 2.1 fits by least squares.
+
+::: {.takeaway title="Each Rule Is the Sum Rearranged"}
+Each rule is the definition of an expectation with the sum rearranged. The
+appendix writes the weighted sum, splits it, then takes the constants outside.
+:::
+
+::: {.notes}
+The step that does the work is the splitting, and it works because summation
+splits across addition and nothing else. That is also why no step of the same
+kind is available for a product, and why the covariance term survives.
+
+Full derivation in the appendix, set as homework. Class time goes on the shape
+of the proof, not on the algebra.
+
+This is the only slide in the module where the algebra arrives before its use.
+Everything else is introduced where it first bites, and it is worth telling them
+that, so the ordering does not read as an accident.
+
+The slope formula is already written on the variance and covariance frame. They
+have simply not been told what it is for.
+:::
+
+```{=html}
+<!-- Merged 17 September: "How the Appendix Derivation Proves These Rules"
+     carried one claim, restated in its own callout, and was folded into this
+     frame. Its Wooldridge locator is B-3b, p.692-693, where E.1 to E.3 are
+     derived from definition B.17.
+
+     Wooldridge chapter 2, p.20, for the slope as covariance over variance,
+     and B-4d, p.699, for the variance of a sum behind a standard error.
+
+     CORRECTION. The bullet read "The variance rule is what turns the same
+     expression into a standard error." The rule that does that is Var.4,
+     which the deck did not state; the computational formula (B.24) does not.
+     Bullet now names the variance of a sum, and the frame above states it.
+
+     "Week 6" and "week 4" replaced by Lecture 2.3 and Lecture 2.1, per
+     _shared/econometrics-roadmap.tex. -->
+```
+
+## The Average of Schooling Times Earnings
+
+Average schooling is about 13 years and average earnings about 11 euro.
+
+::: {.defn title="Question"}
+Is the average of (schooling $\times$ earnings) about 143?
+:::
+
+
+::: {.notes}
+60-63 min. Too small, by exactly the covariance, which last week they measured
+as positive. The sign question is the one that separates a memorised rule from a
+used one. Do not adjudicate.
+
+Then, slide hidden: write $\operatorname{Var}(y)$ using only $E[\cdot]$, and say
+what $E[y^2] - (E[y])^2$ would equal if every person in the population earned
+the same amount. The answer is zero, which is Property VAR.1.
+:::
+
+```{=html}
+<!-- Wooldridge B-4b, p.697, equation (B.27): E(XY) = E(X)E(Y) + Cov(X,Y), so
+     the answer is 143 plus a positive number. 13 x 11 = 143 checked.
+     B-3e, p.696, Property VAR.1 for the hidden-slide question.
+
+     The two numbers are the module's own population, not a shelf fact. They
+     are consistent with it: E[y|x] = 9.50 + 1.30(x - 12) at E[x] = 13 gives
+     E[y] = 10.80, which rounds to the 11 quoted.
+
+     Replaces "## Vote: Is the Average Product the Product of the Averages?"
+     and the "## Pause" frame that followed it. -->
+```
+
+# The Conditional Expectation Function
+
+## Defining the Conditional Expectation of Earnings Given Schooling
+
+Split everyone by years of schooling, then average earnings inside each group:
+
+$$
+E[y \mid x]
+$$
+
+- $E[y \mid x]$: the average of $y$ among people with that value of $x$
+
+In a sample, that instruction is carried out with the mean from Lecture 1.1:
+
+$$
+\widehat{E}[y \mid x = 12] = \frac{1}{n_{12}} \sum_{i \,:\, x_i = 12} y_i
+$$
+
+- $n_{12}$: how many people in the sample have twelve years of schooling
+
+::: {.defn title="A Function, Not a Number"}
+$E[y \mid x]$ is the conditional expectation function, the CEF for short. The CEF
+returns a different average at each value of $x$.
+:::
+
+::: {.notes}
+IDEA 3. 63-90 min. Do the physical example before the earnings one, because it
+costs thirty seconds and it makes the whole object concrete. Measure everyone's
+height. Now sort them into weight bands and take the average height inside each
+band. The sequence of averages you get is a CEF. Nothing else is going on: it is
+a local average, where "local" means a group defined by the other variable.
+
+Then say what the sorting buys. Someone walks in and you have to name their
+hourly earnings; you are told only how long they stayed in school. The number
+you would say is the average of the group they fall into, and the whole of
+Lecture 2.1 is an attempt to estimate it.
+
+One nuance worth a sentence, because it recycles Lecture 1.1's notation rule.
+Splitting a sample into bins and averaging gives the SAMPLE version. The CEF
+itself is the population object, a fact about all 200,000. The Roman-and-Greek
+distinction from week one applies here to a whole function rather than to a
+single number, and the figure two frames on shows the sample version standing
+in for the population one.
+
+The second display is there to stop this looking like a new formalism. Read the
+right-hand side out in words - add up the earnings of everyone with twelve years
+of schooling, divide by how many of them there are - and it is the mean from
+Lecture 1.1 with a condition on which rows enter the sum. No new algebra, no new
+operator: the only thing the bar does is decide who is in the average. Every
+year someone asks whether expectation is different from averaging, and this is
+the frame that answers it, so do not skip past the display.
+
+"Best" is a precise claim, not a compliment, and the frame two on gives the
+precise version: smallest expected squared error. Promise it here rather than
+leaving the word loose.
+
+Then read it aloud as "the average of earnings among everyone in the population
+with this much schooling". Feed it twelve and it returns 9.50; feed it sixteen
+and it returns 14.70.
+
+Wooldridge's own example is the same pair of variables: hourly wage given years
+of education, with $E[\text{wage} \mid \text{educ}]$ traced out across education
+levels. Say that, so they know this is not a device invented for this module.
+:::
+
+```{=html}
+<!-- Wooldridge B-4e, p.700-701. The conditional expectation of Y given X = x,
+     written E(Y|x), with the discrete definition sum_j y_j f(y_j|x). The
+     wage-on-education illustration is figure B.5, p.701. $x$ was introduced
+     on the variance and covariance frame and is not re-listed here. -->
+```
+
+## Earnings Distributions at Three Levels of Schooling
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Earnings among people with ten, twelve and sixteen years of schooling.}
+```
+
+::: {.tablenotes title="Wide Spread Around Each Mean"}
+At twelve years the conditional mean is 9.50. Earnings there scatter widely: the
+conditional standard deviation is 4.50.
+:::
+
+::: {.notes}
+Three distributions, each with its own vertical rule at its own mean: 6.90 at
+ten years, 9.50 at twelve, 14.70 at sixteen. The means march right; the
+distributions overlap heavily.
+
+The point to press: an average is not a description of a person. Plenty of
+people with sixteen years of schooling earn less than the average person with
+ten, and the CEF never claimed otherwise. The spread around the conditional mean
+has its own name, the conditional variance, and Lecture 2.3 needs it.
+:::
+
+<!-- FIGURE 1-2_conditional-distributions: three overlaid or small-multiple
+     densities of earnings at x = 10, 12, 16, each with a vertical rule at its
+     conditional mean (6.90, 9.50, 14.70) and a shared x axis. Needs the
+     population only. -->
+
+```{=html}
+<!-- Wooldridge B-4g, p.704, for the conditional variance:
+     Var(Y|X = x) = E(Y^2|x) - [E(Y|x)]^2.
+
+     CORRECTION. The old box read "Half the people at twelve years of
+     schooling are not close to 9.50." Nothing on the shelf or in the
+     generator supports a claim about half the conditional distribution; it
+     depends on the shape, not on the spread. Replaced by the conditional
+     standard deviation, 4.50, which is in the generator. The .caveat on this
+     figure frame is now a .tablenotes, which is the figure-frame shape. -->
+```
+
+## The Conditional Expectation Function in This Population
+
+```{=latex}
+\fig{../_shared/figures/1-2_cef-weights.png}{One hundred people at ten levels of schooling. Each navy point is the average of the column beneath it; the count in that column is written under it.}
+```
+
+::: {.tablenotes title="The Counts Are the Weights"}
+Here $E[y \mid x] = 9.50 + 1.30\,(x - 12)$, the blue line. Pooling all one
+hundred gives 10.70. Averaging the ten column means without their counts gives
+11.61, because it treats the two people at eighteen years as it treats the
+twenty at twelve.
+:::
+
+::: {.notes}
+Walk it column by column. Ten levels of schooling, one hundred people spread
+unevenly across them, and the navy dot in each column is the average of the pale
+dots under it. Nothing else is happening. That is the whole of the conditional
+expectation, done ten times.
+
+The bar inside each box is the median and the navy dot is the mean, which is
+last section's distinction arriving on a real picture. Point at a skewed column
+and note that the two do not coincide.
+
+Then the second reading, which is the one worth the time. The green rule is the
+average of all one hundred, 10.70. The dotted rule is the average of the ten
+navy dots, 11.61. Ask why they differ before saying why: the ten columns are not
+the same size, so treating them as ten equal things overweights the empty end.
+The counts under the columns are the weights, and ignoring them costs ninety-one
+cent here.
+
+That is also the answer to the question that comes up every year, whether an
+expectation is "just an average". It is. Pooled, every person counts once and
+you need no weights at all. Reassembled from group averages, the group sizes are
+the weights and dropping them changes the number.
+
+The blue line is straight because we wrote the generator that way. Nothing in
+the definition of a conditional expectation requires it, and the question frame
+later in this section is exactly that point.
+
+Say "goes with", not "raises". This is a description of the population, and
+today's last section is about how easily it gets read as an effect.
+:::
+
+<!-- FIGURE 1-2_cef-weights: BUILT. _apps/regression/R/model.R, D_06_01.
+     Schooling on the horizontal axis, earnings on the vertical. One hundred
+     people at ten integer levels, allocated 4-9-16-20-17-13-9-6-4-2, with a
+     boxplot per level, the level's mean as a navy point, the population line
+     E[y|x] = 9.50 + 1.30(x - 12) in blue, and two horizontal rules: the
+     pooled average of all one hundred and the unweighted average of the ten
+     column means.
+
+     REPLACES the old 1-2_cef spec, which asked for 200,000 greyed-out
+     population points behind ten binned means. The whole content of this
+     frame is now that the columns have different SIZES, and a 200,000-point
+     cloud cannot be counted. One hundred visible people can. -->
+
+```{=html}
+<!-- Wooldridge B-4e, p.702, gives a linear CEF as an EXAMPLE of a functional
+     form one might specify, not as a property of conditional expectations:
+     "suppose that the expected value of WAGE given EDUC is the linear
+     function". The frame follows that, and the note says where the line
+     comes from.
+
+     CORRECTION. "Every extra year of schooling moves the average by 1.30
+     euro" used a banned directionless verb, and "moves" also reads causal.
+     Now "goes with 1.30 euro more earnings on average", which is directional
+     and descriptive. 9.50 + 1.30(16 - 12) = 14.70 and 9.50 + 1.30(10 - 12) =
+     6.90, matching the figure comment above. Second callout moved to notes. -->
+```
+
+## The Sense in Which the Conditional Mean Is Best
+
+No rule built on schooling beats the conditional mean on squared error:
+
+$$
+E[y \mid x] \;=\; \arg\min_{g} \; E\big[\,(y - g(x))^2\,\big]
+$$
+
+- $g(x)$: any function of $x$ used to guess $y$
+- $\arg\min_{g}$: the $g$ that makes what follows as small as it goes
+
+::: {.caveat title="Both Expected Squares Must Be Finite"}
+Both $E[y^2]$ and $E[g(x)^2]$ must be finite. Without them there is no expected
+squared error to compare.
+:::
+
+::: {.notes}
+The comparison class is the part that matters. It is not straight lines, not
+smooth functions, not simple functions: it is every function of $x$ with a
+finite expected square. That is what makes "best guess" a result rather than a
+preference.
+
+Say the straight-line case out loud, because it is the one Lecture 2.1 inherits:
+straight lines are in the class, and they lose to the CEF unless the CEF is
+itself a straight line.
+
+Wooldridge states the inequality twice: conditional on $x$, and unconditionally.
+The unconditional form is the one written here, and it follows from the
+conditional one. Say that, and leave the proof to the appendix.
+
+The finiteness conditions are not decoration. Without them the minimisation is
+not well posed, and "no rule does better" would be a claim about objects with no
+expected squared error to compare.
+:::
+
+```{=html}
+<!-- Wooldridge B-4f, p.703, Property CE.6: if E(Y^2) < infinity and
+     E[g(X)^2] < infinity for some function g, then
+     E{[Y - m(X)]^2 | X} <= E{[Y - g(X)]^2 | X} and
+     E{[Y - m(X)]^2} <= E{[Y - g(X)]^2}, where m(X) = E(Y|X). Commentary on
+     p.704: "the conditional mean is better than any other function of X for
+     predicting Y. The conditional mean also minimizes the unconditional
+     expected squared prediction error."
+
+     CORRECTION. The frame said "Among every possible way of guessing earnings
+     from schooling" and "$g(x)$: any rule at all". CE.6's comparison class is
+     functions with finite expected square, and it also needs E(Y^2) finite.
+     Both conditions are now on the slide. The conditioning is handled in the
+     notes: the deck states the unconditional half, which is the half the
+     argmin expression writes.
+
+     EXPOSITION PASS. Both conditions are still on the slide and neither is
+     weakened; they have moved out of the lead sentence and out of the
+     notation line into a .caveat titled "Finite Squares on Both Sides". The
+     lead now states the result in words. The displaced .takeaway, "Best
+     Against Every Function", is gone under the one-callout rule and its
+     straight-lines point is in the notes. -->
+```
+
+## Why the Minimum Sits at the Conditional Mean
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{Expected squared error at twelve years of schooling, against the guess made.}
+```
+
+::: {.tablenotes title="The Floor Is the Conditional Variance"}
+The curve bottoms out at 9.50, on a floor of $4.50^2$. That floor is the
+conditional variance, and no guess goes below it.
+:::
+
+::: {.notes}
+Three steps, and they are in the appendix: add and subtract the conditional mean
+inside the square, expand, and show the cross term has expectation zero. The step
+doing the work is the third.
+
+Why the cross term dies: it is a deviation from the conditional mean multiplied
+by something fixed once $x$ is known, so averaging within each value of $x$ kills
+it. That is Property CE.2 doing the work.
+
+Walk the picture: candidate guesses on the horizontal axis, expected squared
+error on the vertical, one convex curve, minimum at 9.50. The height of the
+minimum is the conditional variance, and that height is not zero. Every other
+guess sits above the floor by a squared term, which is why the curve is convex
+and why the minimum is unique.
+:::
+
+<!-- FIGURE 1-2_mse: horizontal axis a candidate constant guess c running from
+     about 4 to 15, vertical axis E[(y - c)^2 | x = 12], one convex curve with
+     its minimum marked at 9.50. Needs the population subset at x = 12. -->
+
+```{=html}
+<!-- Wooldridge B-4f, p.702, Property CE.2:
+     E[a(X)Y + b(X) | X] = a(X)E(Y|X) + b(X), which is what kills the cross
+     term. B-4g, p.704, for the conditional variance that remains.
+
+     The box now gives the takeaway rather than the three steps; the steps are
+     the tour and belong in the notes. -->
+```
+
+## What the Fitted Line in Lecture 2.1 Approximates
+
+Without the CEF, a fitted line is just the easiest curve to draw.
+@angrist2015 build the regression chapters of *Mastering Metrics* on the CEF.
+
+::: {.takeaway title="The Line Approximates the CEF"}
+Lecture 2.1 fits a line by least squares to approximate the CEF. This
+population's CEF is straight; real ones need not be. The CEF exists
+in the population before anyone fits anything.
+:::
+
+::: {.notes}
+The fitted line is an answer to a question already posed, not a summary chosen
+because it is easy to draw. That is the whole reason conditional expectation is
+in Lecture 1.2 rather than in an appendix.
+
+Mastering Metrics opens its regression theory appendix on the CEF and then puts
+the regression line through a real earnings-on-schooling CEF, which bounces
+around the line rather than lying on it. Worth describing out loud; it is the
+picture Lecture 2.1 will earn.
+:::
+
+```{=html}
+<!-- Mastering Metrics, Appendix: Regression Theory, p.82: "Conditional
+     Expectation Functions" opens the appendix, and figure 2.1 is captioned
+     "The CEF and the regression line".
+
+     The old frame cited @angrist2009 and @angrist2017undergraduate. Neither
+     is on the shelf. @angrist2015 IS on the shelf and makes the same move, so
+     it carries the sentence. The @angrist2017undergraduate claim - that first
+     courses skipping the CEF leave students fitting lines without knowing
+     what the line is for - could not be checked against anything we hold, so
+     it is dropped rather than hedged. -->
+```
+
+## Description Versus Causation in the Conditional Mean
+
+Describing who earns what is not the same as saying what schooling does.
+
+::: {.caveat title="A Description, Not an Effect"}
+$E[y \mid x]$ describes the population and says nothing about changing $x$.
+"People with sixteen years of schooling earn 14.70 on average" is a description.
+"Four more years raises earnings by 5.20" is a different claim. Nothing today
+supports it.
+:::
+
+::: {.notes}
+Hold this distinction. Lecture 4.2 is built entirely on it.
+
+Mastering Metrics runs Mincer's earnings regression on the 1960 census, gets
+about eleven per cent a year with experience controls, and then asks whether
+more- and less-educated workers at the same experience level are equally able
+and diligent. Their own answer is that such claims are hard to swallow, and the
+gap between the description and the effect is the subject of the rest of that
+chapter.
+:::
+
+```{=html}
+<!-- Mastering Metrics 6.1, p.209: "Economists call the causal effect of
+     education on earnings the returns to schooling", Mincer's estimates, and
+     "It remains to be seen, however, whether this is a causal effect",
+     followed by the ability-bias discussion.
+
+     Arithmetic: 9.50 + 1.30(16 - 12) = 14.70 and 4 x 1.30 = 5.20, so both
+     numbers in the box are this population's.
+
+     The old frame cited @card1999 for "forty years of work on exactly this
+     gap". Card (1999) is not on the shelf and the forty-year claim could not
+     be checked, so the sentence is gone and MM 6.1 carries the point.
+     Callout retitled: "Read this one carefully" named the kind of box. -->
+```
+
+## What Would Have To Be True?
+
+This week the question is asked of the conditional mean of earnings.
+
+::: {.defn title="Question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+Reading $E[y \mid x]$ as an effect is an assumption about who stayed in school.
+Stayers and leavers must differ in nothing else touching earnings.
+
+::: {.notes}
+90-95 min. Same slot every week. They answer in pairs first, then you.
+
+What would have to be true for this number to mean what we just said it means,
+and what is the plausible story where it is not true? The point is not that
+causation is hard in the abstract; it is that THIS number rests on something
+nameable that may well be false.
+:::
+
+```{=html}
+<!-- Mastering Metrics 6.1, p.209, ability bias: "at a given experience level,
+     are more- and less-educated workers equally able and diligent? ... Such
+     claims seem hard to swallow." The callout states that as an assumption
+     rather than as a finding, which is the strength MM gives it.
+
+     Callout retitled from "The standing question", which named the slot
+     rather than the claim. -->
+```
+
+## Application
+
+The CEF explorer cuts schooling into one-year bins. Each bin gets one point, at
+its mean of earnings.
+
+::: {.defn title="Question"}
+With our 120 people, will the bin means look like a line?
+:::
+
+The lab repeats the exercise on all 200,000.
+
+::: {.notes}
+95-105 min. Answers before the app is opened; committing first is what makes the
+demonstration land.
+
+The answer is no, and the disappointment is the lesson: the CEF is smooth, and
+the estimate of it from 120 people is not. That gap is exactly what Lecture 1.3
+formalises.
+
+In the lab they compute the bin means in R themselves, then do it again on the
+full 200,000 and put the two pictures side by side.
+:::
+
+```{=html}
+<!-- Wooldridge B-4e, p.701-702, on summarising a CEF by cells and why a table
+     of conditional means is cumbersome when x varies finely - which is the
+     binning the lab does.
+
+     Replaces an embedded "vote first, before anything is run". Answers are
+     taken out loud, before the app, per the no-votes rule. -->
+```
+
+## Summary: Expectation, Its Algebra, and the CEF
+
+Today was three ideas, each doing one job:
+
+::: {.contributions}
+1.  **Expectation.** A property of the distribution, not of the data you hold.
+2.  **The Algebra of Expectations.** Three rules carry every derivation, and none of them covers a product.
+3.  **The Conditional Expectation Function.** The CEF describes the population and does not intervene in it.
+:::
+
+::: {.notes}
+105-110 min. No new material. The names match the section titles, which match
+the roadmap.
+
+Exit ticket after this: what was the muddiest point? The answers set next week's
+retrieval questions.
+:::
+
+```{=html}
+<!-- CORRECTION. Item 2 read "Four rules carry every derivation in the module,
+     and the one that fails is the one for products." Wooldridge B-3b, p.692,
+     states three properties of expected values, and there is no rule for
+     products in the set at all - the failure is that no such rule exists.
+     Both halves fixed.
+
+     The .contributions component sets the bold lead on one line and the body
+     on the next, so the lead has to be a complete label and the body a
+     complete sentence. -->
+```
+
+## Before Lecture 1.3
+
+::: {.contributions}
+1.  **Play:** The CEF explorer, widening the bin from one year to four.
+2.  **Apply:** Problem set 1, covering 1.1 and 1.2, with both appendix derivations.
+3.  **Review:** @wooldridge2020, Math Refresher B-4e and B-4f, on conditional expectation.
+:::
+
+::: {.notes}
+All three look back at today, Review included.
+
+Problem set 1 is out this week and is fully worked; the scaffolding fades from
+Lecture 2.2. Of the two appendix derivations, the second is the one that makes
+"best guess" a result rather than a word.
+
+B-4e defines the conditional expectation and B-4f gives its properties,
+including the law of iterated expectations that Lecture 3.1 leans on.
+:::
+
+```{=html}
+<!-- Wooldridge, Math Refresher B-4e, p.700, conditional expectation, and
+     B-4f, p.702, its properties. These are the sections this lecture rests
+     on, not the ones the next lecture needs.
+
+     Replaces "## Before Week 3", which was Read, Do, Try as bullets with a
+     .defn for the problem set. Now Play, Apply, Review as a contributions
+     block.
+
+     CHANGED 17 September, Sam's instruction: the third item is REVIEW, not
+     READ. It points back at the sections covering the lecture just given
+     rather than forward at pre-reading for the next one. All three decks in
+     block 1 changed together; blocks 2 to 4 have no close-out frame yet. -->
+```
+
+## Next Week
+
+Lecture 1.3 computes an expectation from 120 people instead of a population:
+
+- **Estimators:** rules that turn 120 numbers into one guess at $E[y]$.
+- **Sampling Variation:** how far the guess lands from $E[y]$ across samples.
+
+::: {.notes}
+Kept separate from the reading list so the preview is not read as an
+afterthought on it.
+
+Name the three properties they will meet - unbiased, consistent, efficient - and
+say that they are separate properties and that no estimator is guaranteed all
+three. Do not define them here.
+:::
+
+```{=html}
+<!-- Wooldridge, Math Refresher C, p.714-721: C-2a estimators, C-2b
+     unbiasedness, C-2c sampling variance, C-2d efficiency, C-3a consistency.
+     The section names come from 1-3's own Lecture Plan. -->
+```
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: The Algebra of Expectations
+
+Write each expectation as its weighted sum, split it, take the constants outside.
+
+::: {.takeaway title="Three Rules, the Variance Form Follows"}
+Three rules follow: a constant, a linear function, and a sum. The variance form
+$E[y^2] - (E[y])^2$ is a consequence of them, not a fourth rule.
+:::
+
+::: {.notes}
+The step that does the work throughout is splitting the sum, which is available
+for addition and for nothing else. Where you cannot split, a covariance term
+survives, and that surviving term is the whole of the slope formula in Lecture
+2.1.
+
+Set as homework; worked solution published with the set.
+:::
+
+```{=html}
+<!-- Wooldridge B-3b, p.692-693, for E.1, E.2 and E.3, derived from (B.17).
+     B-3e, p.695, equation (B.24), for the variance form.
+
+     CORRECTION. This frame said "Four results" and the body slide called them
+     "the four rules". B-3b gives three properties of expected values; the
+     variance form is B-3e and is a consequence, not a fourth property. The
+     frame now says three rules and one consequence, and the body frame is
+     retitled "The Three Rules of Expectation Algebra". -->
+```
+
+## Derivation: The Conditional Mean Minimises Expected Squared Error
+
+Add and subtract $E[y \mid x]$ inside the square, then expand. The cross term has
+expectation zero.
+
+::: {.takeaway title="The Cross Term Has Mean Zero"}
+Assume $E[y^2]$ and $E[g(x)^2]$ are finite. What remains is the conditional
+variance plus a squared term, zero only at $g(x) = E[y \mid x]$.
+:::
+
+::: {.notes}
+Three steps. The third is the one that works: the cross term is a deviation from
+the conditional mean multiplied by something fixed once $x$ is known, so
+averaging within each value of $x$ kills it.
+
+That is the entire content of "best guess". Set as homework; worked solution
+published with the set.
+:::
+
+```{=html}
+<!-- Wooldridge B-4f, p.703, Property CE.6, with its two finiteness
+     conditions, and Property CE.2 on p.702, which is what sends the cross
+     term to zero. B-4g, p.704, for the conditional variance left behind.
+
+     CORRECTION. The finiteness conditions were absent here and on the body
+     frame. CE.6 is stated with them. -->
+```
+
+## Notes and Tools
+
+- **Binning in R:** `cut()` and `tapply()`, which is the whole binned-means lab.
+- **The Lecture in One Line:** `mean(y[x == 12])` against `mean(y)`.
+- **This Week's Script:** the CEF explorer, and the code that draws its exhibits.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). Entries for this deck are drafted in
+     bib/1-2.bib and must be merged into the shared file before rendering.
+     A work mentioned only inside a raw LaTeX block is invisible to citeproc -
+     put the citation in the markdown around the block, or under nocite.
+
+     The frame takes .allowframebreaks because the list outgrows one slide;
+     the theme blanks the continuation title so the breaks are invisible.
+
+     This deck now cites @wooldridge2020 and @angrist2015 only. Both are on
+     the shelf. @stockwatson2019, @angrist2009, @angrist2017undergraduate,
+     @card1999 and @mincer1974 were cited by the previous version and none of
+     them is on the shelf. -->

@@ -1,0 +1,649 @@
+---
+#      LECTURE 3.1 - Adding Controls
+#
+#      Decisions behind this deck are in the project note
+#      `econometrics-part1-design.md`.
+#
+#      SLIDE RULES, for this deck and the other eleven.
+#
+#      1. An equation that appears for the FIRST TIME gets its notation
+#         listed underneath, terse, one symbol per line. No asides in the
+#         list; an argument about a symbol is a separate callout.
+#
+#      2. Every equation states its OBJECTIVE before it appears - what
+#         question it answers, in one line.
+#
+#      3. Notation CONVENTIONS are taught as callouts where each first
+#         bites. Two bite today: the SUBSCRIPT on a slope, which is now
+#         needed because there is more than one, and the TILDE, which
+#         marks the estimate from the regression that left something out.
+#
+#      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate. This is
+#         the week that rule earns its keep: the closed form for a
+#         multiple-regression coefficient is not writable in scalars, so
+#         REGRESSION ANATOMY does the work instead. Say the anatomy
+#         sentence out loud in class and make them say it back. It is the
+#         most portable idea in the module - it is what makes instrumental
+#         variables and fixed effects legible in Part II.
+#
+#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
+#         appendix and set as homework. Class time goes on the shape of
+#         the proof: what it does, its steps, which step does the work.
+#
+#      NARRATIVE SPINE. Three sections, named by content, and named the
+#      same way in the roadmap, the dividers and the closing summary.
+#
+#        1  Partialling Out
+#        2  Reading a Partial Coefficient
+#        3  Omitted Variable Bias
+#
+#      TIMING, 110 minutes of a two-hour slot
+#         0-6     retrieval
+#         6-10    lecture plan
+#        10-35    Partialling Out
+#        35-38    pause
+#        38-63    Reading a Partial Coefficient
+#        63-66    pause
+#        66-92    Omitted Variable Bias
+#        92-97    the standing question
+#        97-105   application
+#       105-110   synthesis and exit ticket
+#
+#      FIGURES. None exist for this lecture yet. Every exhibit below is a
+#      call to ../_shared/placeholder.pdf followed by an HTML comment
+#      saying what to draw and which switch in _apps/regression/R/model.R
+#      it needs. When they are built they belong in export_figures.R like
+#      the block 2 exhibits, so the slide and the app cannot drift apart.
+#      Do not edit a PNG: edit the builder.
+#
+#      THE POPULATION. The same 200,000 people as every other week, and a
+#      sample of 120 drawn from it. Four switches that have been inert
+#      since week 1 come on today, one per case:
+#
+#        parent_edu    B_05_01 = 0.50, B_05_02 = 0.45   good control
+#        occupation    B_05_03 = 0.50, slope = 0.90     mediator
+#        promoted      B_05_04 = 0.50, B_05_05 = 0.15   collider
+#        ability       B_04_02 = 0.80, B_04_01 = 1.50   unobserved
+#
+#      Every number quoted on a slide is the POPULATION regression on all
+#      200,000, not a sample estimate. That is deliberate: the collider
+#      case only lands if nobody can file it under sampling noise. The
+#      figures draw samples; the numbers in the prose do not.
+#
+#      The mediator case sets the direct slope to 0.90 so that the TOTAL
+#      return stays 1.30 - 0.90 direct plus 0.80 x 0.50 through
+#      occupation. The headline truth of the module does not move.
+#
+#      WHY THE COLLIDER IS HERE AT ALL. Most first courses stop at
+#      omitted variable bias and never mention bad controls. Treating
+#      them here is a deliberate departure, and the reason is that the
+#      population has been generated in causal order since week 1, so
+#      promotion is an actual collider rather than an assertion.
+#
+title: "Adding Controls"
+subtitle: "ECONXXXXX Econometrics I"
+short-title: "ECONXXXXX -- Lecture 3.1"
+author: "Sam Deegan"
+institute: "University College Dublin"
+format: dublin-beamer
+include-in-header:
+  - ../_shared/econometrics-roadmap.tex
+  - ../_shared/econometrics-figures.tex
+
+bibliography: ../_shared/econometrics.bib
+csl: ../_shared/apa.csl
+link-citations: true
+
+cover-photo: ../_shared/cover-dublin.png
+cover-scrim: 0.42
+cover-badge: Lecture 3.1
+cover-logo: ../_shared/ucd-crest.png
+qr-code: ../_shared/qr-sam-deegan.png
+---
+
+
+## Where We Are
+
+```{=latex}
+\roadmap{3.1}
+```
+
+::: {.tablenotes}
+Weeks already covered are greyed; today's is marked.
+:::
+
+## Last Week's Slope and Standard Error in a Sentence
+
+Last week we took one slope and one standard error and turned them into a
+sentence somebody else could check.
+
+::: {.tablenotes}
+Two minutes with your neighbour. The table said the return to a year of
+schooling was 1.52 euro an hour, with a standard error of 0.17. Write down the
+one sentence you would put in a report. Then write down the sentence you would
+not be willing to put in it.
+:::
+
+<!-- 0-6 min. Retrieval. Most of them will write a causal sentence and a
+     hedge, and the hedge is where today starts. Take three answers. Do not
+     resolve them. -->
+
+## Lecture Plan
+
+- **Partialling Out.** What adding a second variable actually does to the slope you already had.
+- **Reading a Partial Coefficient.** What holding something fixed covers, and three variables where it goes wrong.
+- **Omitted Variable Bias.** Turning the thing you could not measure into a number.
+
+::: {.tablenotes}
+Reading: [to settle].
+:::
+
+# Partialling Out
+
+## The Two-Regressor Model for Earnings and Schooling
+
+**The goal of this section:** say what adding a variable actually does to a
+coefficient, precisely enough that you could do it by hand.
+
+We want the return to a year of schooling once parental education is in the
+model, so the model now carries two slopes rather than one:
+
+$$
+\text{earnings}_i = \beta_0 + \beta_1\,\text{school}_i
+                  + \beta_2\,\text{parent}_i + u_i
+$$
+
+- $\text{earnings}_i$: hourly earnings of person $i$, in euro
+- $\text{school}_i$: years of schooling of person $i$
+- $\text{parent}_i$: years of schooling of person $i$'s parents
+- $\beta_1$: the return to a year of schooling
+- $\beta_2$: the return to a year of parental schooling
+- $u_i$: everything else that moves earnings
+
+<!-- IDEA 1. 10-35 min. -->
+
+## Subscript Notation for Multiple Regressors
+
+::: {.defn title="A convention that starts mattering today"}
+Until this week there was one slope, so $\beta$ needed no subscript. There are
+now two, and $\beta_1$ is not the same object as the $\beta$ of week 6 even
+though both are called the return to schooling. Same name, different quantity,
+different assumptions behind it.
+:::
+
+## Regression Anatomy: The Slope on the Residualised Regressor
+
+We want an expression for $\hat\beta_1$ that we can actually read, so we ask
+what part of schooling the regression has to work with:
+
+$$
+\text{school}_i = \hat\delta_0 + \hat\delta_1\,\text{parent}_i + r_i
+$$
+
+- $r_i$: the part of person $i$'s schooling that parental education cannot explain
+- $\hat\delta_1$: the slope from regressing schooling on parental education
+
+::: {.result title="Regression anatomy"}
+$\hat\beta_j$ is the slope from regressing $y$ on the part of $x_j$ that the
+other regressors cannot explain.
+:::
+
+## The Two-Step Residual Recipe for a Coefficient
+
+Take those residuals and use them as the only regressor:
+
+$$
+\hat\beta_1 = \frac{\sum_i r_i\,\text{earnings}_i}{\sum_i r_i^2}
+$$
+
+::: {.worked title="The recipe, in three lines of R"}
+Regress schooling on parental education. Keep the residuals. Regress earnings
+on those residuals. The slope you get back is the coefficient on schooling
+from the two-variable regression, to the last decimal place.
+:::
+
+::: {.tablenotes}
+This is not an approximation and it is not a teaching analogy. It is an
+identity, and it is what the appendix derivation shows.
+:::
+
+## Raw and Residualised Scatterplots Side by Side
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Left: earnings against schooling, raw.
+Right: earnings against the part of schooling that parental education cannot
+explain. The right-hand slope is the coefficient from the two-variable
+regression.}
+```
+
+<!-- FIGURE 3-1_anatomy: two panels side by side, a sample of 120. Left panel
+     is the raw scatter with the simple fit (slope 1.57). Right panel plots
+     earnings against the residual from schooling-on-parent, x-axis centred on
+     zero, with its fit (slope 1.30). Needs B_05_01 = 0.50 and B_05_02 = 0.45.
+     Annotate both slopes on the panels. Use figpair if both fit. -->
+
+::: {.takeaway}
+The horizontal axis on the right is narrower than the one on the left, because
+some of the variation in schooling has been used up. That is the whole cost of
+a control, and it is the reason the standard error moves too.
+:::
+
+## Vote: How Does a Strong Control Affect the Standard Error?
+
+Suppose parental education predicts schooling almost perfectly in our sample.
+What happens to the residuals, and what happens to the standard error on the
+coefficient for schooling?
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: which part of the formula
+did you just reason about?
+:::
+
+<!-- ConcepTest 1. The residuals collapse toward zero, the denominator
+     collapses with them, and the standard error blows up. They can get there
+     from the picture without touching the formula, which is the point. This
+     is also where multicollinearity in 3.3 comes from, but do not name it
+     today. Take answers, do not adjudicate. -->
+
+## Pause
+
+<!-- 35-38 min. -->
+
+::: {.tablenotes}
+Two minutes. Say the anatomy sentence back to your neighbour without looking
+at it, then swap. You will need it in every remaining week of the module.
+:::
+
+# Reading a Partial Coefficient
+
+## The Limits of Holding Other Variables Fixed
+
+**The goal of this section:** say what holding other things fixed does and does
+not cover, and then look at three variables where adding them is a mistake.
+
+Regression anatomy tells you what the machine did. It does not tell you
+whether you should have asked it to.
+
+::: {.caveat}
+"Controlling for parental education" is a description of an arithmetic
+operation. Whether that operation removes a bias, removes part of the answer,
+or invents a bias out of nothing depends entirely on where the variable sits
+in the story that generated the data -- and the regression cannot see that.
+:::
+
+<!-- IDEA 2. 38-63 min. -->
+
+## Confounder, Mediator and Collider in One Causal Diagram
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Parental education causes schooling and
+earnings. Occupation sits between them. Promotion is caused by both. The same
+regression command does three different things to these three variables.}
+```
+
+<!-- FIGURE 3-1_diagram: a causal diagram, drawn not simulated. Schooling on
+     the left, earnings on the right, arrow between them. Parent above with
+     arrows down into both. Occupation on the arrow between schooling and
+     earnings. Promotion below with arrows into it from both. Colour the
+     three controls differently and label them confounder, mediator,
+     collider. No model.R switch needed. -->
+
+The taxonomy is older than the diagram convention and is set out carefully in
+@cinelli2024; the collider case in particular is surveyed in @elwert2014.
+
+## Confounders: Why Controlling Removes Bias
+
+Parents with more schooling send their children further in school, and they
+also help their children earn more for reasons that have nothing to do with
+school. So schooling and earnings move together partly for a reason that is
+not the return to schooling.
+
+::: {.result}
+In the population of 200,000, leaving parental education out gives 1.57. Put
+it in and the coefficient is 1.30, which is the truth we wrote into the
+generator.
+:::
+
+::: {.tablenotes}
+This is the case the phrase "adding controls" was invented for, and it is the
+only one of the three where the coefficient moves toward the answer.
+:::
+
+## Mediators: Why Controlling Removes Part of the Effect
+
+Schooling gets you into a different occupation, and the occupation pays
+differently. That is not a nuisance. That is one of the ways schooling raises
+earnings, and it is part of the number we said we wanted.
+
+::: {.result}
+With occupation left out, the coefficient is 1.30: the full return. Put
+occupation in and it falls to 0.91. The missing 0.39 did not disappear -- it
+is the part of the return that travels through occupation.
+:::
+
+::: {.caveat title="And the fallback is not safe either"}
+You might say fine, report 0.91 and call it the direct effect. Even that only
+works if nothing unmeasured causes both occupation and earnings. If something
+does, conditioning on occupation opens exactly the problem on the next slide
+[@cinelli2024].
+:::
+
+## Colliders: Why Controlling Creates a Bias
+
+Promotion is caused by schooling and it is caused by earnings. Nothing causes
+it in the other direction. Add it to the regression and something genuinely
+strange happens.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{Within the promoted and within the
+not-promoted, the relationship between schooling and earnings is flatter than
+it is overall -- and in this population it turns negative.}
+```
+
+<!-- FIGURE 3-1_collider: scatter of earnings on schooling for a sample of 120,
+     points shaded by promotion, with the overall fit in green and separate
+     fits within the promoted and the not-promoted in navy. The within-group
+     lines should visibly tilt the other way. Needs B_05_04 = 0.50 and
+     B_05_05 = 0.15. This is the figure students will remember, so give the
+     within-group slopes on the panel. -->
+
+::: {.result}
+Leave promotion out: 1.30, the truth. Put it in: $-0.15$. The sign flips.
+:::
+
+## Why the Collider Bias Is Not Sampling Noise
+
+Take the people who did get promoted. Some of them got there on schooling.
+Some got there on earnings. So among the promoted, the ones with less
+schooling must have had something else going for them -- they earned more.
+Within that group, less schooling now comes with higher pay.
+
+::: {.caveat title="Read this one carefully"}
+Nothing in the world changed. Every number quoted here is computed on the full
+population of 200,000, so it is not sampling noise, and it is not a bug in the
+data. The correlation was manufactured by the act of conditioning. This is
+the case where adding a variable made the answer worse, and it is the reason
+"I controlled for everything I had" is not a defence.
+:::
+
+The general statement, and the reason post-treatment variables are the usual
+culprits, is in @rosenbaum1984 and @montgomery2018.
+
+## Why Only One Coefficient in Your Table Is Interpretable
+
+::: {.caveat title="The other coefficients in your table"}
+If you built the model to estimate the return to schooling, then the
+coefficient on schooling is the one your assumptions were chosen for. The
+coefficient on parental education in the same table is a different quantity
+that nobody justified, and it usually cannot be read causally at all.
+:::
+
+Reporting every row of a regression table as though each were an effect is
+common enough to have a name [@westreich2013], and the practice of adding
+controls without saying what job each is doing is criticised directly in
+@hunermund2025.
+
+## Vote: Should Promotion Go Into the Regression?
+
+I want the return to schooling. My dataset has a variable for whether the
+person was promoted in the last three years. Should it go in the regression?
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: what would you need to know
+about the world, rather than about the data, to settle it?
+:::
+
+<!-- ConcepTest 2. The answer is no, and the second question is the real one:
+     nothing in the dataset tells you, because the answer depends on what
+     causes what. Some will argue promotion is a confounder because promoted
+     people earn more AND have more schooling, which is exactly the confusion
+     to surface. Take answers, do not adjudicate. -->
+
+## Pause
+
+<!-- 63-66 min. -->
+
+::: {.tablenotes}
+Two minutes. Write down one variable from your own field that you now suspect
+is a bad control, and say which of the two kinds it is. Then compare with your
+neighbour.
+:::
+
+# Omitted Variable Bias
+
+## The Omitted Variable Bias Formula
+
+**The goal of this section:** turn "but I couldn't measure everything" from a
+worry into a quantity you can argue about.
+
+We want to know how far off the coefficient is when a variable is missing, so
+we compare the regression we ran with the one we wish we had run:
+
+$$
+\tilde\beta_1 = \hat\beta_1 + \hat\delta \cdot \hat\gamma
+$$
+
+- $\tilde\beta_1$: the slope on schooling from the regression that left the variable out
+- $\hat\beta_1$: the slope on schooling from the regression that includes it
+- $\hat\delta$: the slope on the omitted variable, in the regression that includes it
+- $\hat\gamma$: the slope from regressing the omitted variable on schooling
+
+<!-- IDEA 3. 66-92 min. -->
+
+## Hat and Tilde: Notation for Two Estimates
+
+::: {.defn title="Hat, and now tilde"}
+A hat marks an estimate. A tilde marks an estimate from a regression that left
+something out. Both are estimates; only one of them is estimating the thing you
+said you wanted.
+:::
+
+## The Bias Is a Product of Two Slopes
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The coefficient with parental education
+left out, as parental education is made to matter more and more. The
+coefficient with it included does not move.}
+```
+
+<!-- FIGURE 3-1_shortlong: sweep B_05_02 (parent -> pay) from 0 to 0.60 with
+     B_05_01 fixed at 0.50, and plot two lines: the short coefficient, which
+     climbs from 1.30 to about 1.67, and the long coefficient, which stays flat
+     at 1.30. Mark the module's headline 1.30 with a reference line. -->
+
+::: {.takeaway}
+Multiply two things and a zero anywhere kills it. A variable that moves
+earnings but is unrelated to schooling costs you nothing in bias. Neither does
+one strongly related to schooling that has no effect on earnings. It takes
+both.
+:::
+
+## Applying the Formula to Unmeasured Ability
+
+Ability is not in the dataset and never will be, so we cannot run the long
+regression. But we can put numbers on the two ingredients and see what they
+would have to be.
+
+```{=latex}
+\figsmall{../_shared/placeholder.pdf}{The estimated return to schooling as
+ability is allowed to matter more. The truth stays at 1.30 throughout; only
+what we would estimate moves.}
+```
+
+<!-- FIGURE 3-1_ability: sweep B_04_01 (ability -> pay) across a plausible
+     range with B_04_02 = 0.80, plotting the short coefficient against the
+     truth at 1.30. Shade the region where the estimate exceeds 1.50, which is
+     roughly what the module's block 2 sample reported. -->
+
+::: {.result}
+Set ability to move schooling by 0.13 years per standard deviation and pay by
+1.51 euro an hour per standard deviation. The product is 0.20, and the
+estimate is 1.50 against a truth of 1.30.
+:::
+
+::: {.tablenotes}
+Both of those are guesses, and they are guesses about the world rather than
+about the data. That is not a weakness of the formula. It is the formula
+telling you honestly what the argument actually turns on, and week 12 is the
+week we stop being able to fix it by adding a column.
+:::
+
+## Vote: How Large Would the Ability Bias Have To Be?
+
+Our estimate is 1.50. For the truth to be 1.00, ability would have to do two
+things at once. Which pair of numbers would get you there, and would you
+defend either of them out loud?
+
+::: {.tablenotes}
+Vote, argue with your neighbour, vote again. Then: is the pair you chose more
+or less plausible than the one on the last slide?
+:::
+
+<!-- ConcepTest 3. Any pair whose product is 0.50 works, which is the insight:
+     the formula does not pin down a story, it prices one. Push them to say
+     which ingredient they find easier to argue about, because it is almost
+     always the second. Take answers, do not adjudicate. -->
+
+## What Would Have To Be True?
+
+::: {.caveat title="The standing question"}
+What would have to be true for this number to mean what we just said it means?
+And what is the plausible story where it isn't?
+:::
+
+[Candidate this week: every variable we controlled for is a confounder and
+none is a mediator or a collider, and nothing we left out moves both schooling
+and earnings. The first half is a claim about causal order that the data
+cannot check. The second half has a price, and we just computed it.]
+
+<!-- 92-97 min. Same slot every week. They answer in pairs first, then you.
+     Not that causation is hard in the abstract, but that THIS estimate rests
+     on something nameable that may well be false. -->
+
+## Application
+
+The two-slider app. One slider moves how much the omitted variable shifts
+schooling; the other moves how much it shifts earnings.
+
+::: {.tablenotes}
+Vote first, before anything is run: with both sliders at their midpoint, is the
+estimated return above 1.30, below it, or unchanged? Then move one slider to
+zero and take the vote again.
+:::
+
+Lab this week: run the three-line residual recipe on our sample and confirm you
+get the multiple-regression coefficient back, then turn the collider switch on
+and watch a coefficient you trusted change sign.
+
+<!-- 97-105 min. ConcepTest 4. The second vote is the one that teaches the
+     product structure, so do not skip it to save time. -->
+
+## Summary: Partialling Out, Bad Controls and Omitted Variable Bias
+
+Today was three separate ideas, each doing one job:
+
+::: {.contributions}
+1. **Partialling Out.** A coefficient is the slope on the part of a variable that nothing else in the model explains.
+2. **Reading a Partial Coefficient.** Holding fixed covers only what you measured, and three kinds of variable break it in three different ways.
+3. **Omitted Variable Bias.** The bias is a product of two things, so naming them turns an objection into an argument with numbers in it.
+:::
+
+::: {.tablenotes}
+Next week: the same machinery, but the regressors stop being years and start
+being categories and logarithms.
+:::
+
+<!-- 105-110 min. No new material. Names match the section titles, which match
+     the roadmap.
+
+     The .contributions component sets the bold lead on one line and the body
+     on the next, so the lead has to be a complete label and the body a
+     complete sentence. An em dash opening the body leaves a dangling dash.
+
+     Exit ticket after this: what was the muddiest point? It will be the
+     collider. The answers set next week's retrieval questions. -->
+
+## Before Lecture 3.2
+
+- **Read** [chapter].
+- **Do** the appendix derivations. There are two, and the first is the one that
+  makes every remaining week of the module readable.
+- **Try** the app: set the second slider to zero and see whether you can make
+  the bias come back.
+
+::: {.defn title="Problem set 3"}
+[Out this week, due week n. Covers 3.1 and 3.2, and asks for one written
+paragraph defending a control you chose and one rejecting a control you
+did not.]
+:::
+
+## {.plain}
+
+::: {.thanks email="sam.deegan@ucdconnect.ie" site="sam-deegan.com"}
+:::
+
+<!-- ===========================================================
+     APPENDIX. Everything past the thank-you slide. The theme switches
+     to Roman numbering here, so these frames do not count against the
+     deck. The divider is the .appendix div on a plain frame, NOT a
+     level-one "# Appendix" heading - the div calls \appendixcontent,
+     which is what switches the counter. One list per frame.
+     =========================================================== -->
+
+## {.plain}
+
+::: {.appendix}
+:::
+
+## Derivation: Regression Anatomy
+
+Show that the two-step residual recipe returns the multiple-regression
+coefficient exactly.
+
+::: {.tablenotes}
+Three steps. Write the first-order conditions for the two-variable fit, use
+the one for parental education to show that the residual $r_i$ is uncorrelated
+with parental education by construction, and substitute. The step that does
+the work is the second: it is orthogonality, and it is why the residual
+carries only the schooling variation that parental education has not already
+claimed. The result is the scalar version of a theorem usually stated in
+matrices [@frisch1933; @lovell1963], and the short proof is @lovell2008.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Derivation: The Omitted Variable Bias Formula
+
+Show that the slope from the short regression equals the slope from the long
+one plus the product of two other slopes.
+
+::: {.tablenotes}
+Three steps. Substitute the long model into the short estimator, split the
+result into the long slope plus a term in the omitted variable, and recognise
+that term as the auxiliary regression of the omitted variable on schooling.
+The step that does the work is the third, and it is where the product
+structure comes from. The same algebra with the omitted variable put back is
+what week 12 uses to argue about measurement error.
+:::
+
+[Full derivation. Set as homework; worked solution published with the set.]
+
+## Notes and Tools
+
+- The two-slider app, and this week's residual-recipe script.
+- `resid()` and `lm()` in R, which is the whole of the anatomy lab.
+- Longer treatments of good and bad controls at this level: @huntingtonklein2022, @cunningham2021 and @angrist2015; the case for putting causal language into a first course is @angrist2017undergraduate, and the bad-control section of @angrist2009 is where most economists meet the idea.
+
+## References {.allowframebreaks}
+
+::: {#refs}
+:::
+
+<!-- Written by citeproc from ../_shared/econometrics.bib, styled by
+     ../_shared/apa.csl (APA 7th). The entries for this deck are drafted in
+     ../../bib/3-1.bib and must be merged into the shared file before this
+     renders. A work mentioned only inside a raw LaTeX block is invisible to
+     citeproc - every citation above is in markdown prose for that reason.
+
+     The frame takes .allowframebreaks because the list outgrows one slide;
+     the theme blanks the continuation title so the breaks are invisible. -->
