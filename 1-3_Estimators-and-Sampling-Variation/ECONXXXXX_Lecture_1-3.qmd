@@ -170,7 +170,7 @@ Lecture 1.2 defined the average we cannot compute, and its algebra:
 
 ::: {.contributions}
 1.  **Expectation.** A property of a distribution, not of a sample.
-2.  **The Algebra of Expectations.** The rules every derivation in this module spends.
+2.  **The Algebra of Expectations.** The rules every derivation in this module uses.
 3.  **The Conditional Expectation Function.** The best guess of earnings given schooling.
 :::
 

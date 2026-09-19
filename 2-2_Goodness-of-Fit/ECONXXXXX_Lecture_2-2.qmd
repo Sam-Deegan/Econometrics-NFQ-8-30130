@@ -13,16 +13,36 @@
 #      2. Every equation states its OBJECTIVE before it appears - what
 #         question it answers, in one line.
 #
-#      3. Notation CONVENTIONS are taught as callouts where each first
-#         bites. The one that matters in this module is the hat: a student
-#         who reads beta-hat and beta as the same object cannot be taught
-#         sampling variation.
+#      3. Notation CONVENTIONS are taught as callouts where each is first
+#         used. The hat was INTRODUCED in 1.3 and extended to a slope in
+#         2.1. This deck extends it to a fitted value and a residual, and
+#         the one callout it owes is the difference between the residual
+#         u-hat, which we compute, and the error u, which we never see.
 #
 #      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
 #
-#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
-#         appendix and set as homework. Class time goes on the shape of
-#         the proof: what it does, its steps, which step does the work.
+#      5. THE DECOMPOSITION IS DERIVED ON THE SLIDES, IN SAMPLE ALGEBRA.
+#         CHANGED 18 September, overturning the previous rule that the
+#         proof of TSS = ESS + RSS sat in the appendix as homework. The
+#         reason: the identity follows from the two conditions 2.1 already
+#         derived in the room, and the cross term vanishes for exactly
+#         those two reasons. Hiding it in an appendix breaks the one link
+#         that makes R-squared a share rather than a definition, and
+#         wastes the derivation 2.1 paid for. Wooldridge proves it in the
+#         body too, 2-3b p.34. Expectations are NOT used: the argument is
+#         sums over the 120 people. Only the corr-squared substitution,
+#         which is mechanical, is left to the appendix.
+#
+#      6. NO VOTES AND NO PAUSE FRAMES. A question to the room is a titled
+#         frame, one or two lines of context, the question in a
+#         `.defn title="Question"` box, and nothing under the box. Where
+#         the answer is a sign or a direction, answers come BEFORE
+#         anything is run. "Objective:" and "The goal of this section:"
+#         are banned openings, and no stage direction appears on a slide.
+#
+#      7. NO SPEAKER NOTES IN THIS BLOCK. A slide has to teach on its own,
+#         so what would have been said is written on it, and what a claim
+#         rests on is carried by a citation rather than by a script.
 #
 #      NARRATIVE SPINE. Three sections, named by content, and named the
 #      same way in the roadmap, the dividers and the closing summary.
@@ -31,17 +51,61 @@
 #        2  Sums of Squares
 #        3  What R-Squared Will Not Tell You
 #
+#      SHELF LOCATORS. Wooldridge, Introductory Econometrics, 7th edition,
+#      cited @wooldridge2020. Every page below was opened in the 18
+#      September pass; PDF page = book page + 23.
+#
+#        2-2   p.25  eq (2.14), (2.15)  the two sample conditions
+#        2-2   p.26  eq (2.17)  b0-hat = ybar - b1-hat xbar
+#        2-2   p.26  b1-hat = rho-hat times (sd of y over sd of x)
+#        2-2   p.26             "simple regression is an analysis of
+#                               correlation ... careful in inferring
+#                               causality"
+#        2-3   p.32             "Properties of OLS on Any Sample of Data"
+#        2-3a  p.32             fitted value and residual defined
+#        2-3b  p.32  eq (2.30)  the residuals sum to zero
+#        2-3b  p.33  eq (2.31)  the residuals are uncorrelated with x
+#        2-3b  p.33             property (3): (xbar, ybar) is on the line
+#        2-3b  p.33  eq (2.32)  y_i = yhat_i + uhat_i
+#        2-3b  p.34  eq (2.33), (2.34), (2.35)  SST, SSE and SSR
+#        2-3b  p.34  eq (2.36)  SST = SSE + SSR
+#        2-3b  p.34  eq (2.37)  the cross term is zero
+#        2-3b  p.34             naming: "called either SST or TSS"; SSE is
+#                               confusable with "error sum of squares"
+#        2-3c  p.35  eq (2.38)  R-squared = SSE/SST = 1 - SSR/SST
+#        2-3c  p.35             R-squared is the squared sample correlation
+#                               between y and yhat
+#        2-3c  p.35  ex 2.8     CEO salary, R-squared 0.0132, n = 209
+#        2-3c  p.35             "a seemingly low R-squared does not
+#                               necessarily mean that an OLS regression
+#                               equation is useless"
+#
+#      Mastering Metrics, cited @angrist2015, is on the shelf for this
+#      block but carries nothing this deck rests on; it is not cited here.
+#
+#      NAMING. This module writes TSS, ESS and RSS. Wooldridge writes SST,
+#      SSE and SSR for the same three quantities and says so at p.34,
+#      where he also warns that SSE reads as "error" and is not. The
+#      naming callout in section 2 exists because students reading the
+#      book beside the slides otherwise think they are different objects.
+#
+#      CENTRING AT THIRTEEN, carried over from 2.1 and changed there on 18
+#      September from twelve. Thirteen years is eight of primary, three of
+#      junior cycle and two of senior cycle: the Leaving Certificate
+#      without Transition Year. Nothing on this deck depends on the
+#      centring constant. TSS, ESS, RSS and R-squared are all invariant to
+#      it, because subtracting thirteen shifts x_i and xbar together.
+#
 #      TIMING, 110 minutes of a two-hour slot
 #         0-6     retrieval
 #         6-10    lecture plan
-#        10-35    Fitted Values and Residuals
-#        35-38    pause
-#        38-63    Sums of Squares
-#        63-66    pause
-#        66-92    What R-Squared Will Not Tell You
-#        92-97    the standing question
-#        97-105   application
-#       105-110   synthesis and exit ticket
+#        10-30    Fitted Values and Residuals
+#        30-62    Sums of Squares, including the derivation of the identity
+#        62-65    question to the room: adding a variable that cannot matter
+#        65-94    What R-Squared Will Not Tell You, including the hold-out
+#        94-99    the standing question
+#        99-106   application
+#       106-110   synthesis and exit ticket
 #
 #      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
 #      written by _apps/export_figures.R. Rebuild with
@@ -54,7 +118,23 @@
 #      THE POPULATION. One simulated population of 200,000 people, a
 #      sample of 120 drawn from it, and a hold-out of another 120. The
 #      truth is known because we wrote it. The flaws are in the generator
-#      already, switched off, and each later lecture turns one on.
+#      already, switched off, and each later lecture turns one on. This is
+#      the deck that opens the hold-out for the first time.
+#
+#      THE NUMBERS ON THIS DECK, computed from the generator at the module
+#      seed on 18 September and re-checked after the centring change:
+#
+#        population     intercept 10.80 at 13 years  slope 1.30  sd(u) 4.50
+#        our 120        ybar 12.2490      xbar 13.4473
+#        least squares  slope 1.5227      intercept 11.5680
+#        sums of squares  TSS 4162.6   ESS 1469.8   RSS 2692.8
+#        the identity     1469.8 + 2692.8 = 4162.6
+#        R-squared        0.3531 = 1469.8/4162.6 = 1 - 2692.8/4162.6
+#        correlation of schooling and earnings 0.5942, and 0.5942^2 = 0.3531
+#        hold-out R-squared 0.2886 against in-sample 0.3531
+#        forward reference to 4.1, heteroskedastic errors that fan out with
+#        schooling: R-squared 0.1014 with slope 1.4784, against 0.3531
+#        with slope 1.5227 here
 #
 title: "Goodness of Fit"
 subtitle: "ECONXXXXX Econometrics I"
@@ -84,164 +164,251 @@ qr-code: ../_shared/qr-sam-deegan.png
 \roadmap{2.2}
 ```
 
-::: {.tablenotes}
-Weeks already covered are greyed; today's is marked.
+::: {.tablenotes title="Block 2 Is Four Lectures on One Estimator"}
+Lectures already given are greyed and today's is marked. Lecture 2.1 fitted the
+line. Today asks how much of the variation in earnings it accounts for, 2.3 asks
+how far it lands from the truth, and 2.4 asks how to report it.
 :::
 
 ## How Small Is a Small Sum of Squared Residuals?
 
-Last week we chose the line that makes the sum of squared residuals as small
-as it can be.
+Lecture 2.1 chose the line that makes the sum of squared residuals smaller than
+any other line does, and on our 120 people that total is 2,692.8.
 
-::: {.tablenotes}
-Two minutes with your neighbour. Small compared to what? If I tell you the SSR
-for a regression is 2,700, have I told you anything?
+That number is in squared euro per hour, and it grows with the number of people
+in the sample. It has no upper limit and no natural scale, so on its own it
+ranks lines and nothing else.
+
+Today builds the comparison it is missing: how much earnings vary in this sample
+before schooling is mentioned at all.
+
+::: {.defn title="Question"}
+If I tell you the sum of squared residuals for a regression is 2,692.8, have I
+told you anything about how well the line fits?
 :::
-
-<!-- 0-6 min. Retrieval. The honest answer is no, and that is today. -->
 
 ## Lecture Plan
 
-- **Fitted Values and Residuals.** Splitting each person into the part the line gets and the part it misses.
-- **Sums of Squares.** Adding those parts up across everyone, and the identity that links them.
-- **What R-Squared Will Not Tell You.** What a high or a low number does and does not license.
-
-::: {.tablenotes}
-Reading: [to settle].
+::: {.contributions}
+1.  **Fitted Values and Residuals.** Splitting one person's earnings into the part the line gets and the part it misses.
+2.  **Sums of Squares.** Adding those parts over 120 people, and deriving the identity that links the three totals.
+3.  **What R-Squared Will Not Tell You.** Why a share of variation is not a verdict on a model or on a slope.
 :::
 
 # Fitted Values and Residuals
 
-## Decomposing an Observation Into Fitted Value and Residual
+## Splitting One Person's Earnings Into Two Parts
 
-**The goal of this section:** separate what the line accounts for from what it
-does not, one person at a time.
-
-For each person the line produces a **fitted value**, and what is left over is
-their **residual**.
+The fitted line assigns every person a predicted wage, and whatever is left over
+belongs to that person alone. Writing one person as the sum of the two is the
+whole of this section [@wooldridge2020]:
 
 ```{=latex}
 \begin{equation}
 y_i = \hat{y}_i + \hat{u}_i
+\qquad\text{where}\qquad
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 (x_i - 13)
 \end{equation}
 ```
 
-- $y_i$: what person $i$ actually earns
-- $\hat{y}_i$: what the fitted line says they earn
-- $\hat{u}_i$: the difference between the two
-- $\bar{y}$: the average of $y$ across the sample
+- $y_i$: what person $i$ actually earns per hour
+- $\hat{y}_i$: the fitted value, what the line predicts for person $i$
+- $\hat{u}_i$: the residual, the amount the line misses person $i$ by
+- $\bar{y}$: the average of $y$ over the 120 people, 12.2490
 
-::: {.caveat title="A residual is not an error"}
-$u_i$ is the population's error and we never see it. $\hat{u}_i$ is a leftover
-we computed. Same hat convention as last week, same reason.
+::: {.caveat title="A Residual Is Not an Error"}
+$u_i$ is the population error from 2.1, and we never see it. $\hat{u}_i$ is a
+number we computed from the fitted line, so it inherits every flaw in that line.
+If we had fitted a different line, every residual would be different while every
+error stayed exactly as it was.
 :::
 
-<!-- IDEA 1. 10-35 min. -->
-
-## The Decomposition Shown on the Scatter Plot
+## The Split Shown on One Person
 
 ```{=latex}
-\figsmall{../_shared/figures/2-2_split.png}{The person furthest from the line,
-split into the part the line explains and the part it does not.}
+\fig{../_shared/figures/2-2_split.png}{One person's earnings split into a fitted value and a residual.}
 ```
 
-::: {.tablenotes}
-The dashed line is $\bar{y}$. Everything today is built from the distance
-between a person, the line, and that average.
+::: {.tablenotes title="Three Heights, Two of Which We Choose"}
+The dashed horizontal line is $\bar{y}$, at 12.2490. The solid line is the
+fitted line from 2.1, slope 1.5227 and intercept 11.5680. Person $i$ sits above
+both, and the distance from $\bar{y}$ up to that person is the sum of two
+segments: $\bar{y}$ up to the line, and the line up to the person.
 :::
 
-## Vote: Can a Residual Be Useful?
+## Three Facts About the Residuals, From Lecture 2.1
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: if one person's residual is very large, is that
-a fact about them or about the model?
+Least squares did not just pick a line. It picked the pair that makes these two
+sums exactly zero, and every step today rests on them [@wooldridge2020]:
+
+```{=latex}
+\begin{equation}
+\sum_{i=1}^{n} \hat{u}_i = 0
+\qquad\qquad
+\sum_{i=1}^{n} (x_i - 13)\, \hat{u}_i = 0
+\end{equation}
+```
+
+The first says the residuals average to zero, so the fitted values average to
+$\bar{y}$ as well. The second says the residuals retain no co-movement with
+schooling. Together they put the point $(\bar{x}, \bar{y})$ on the fitted line.
+
+::: {.takeaway title="These Two Sums Are the Only Inputs to Today's Derivation"}
+Neither holds because of an assumption about the population. Both hold by
+construction, for any sample of any 120 people, because the line was chosen to
+make them hold.
 :::
 
-<!-- ConcepTest 1. Both, and separating them is what week 11 is about. Do
-     not adjudicate. -->
+## A Large Residual Is Information About the Model
 
-## Pause
+In 2.1 the largest residual was 17.23, and it supplied 296.9 of the total
+2,692.8. It is tempting to read that person as an error in the data.
 
-<!-- 35-38 min. -->
+They are not. A residual is a statement about the pair, the person and the line,
+and it cannot be assigned to one of them from its size alone. A person who earns
+far more than thirteen years of schooling predicts may have a rare occupation, a
+mistyped wage, or a feature the line was never given.
 
-::: {.tablenotes}
-Two minutes. Write down, without the slide, what the residual for a single
-person is. Then compare with your neighbour.
+Lecture 4.1 is about reading residuals systematically: which patterns in them
+indicate a fault in the specification rather than a fact about a person.
+
+::: {.caveat title="The Residuals Sum to Zero Whatever Is Wrong With the Line"}
+The two conditions above hold for a badly specified line exactly as they hold
+for a well specified one. So no residual total can tell you the model is right,
+and today's R-squared inherits that limitation in full.
 :::
 
 # Sums of Squares
 
-## Total Sum of Squares
+## Three Totals, One for Each Kind of Variation
 
-**The goal of this section:** turn a person-by-person split into three formal
-quantities, and show that two of them add to the third.
-
-How much does earnings vary in this sample at all, before schooling is
-mentioned?
+The per-person split becomes a comparison only once it is added over everybody.
+Three totals do that, and each answers one question [@wooldridge2020]:
 
 ```{=latex}
 \begin{equation}
-\mathrm{TSS} = \sum_{i=1}^{n} \left( y_i - \bar{y} \right)^2
+\mathrm{TSS} = \sum_{i=1}^{n} (y_i - \bar{y})^2
+\qquad
+\mathrm{ESS} = \sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2
+\qquad
+\mathrm{RSS} = \sum_{i=1}^{n} \hat{u}_i^{\,2}
 \end{equation}
 ```
 
-```{=latex}
-\figsmall{../_shared/figures/2-2_tss.png}{Each segment runs from a person to the
-sample mean. The total sum of squares adds up their squares.}
-```
+- $\mathrm{TSS}$: how much earnings vary, before schooling is mentioned
+- $\mathrm{ESS}$: how much the fitted values vary around the same average
+- $\mathrm{RSS}$: how much is left once the line has been subtracted
 
-<!-- IDEA 2. 38-63 min. -->
-
-## Explained Sum of Squares
-
-How much of that variation does the fitted line reproduce?
-
-```{=latex}
-\begin{equation}
-\mathrm{ESS} = \sum_{i=1}^{n} \left( \hat{y}_i - \bar{y} \right)^2
-\end{equation}
-```
-
-```{=latex}
-\figsmall{../_shared/figures/2-2_ess.png}{Now each segment runs from the line to the
-mean. Where the line is flat, this contributes nothing.}
-```
-
-## Residual Sum of Squares
-
-What is left over once the line has done its work?
-
-```{=latex}
-\begin{equation}
-\mathrm{RSS} = \sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2
-             = \sum_{i=1}^{n} \hat{u}_i^{\,2}
-\end{equation}
-```
-
-```{=latex}
-\figsmall{../_shared/figures/2-2_rss.png}{The same segments least squares made as
-small as it could last week.}
-```
-
-::: {.tablenotes}
-This is the quantity we minimised in 2.1. Goodness of fit and the choice of
-line are the same arithmetic, asked twice.
+::: {.caveat title="Wooldridge Writes SST, SSE and SSR for These Three"}
+The same three totals, different letters. Wooldridge notes that the first is
+called SST or TSS with little confusion, but that SSE reads as "error sum of
+squares" and is not: it is the explained total [@wooldridge2020]. Read the
+letters in whichever book is open and match them to the formula, not the name.
 :::
 
-## The Identity Linking the Three Sums of Squares
+## The Total Sum of Squares as Vertical Segments
+
+```{=latex}
+\fig{../_shared/figures/2-2_tss.png}{Each segment runs from a person to the sample average of earnings.}
+```
+
+::: {.tablenotes title="The Benchmark Is the Average, Not the Line"}
+This is the total we would face if we had never collected schooling: predict
+12.2490 for everybody and square what is left. On our 120 people the segments
+square and sum to 4,162.6. Every later total is measured against this one.
+:::
+
+## The Explained Sum of Squares as Vertical Segments
+
+```{=latex}
+\fig{../_shared/figures/2-2_ess.png}{Each segment now runs from the fitted line down to the sample average.}
+```
+
+::: {.tablenotes title="A Flat Line Would Contribute Nothing Here"}
+These segments record how far the line departs from predicting the average for
+everybody. If $\hat{\beta}_1$ were zero, every fitted value would equal 12.2490
+and this total would be zero. On our 120 it is 1,469.8. The residual segments
+are the ones drawn in 2.1, and they square and sum to 2,692.8.
+:::
+
+## Deriving the Identity: Splitting the Deviation From the Mean
+
+Take one person's distance from the average and add and subtract the fitted
+value, which splits it into the two segments on the last two exhibits:
 
 ```{=latex}
 \begin{equation}
-\mathrm{TSS} = \mathrm{ESS} + \mathrm{RSS}
+y_i - \bar{y} = \hat{u}_i + (\hat{y}_i - \bar{y})
 \end{equation}
 ```
 
+Square both sides and sum over the 120 people. The square of a sum is three
+terms, and two of them are totals we have already named:
+
 ```{=latex}
-\figsmall{../_shared/figures/2-2_bars.png}{The three totals as bars. The first
-is the height of the other two.}
+\begin{equation}
+\underbrace{\sum_{i=1}^{n} (y_i - \bar{y})^2}_{\mathrm{TSS}}
+= \underbrace{\sum_{i=1}^{n} \hat{u}_i^{\,2}}_{\mathrm{RSS}}
++ \; 2\sum_{i=1}^{n} \hat{u}_i (\hat{y}_i - \bar{y})
++ \underbrace{\sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2}_{\mathrm{ESS}}
+\end{equation}
 ```
 
-## Defining R-Squared From the Sums of Squares
+::: {.takeaway title="The Identity Holds Only If the Middle Term Is Zero"}
+Nothing so far is special to least squares: this much is true of any line at
+all. The whole argument reduces to one cross term, and the next frame is the
+only place where the line being the least-squares line matters.
+:::
+
+## Deriving the Identity: Why the Cross Term Is Zero
+
+Substitute the intercept 2.1 derived, $\hat{\beta}_0 = \bar{y} - \hat{\beta}_1
+(\bar{x} - 13)$, into the fitted value. The centring constant cancels and what
+remains is a deviation from the sample mean of schooling:
+
+```{=latex}
+\begin{equation}
+\hat{y}_i - \bar{y}
+= \hat{\beta}_0 + \hat{\beta}_1 (x_i - 13) - \bar{y}
+= \hat{\beta}_1 (x_i - \bar{x})
+\end{equation}
+```
+
+Put that into the cross term and take the constant $\hat{\beta}_1$ outside:
+
+```{=latex}
+\begin{equation}
+\sum_{i=1}^{n} \hat{u}_i (\hat{y}_i - \bar{y})
+= \hat{\beta}_1 \sum_{i=1}^{n} (x_i - \bar{x})\, \hat{u}_i
+= \hat{\beta}_1 \Bigl[ \sum_{i=1}^{n} (x_i - 13)\, \hat{u}_i
+  - (\bar{x} - 13) \sum_{i=1}^{n} \hat{u}_i \Bigr] = 0
+\end{equation}
+```
+
+::: {.takeaway title="Both Bracketed Sums Are Conditions From Lecture 2.1"}
+The first is zero because the residuals retain no co-movement with schooling.
+The second is zero because the residuals sum to zero. Wooldridge reaches the
+same step at eq (2.37) [@wooldridge2020]. R-squared behaves like a share only
+because both of 2.1's conditions hold.
+:::
+
+## The Three Totals on Our 120 People
+
+```{=latex}
+\fig{../_shared/figures/2-2_bars.png}{The three totals as bars: the first is the height of the other two.}
+```
+
+::: {.tablenotes title="The Arithmetic Closes Exactly"}
+$1{,}469.8 + 2{,}692.8 = 4{,}162.6$. The explained total and the residual total
+add to the total variation with nothing left over, which is what the cross term
+vanishing bought us. Most of the height of the first bar is residual.
+:::
+
+## Defining R-Squared From the Three Totals
+
+The three totals are in squared euro per hour, so none of them can be compared
+across datasets. Dividing one by another removes the units and the sample size
+[@wooldridge2020]:
 
 ```{=latex}
 \begin{equation}
@@ -249,162 +416,233 @@ R^2 = \frac{\mathrm{ESS}}{\mathrm{TSS}} = 1 - \frac{\mathrm{RSS}}{\mathrm{TSS}}
 \end{equation}
 ```
 
-::: {.result}
-$R^2$ is the share of the variation in earnings that moves with schooling in
-this sample. It lies between nought and one only because the identity above
-holds, and that identity holds only because of the first-order condition you
-derived in 2.1.
+- $R^2$: the share of the sample variation in earnings the line accounts for
+
+::: {.defn title="R-Squared Is a Share Because the Identity Holds"}
+The two expressions agree only because ESS and RSS add to TSS, and $R^2$ lies
+between nought and one for the same reason. Without the cross term vanishing it
+would be a ratio of two unrelated totals and could take any value at all.
 :::
 
-## Vote: Which Model Has the Higher R-Squared?
+## R-Squared on Our 120 People
 
-Two regressions on the same people: earnings on schooling, and earnings on
-schooling plus their height in centimetres.
+Both routes to the number use the totals from the bar chart, and they agree
+because the identity holds:
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: does your answer depend on whether height
-matters?
+```{=latex}
+\begin{equation}
+R^2 = \frac{1469.8}{4162.6} = 0.3531
+\qquad\qquad
+R^2 = 1 - \frac{2692.8}{4162.6} = 0.3531
+\end{equation}
+```
+
+::: {.worked title="Reading the Number Out Loud"}
+Schooling accounts for 35.31 per cent of the variation in hourly earnings across
+these 120 people. The other 64.69 per cent is variation the line does not
+reproduce. That sentence is about this sample and about the spread of earnings
+in it, and it says nothing yet about whether 1.5227 is a good estimate.
 :::
 
-<!-- ConcepTest 2. It does not. Adding any variable cannot lower R-squared,
-     which is the first crack in using it to choose a model, and week 10
-     comes back to it. Do not adjudicate. -->
+## R-Squared Is the Squared Correlation
 
-## Pause
+Lecture 2.1 wrote the slope as a correlation times a ratio of standard
+deviations, which is Wooldridge's second form of eq (2.19) [@wooldridge2020]:
 
-<!-- 63-66 min. -->
+```{=latex}
+\begin{equation}
+\hat{\beta}_1 = \hat{\rho}_{xy} \cdot \frac{\hat{\sigma}_y}{\hat{\sigma}_x}
+\qquad\Longrightarrow\qquad
+R^2 = \hat{\rho}_{xy}^{\,2}
+\end{equation}
+```
 
-::: {.tablenotes}
-Two minutes. In one sentence with no symbols: what would an R-squared of zero
-mean? Then compare with your neighbour.
+- $\hat{\rho}_{xy}$: the sample correlation between schooling and earnings, 0.5942
+- $\hat{\sigma}_y, \hat{\sigma}_x$: the sample standard deviations of earnings and schooling
+
+On our 120 people, $0.5942^2 = 0.3531$, which is the R-squared computed from the
+totals. The appendix does the three lines of substitution.
+
+::: {.takeaway title="In Simple Regression R-Squared Carries No New Information"}
+With one regressor, R-squared is the correlation you already had, squared and
+stripped of its sign. It cannot tell you the slope is positive, and it is the
+same number whether earnings are regressed on schooling or schooling on
+earnings. In multiple regression it stops being a correlation, which is where
+its problems begin.
+:::
+
+## Adding a Variable That Cannot Matter
+
+Two regressions on the same 120 people: earnings on schooling, and earnings on
+schooling together with each person's height in centimetres.
+
+::: {.defn title="Question"}
+Which regression has the higher R-squared, and does your answer depend on
+whether height has anything to do with earnings?
 :::
 
 # What R-Squared Will Not Tell You
 
-## A High R-Squared With a Negligible Effect
+## Adding Any Variable Raises the R-Squared
 
-**The goal of this section:** stop a number that measures spread being read as
-a verdict on the model.
+The height regression has the higher R-squared, and it does not depend on height
+mattering. Least squares minimises RSS over a larger set of candidate lines, so
+the new RSS cannot be larger than the old one. TSS is unchanged, since it never
+involved a regressor. So $1 - \mathrm{RSS}/\mathrm{TSS}$ cannot fall.
+
+A variable with no relation to earnings will still pick up some accidental
+co-movement in 120 people, so in practice the R-squared rises rather than
+staying still.
+
+::: {.caveat title="R-Squared Cannot Compare Specifications"}
+A criterion that never falls when a variable is added cannot choose between
+specifications, because it ranks the largest model first every time. Lecture 3.1
+introduces adjusted R-squared, which charges for each variable; Lecture 3.3 does
+the comparison properly, with a test rather than a ranking.
+:::
+
+## A Straight Line Through a Curved Relationship
 
 ```{=latex}
-\figsmall{../_shared/figures/2-2_rsq-tight.png}{Almost all the variation is
-accounted for, and the effect is worth six cent an hour.}
+\fig{../_shared/figures/2-2_rsq-curved.png}{Earnings rise and then fall, while the fitted straight line rises throughout.}
 ```
 
-::: {.tablenotes}
-Precise, and unimportant. If you chose between models on R-squared you would
-pick this one.
+::: {.tablenotes title="The R-Squared Does Not Report the Curve"}
+The straight line takes an average direction through a relation that reverses,
+and returns a single positive slope and a respectable R-squared. Nothing in
+either number records that the fit is wrong in shape. Lecture 3.2 fits the curve;
+the residual plot in Lecture 4.1 is how you find out you need to.
 :::
 
-<!-- IDEA 3. 66-92 min. -->
-
-## A Low R-Squared With an Important Effect
+## A Low R-Squared Does Not Mean a Useless Slope
 
 ```{=latex}
-\figsmall{../_shared/figures/2-2_rsq-loose.png}{Almost none of the variation
-is accounted for, and the effect is worth nearly two euro an hour.}
+\fig{../_shared/figures/2-2_rsq-loose.png}{A wide scatter around a clearly rising line: little of the spread accounted for.}
 ```
 
-::: {.tablenotes}
-Noisy, and important. Most of what moves earnings is not schooling, which is
-a fact about the world rather than a fault in the regression.
+::: {.tablenotes title="Most of What Sets Earnings Is Not Schooling"}
+Our own R-squared of 0.3531 says schooling leaves most of the spread in earnings
+unaccounted for, which is a fact about how varied Irish earnings are and not a
+fault in the line. Wooldridge's CEO salary regression returns 0.0132 on 209
+firms, and he warns that a low R-squared does not make a regression useless
+[@wooldridge2020].
 :::
 
-## A High R-Squared With a Misspecified Functional Form
+## Errors That Widen With Schooling Lower the R-Squared
+
+Lecture 4.1 turns on heteroskedasticity: the errors stay centred on zero but
+spread out more at higher levels of schooling, while the true slope stays at
+1.30. The fitted slope barely shifts and the R-squared falls to under a third of
+its value:
+
+- baseline sample, errors of the same width at every schooling level: slope 1.5227, $R^2 = 0.3531$
+- heteroskedastic sample, errors that fan out with schooling: slope 1.4784, $R^2 = 0.1014$
+
+The slope answers "how much more does an extra year of schooling go with?" The
+R-squared answers "how tightly do people cluster around that answer?" Widening
+the errors at the top of the schooling range alters the second and leaves the
+first where it is.
+
+::: {.takeaway title="Two Different Questions, and Only One of Them Is About Size"}
+R-squared has no units; the slope is in euro per hour per year of schooling.
+No value of a unit-free share can tell you whether a euro figure is large enough
+to matter, and Wooldridge notes that beginners weight R-squared far too heavily
+in judging a regression [@wooldridge2020].
+:::
+
+## A High R-Squared Does Not Mean a Large Slope
 
 ```{=latex}
-\figsmall{../_shared/figures/2-2_rsq-curved.png}{Earnings rise to about
-fifteen years and then fall. The straight line reports a positive slope
-throughout.}
+\fig{../_shared/figures/2-2_rsq-tight.png}{A tight scatter around a nearly flat line: almost all the spread accounted for.}
 ```
 
-::: {.caveat}
-This is the dangerous one, because nothing about the number tells you it is
-happening. You have to look at the picture.
+::: {.tablenotes title="The Slope Also Depends on the Two Standard Deviations"}
+$\hat{\beta}_1 = \hat{\rho}_{xy} \cdot \hat{\sigma}_y / \hat{\sigma}_x$, and
+R-squared fixes only the correlation. Holding the correlation at 0.99 and
+shrinking $\hat{\sigma}_y$ shrinks the slope towards zero without touching the
+R-squared. Any R-squared is compatible with any slope, in either direction.
 :::
 
-## Measuring Fit on a Hold-Out Sample
+## Fit Measured Where the Line Was Chosen
+
+R-squared is computed on the same 120 people the coefficients were chosen to
+suit. Least squares picked the pair with the smallest possible RSS on those
+rows, so it collected every accident in them that a line can collect.
+
+On a fresh 120 from the same population those accidents are different ones, and
+the line has no way to match them. Its RSS there will be larger, so the
+R-squared will be lower. The drop is not a failure; it is the part of the
+in-sample fit that was never about schooling.
+
+::: {.caveat title="The Second 120 Were Set Aside Before Anything Was Fitted"}
+Held out means held out. The moment a hold-out sample is used to choose a
+specification it stops being one, because the chosen line has then been suited
+to those rows too, and the honest comparison is gone.
+:::
+
+## R-Squared on the Hold-Out Sample
 
 ```{=latex}
-\figpair{../_shared/figures/2-2_fit-sample.png}{The 120 the line was fitted
-on.}{../_shared/figures/2-2_fit-holdout.png}{120 more from the same
-population, which the line has never seen.}
+\fig{../_shared/figures/2-2_fit-holdout.png}{The fitted line from our 120, drawn through 120 people it has never seen.}
 ```
 
-::: {.tablenotes}
-We held a second sample back before fitting anything. Fit measured on the data
-you chose the line with is a claim about that data. Checking it somewhere else
-is a different and harder claim.
+::: {.tablenotes title="0.3531 In Sample, 0.2886 on the Hold-Out"}
+The same line, the same population, the same slope of 1.5227: only the rows
+differ. A fall of 0.0645, about a fifth of the in-sample figure, is the optimism
+in fit measured on the data the line was chosen with. Report which of the two
+numbers you are quoting.
 :::
-
-## Vote: Would You Publish This Regression?
-
-An $R^2$ of 0.04, a slope of 1.9 euro a year, and 20,000 observations.
-
-::: {.tablenotes}
-Vote, argue, vote again. Then: which of the three numbers did you use?
-:::
-
-<!-- ConcepTest 3. Most will use the R-squared and should be using the other
-     two. Do not adjudicate; it comes back in 2.4. -->
 
 ## What Would Have To Be True?
 
-::: {.caveat title="The standing question"}
+This time the question is asked of the sentence we read out loud, that schooling
+accounts for 35.31 per cent of the variation in earnings in this sample.
+
+::: {.defn title="Question"}
 What would have to be true for this number to mean what we just said it means?
 And what is the plausible story where it isn't?
 :::
 
-[Candidate this week: a high R-squared is compatible with a useless
-model, and a low one with an important effect. The number tells you about
-spread, and you were asked about importance.]
-
-<!-- 92-97 min. Same slot every week. They answer in pairs first, then
-     you. Not that causation is hard in the abstract, but that THIS
-     estimate rests on something nameable that may well be false. -->
-
 ## Application
 
-Fit the line on our sample, then predict for the hold-out.
+The app recomputes the three totals and the R-squared as you drag a single
+person up or down, so you can watch the slope and the R-squared respond by
+different amounts to the same movement.
 
-::: {.tablenotes}
-Vote first: will the R-squared computed on the hold-out be higher, lower, or
-about the same? Take the vote before anything is run.
+::: {.defn title="Question"}
+Before we fit anything: will the R-squared computed on the hold-out 120 come out
+higher, lower, or about the same as the 0.3531 we got in sample?
 :::
 
-Lab this week: residual plots, and computing R-squared by hand before checking
-it against `summary()`.
+The lab for this lecture computes R-squared by hand from the three totals, then
+checks it against `summary()`, and draws the residual plot.
 
-<!-- 97-105 min. ConcepTest 4. -->
-
-## Summary: The Three Parts of Goodness of Fit
-
-Today was three separate ideas, each doing one job:
+## Summary: Residuals, Sums of Squares, and R-Squared
 
 ::: {.contributions}
-1. **Fitted Values and Residuals.** Every person splits into a fitted value and a residual.
-2. **Sums of Squares.** The sums of squares add up, which is what makes R-squared a share.
-3. **What R-Squared Will Not Tell You.** A share of variation is not a verdict on the model.
+1.  **Fitted Values and Residuals.** Every person splits into a fitted value and a residual, and the residuals sum to zero for any line least squares picks.
+2.  **Sums of Squares.** TSS = ESS + RSS, because the cross term vanishes under the two conditions from 2.1: 1,469.8 + 2,692.8 = 4,162.6.
+3.  **What R-Squared Will Not Tell You.** 0.3531 is a share of spread, not a verdict: it cannot rank specifications, and it fell to 0.2886 on the hold-out.
 :::
 
-::: {.tablenotes}
-Next week: whether the line we fitted is any good as an estimate, which is a different question from whether it fits.
-:::
+## Next Lecture
 
-<!-- 105-110 min. No new material. Names match the section titles, which
-     match the roadmap. Exit ticket after this: what was the muddiest
-     point? The answers set next week's retrieval questions. -->
+Lecture 2.3 asks a different question about the same line: not how well it fits
+these 120 people, but how far the slope lands from the 1.30 that generated them.
+
+- **The Gauss-Markov Assumptions:** what must be true of the population first.
+- **Unbiasedness:** the sense in which least squares gets the right answer.
+- **Precision:** how far $\hat{\beta}_1$ would move if we drew another 120.
+
+The residual sum of squares returns there in a new role: 2,692.8 is what the
+standard error of the slope is built from.
 
 ## Before Lecture 2.3
 
-- **Read** [chapter].
-- **Do** the appendix derivation. It is two lines once you know which fact to
-  use, and the whole of R-squared rests on it.
-- **Try** the app: drag a point and watch R-squared and the slope move by
-  different amounts.
-
-::: {.defn title="Problem set 1"}
-[Due this week. Covers 2.1 and 2.2.]
+::: {.contributions}
+1.  **Play:** The app. Drag one person and watch the slope and the R-squared respond by different amounts.
+2.  **Apply:** Problem set 2, covering 2.1 and 2.2. It repeats today's identity with $n = 6$ and numbers you can add up by hand.
+3.  **Review:** @wooldridge2020, section 2-3, on fitted values, residuals, the three sums of squares and R-squared.
 :::
 
 ## {.plain}
@@ -425,24 +663,36 @@ Next week: whether the line we fitted is any good as an estimate, which is a dif
 ::: {.appendix}
 :::
 
-## Derivation: Why the Sums of Squares Add Up
+## Derivation: R-Squared Is the Squared Correlation
 
-Show that the total sum of squares equals the explained plus the residual sum
-of squares.
+The body frame asserts $R^2 = \hat{\rho}_{xy}^{\,2}$. Start from the fitted
+deviation derived in the body, $\hat{y}_i - \bar{y} = \hat{\beta}_1
+(x_i - \bar{x})$, so the explained total is the slope squared times the
+schooling total:
 
-::: {.tablenotes}
-Two steps and a fact. Write the deviation of $y_i$ from its mean as the sum of
-two pieces, square it, and sum. The step that does the work is the cross
-term: it vanishes, and it vanishes because of the first-order condition you
-derived last week. That is the only reason R-squared behaves like a share.
+```{=latex}
+\begin{equation}
+R^2 = \frac{\hat{\beta}_1^{\,2} \sum_{i=1}^{n}(x_i - \bar{x})^2}
+           {\sum_{i=1}^{n}(y_i - \bar{y})^2}
+    = \hat{\rho}_{xy}^{\,2}\,
+      \frac{\hat{\sigma}_y^{\,2}}{\hat{\sigma}_x^{\,2}} \cdot
+      \frac{\hat{\sigma}_x^{\,2}}{\hat{\sigma}_y^{\,2}}
+    = \hat{\rho}_{xy}^{\,2}
+\end{equation}
+```
+
+::: {.takeaway title="Dividing Both Totals by n Minus One Turns Them Into Variances"}
+Substituting $\hat{\beta}_1 = \hat{\rho}_{xy}\hat{\sigma}_y/\hat{\sigma}_x$ from
+p.26 gives the middle expression, and the two variance ratios cancel
+[@wooldridge2020]. This is why R-squared carries no information beyond the
+correlation when there is one regressor.
 :::
-
-[Full derivation. Set as homework; worked solution published with the set.]
 
 ## Notes and Tools
 
-- The app, and this week's lab script.
-- `summary()`, `fitted()`, `resid()` in R.
+- **The App:** the fit app, and the script that draws this deck's exhibits.
+- **The Lecture in One Line:** `summary(lm(y ~ I(x - 13)))$r.squared`.
+- **This Lecture's Lab:** `fitted()`, `resid()`, and R-squared by hand from the three totals.
 
 ## References {.allowframebreaks}
 

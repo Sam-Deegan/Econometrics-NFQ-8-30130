@@ -105,13 +105,26 @@ options(scipen = 999, digits = 3)
 set.seed(42)
 
 ###### B_03_01: The True Line ##################################################
+# Note: CENTRED AT THIRTEEN since 18 September, not twelve. Twelve is the
+#       United States convention - K-12, high school completion - and is what
+#       Wooldridge's wage data encodes. Irish schooling is eight years primary,
+#       three of junior cycle and two of senior cycle, so a student sitting the
+#       Leaving Certificate without Transition Year has thirteen years.
+#
+#       IT IS A REPARAMETERISATION AND NOTHING ELSE. Same population, same
+#       people, same earnings, same slope. The intercept is renamed from 9.50
+#       at twelve to 10.80 at thirteen, because 9.50 + 1.30 = 10.80. Verified
+#       after the change: E[y] 11.5190, E[x] 13.5372, sample ybar 12.2490,
+#       fitted slope 1.5227 and SSR 2692.8 all unchanged; only the fitted
+#       intercept moves, 10.0453 to 11.5680.
+#
 # Note: Earnings per hour on years of schooling. Schooling is centred at
 #       twelve, so the intercept is earnings at twelve years rather than an
 #       extrapolation to no schooling at all.
 
-B_03_01_true_intercept_dbl <- 9.50
+B_03_01_true_intercept_dbl <- 10.80
 B_03_02_true_slope_dbl     <- 1.30
-B_03_03_centre_year_dbl    <- 12
+B_03_03_centre_year_dbl    <- 13
 
 ###### B_03_02: The Schooling Distribution #####################################
 # Note: Bounded, so nobody in the population has three years or thirty.

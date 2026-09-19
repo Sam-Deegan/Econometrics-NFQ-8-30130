@@ -13,16 +13,34 @@
 #      2. Every equation states its OBJECTIVE before it appears - what
 #         question it answers, in one line.
 #
-#      3. Notation CONVENTIONS are taught as callouts where each first
-#         bites. The one that matters in this module is the hat: a student
-#         who reads beta-hat and beta as the same object cannot be taught
-#         sampling variation.
+#      3. Notation CONVENTIONS are taught as callouts where each is first
+#         used. The hat is INTRODUCED in 1.3, on the frame "A Hat Marks
+#         the Sample Counterpart". This deck extends it to a slope; it
+#         does not teach it as new.
 #
 #      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
 #
-#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
-#         appendix and set as homework. Class time goes on the shape of
-#         the proof: what it does, its steps, which step does the work.
+#      5. THE OLS DERIVATION IS ON THE SLIDES, IN SAMPLE ALGEBRA.
+#         CHANGED 18 September, overturning the previous rule that nothing
+#         was derived in the room. The reason: block 1 spends three
+#         lectures building summation algebra, the sample covariance and
+#         the sample variance, and 1.2 explicitly promises that covariance
+#         over variance IS what this lecture produces. Hiding the three
+#         lines that connect them wastes the block-1 investment and makes
+#         the estimator arrive by assertion. Wooldridge derives it in the
+#         body too, 2-2 pp.25-26. Expectations are NOT used: the argument
+#         is sums over the 120 people, which is the algebra they have.
+#
+#      6. NO VOTES AND NO PAUSE FRAMES. A question to the room is a titled
+#         frame, one or two lines of context, the question in a
+#         `.defn title="Question"` box, and nothing under the box. Where
+#         the answer is a sign or a direction, answers come BEFORE
+#         anything is run. "Objective:" and "The goal of this section:"
+#         are banned openings, and no stage direction appears on a slide.
+#
+#      7. NO SPEAKER NOTES IN THIS BLOCK. A slide has to teach on its own,
+#         so what would have been said is written on it, and what a claim
+#         rests on is carried by a citation rather than by a script.
 #
 #      NARRATIVE SPINE. Three sections, named by content, and named the
 #      same way in the roadmap, the dividers and the closing summary.
@@ -31,14 +49,50 @@
 #        2  Least Squares
 #        3  Reading the Slope
 #
+#      SHELF LOCATORS. Wooldridge, Introductory Econometrics, 7th edition,
+#      cited @wooldridge2020. Every page was opened in the 18 September
+#      pass; PDF page = book page + 23.
+#
+#        2-1  p.20  eq (2.1)   the simple regression model
+#        2-1  p.21  eq (2.2)   dy = b1 dx when du = 0
+#        2-1  p.23  eq (2.6)   E(u|x) = E(u), zero conditional mean
+#        2-1  p.23  eq (2.8)   E(y|x) = b0 + b1 x, the PRF
+#        2-1  p.24  fig 2.1    E(y|x) as a linear function of x
+#        2-2  p.25  eq (2.14), (2.15)  the two sample conditions
+#        2-2  p.26  eq (2.17)  b0-hat = ybar - b1-hat xbar
+#        2-2  p.26  eq (2.18)  the non-degenerate-x condition
+#        2-2  p.26  eq (2.19)  b1-hat as sample covariance over variance
+#        2-2  p.26             "simple regression is an analysis of
+#                              correlation ... careful in inferring causality"
+#        2-2  p.27  eq (2.21), (2.22)  residual, and the SSR criterion
+#        2-2  p.28  fig 2.4    fitted values and residuals
+#        2-4  p.39  table 2.3  level-level interpretation of b1
+#
+#      Mastering Metrics, cited @angrist2015: the appendix to chapter 2
+#      builds regression on the CEF, book p.82.
+#
+#      CENTRING AT THIRTEEN. CHANGED 18 September, from twelve. Twelve is
+#      the United States convention - K-12, high school completion - and
+#      it is what Wooldridge's wage data encodes. It is not the Irish
+#      figure. Irish schooling is eight years primary plus a junior cycle
+#      of three and a senior cycle of two, so a student who sits the
+#      Leaving Certificate without Transition Year has completed THIRTEEN
+#      years; with Transition Year, fourteen. Centring at a year nobody in
+#      the room reached by that route made beta-0 a number they could not
+#      place. The change is a REPARAMETERISATION and nothing else: the
+#      same population, the same people, the same earnings, the same
+#      slope. Only the intercept is renamed, from 9.50 at twelve to 10.80
+#      at thirteen, because 9.50 + 1.30 = 10.80. E[y], E[x], the sample
+#      mean, the fitted slope and the SSR are all unchanged.
+#
 #      TIMING, 110 minutes of a two-hour slot
 #         0-6     retrieval
 #         6-10    lecture plan
-#        10-35    The Line and What It Is For
-#        35-38    pause
-#        38-63    Least Squares
-#        63-66    pause
-#        66-92    Reading the Slope
+#        10-33    The Line and What It Is For
+#        33-62    Least Squares, including the derivation
+#        62-65    question to the room: squares against absolute values
+#        65-88    Reading the Slope
+#        88-92    question to the room: dropping the highest earners
 #        92-97    the standing question
 #        97-105   application
 #       105-110   synthesis and exit ticket
@@ -55,6 +109,16 @@
 #      sample of 120 drawn from it, and a hold-out of another 120. The
 #      truth is known because we wrote it. The flaws are in the generator
 #      already, switched off, and each later lecture turns one on.
+#
+#      THE NUMBERS ON THIS DECK, computed from the generator at the module
+#      seed on 18 September and re-checked after the centring change:
+#
+#        population   intercept 10.80 at 13 years   slope 1.30   sd(u) 4.50
+#        realised     E[y] 11.52       E[x] 13.54
+#        our 120      ybar 12.25       xbar 13.45
+#        cross-products  Sxy 965.3     Sxx 633.9
+#        least squares   slope 1.5227  intercept 11.568  SSR 2692.8
+#        largest single residual 17.23, contributing 296.9 of the SSR
 #
 title: "Fitting a Line"
 subtitle: "ECONXXXXX Econometrics I"
@@ -84,282 +148,370 @@ qr-code: ../_shared/qr-sam-deegan.png
 \roadmap{2.1}
 ```
 
-::: {.tablenotes}
-Weeks already covered are greyed; today's is marked.
+::: {.tablenotes title="Block 2 Is Four Lectures on One Estimator"}
+Lectures already given are greyed and today's is marked. Today fits the line.
+Lecture 2.2 asks how much of earnings it accounts for, 2.3 asks how far it
+lands from the truth, and 2.4 asks how to report it.
 :::
 
-## What We Said Last Week About Conditional Expectations
+## What Lectures 1.2 and 1.3 Left Open
 
-Last week we said the best guess of earnings given schooling is a
-**conditional expectation**, and that an estimate has a distribution.
+Lecture 1.2 said the best guess of earnings given schooling is a **conditional
+expectation**, $E[y \mid x]$, and that it can be any shape at all.
 
-::: {.tablenotes}
-Two minutes with the person beside you. If I gave you the schooling of one
-person and nothing else, what would you guess they earn, and what would you
-need to know to make that guess?
+Lecture 1.3 said any number computed from 120 people is one draw from a
+distribution, and will miss the population number it estimates.
+
+Today puts those together: we choose one shape, fit it to 120 people, and get a
+number that misses.
+
+::: {.defn title="Question"}
+Given one person's years of schooling and nothing else, what would you guess
+they earn, and what would you need to know to make that guess?
 :::
-
-<!-- 0-6 min. Retrieval, not recap. Take two or three answers out loud. Do
-     not resolve them - the answer is the whole of today. -->
 
 ## Lecture Plan
 
-- **The Line and What It Is For.** A line is a claim about the average earnings of people with a given schooling.
-- **Least Squares.** Out of every line we could draw, why this one.
-- **Reading the Slope.** What the number means, in the units the data came in.
-
-::: {.tablenotes}
-Reading: [to settle].
+::: {.contributions}
+1.  **The Line and What It Is For.** A line is a claim about the average earnings of people with a given schooling.
+2.  **Least Squares.** Out of every line we could draw, why this one, and where its formula comes from.
+3.  **Reading the Slope.** What the number means, in the units the data came in.
 :::
 
 # The Line and What It Is For
 
 ## A Line Is the Simplest Conditional Expectation
 
-**The goal of this section:** say what a line drawn through a scatter of
-people is actually claiming.
+Lecture 1.2's conditional expectation function could bend, jump, or flatten out
+at any level of schooling. A line refuses all of that. It commits to one claim:
 
-Last week's conditional expectation function could be any shape. A line
-commits to the simplest one there is: whatever schooling you have, your
-expected earnings move by the same amount for one more year.
+> one more year of schooling changes expected earnings by the same amount,
+> whether it is the ninth year or the nineteenth.
 
-::: {.defn title="What we want from it"}
-Given a person's years of schooling and nothing else, what is our best guess
-of their hourly earnings?
+That is a restriction, not a discovery. We impose it because a line has two
+numbers, and two numbers can be estimated from 120 people and reported in a
+sentence. @angrist2015 build the regression chapters of *Mastering Metrics* on
+exactly this move.
+
+::: {.defn title="The Question the Line Answers"}
+Given a person's years of schooling and nothing else, what is our best guess of
+their hourly earnings?
 :::
-
-<!-- IDEA 1. 10-35 min. -->
 
 ## The Simple Regression Model and Its Notation
 
+Before choosing a line we write down what one claims: one person, one line, and
+everything about that person the line does not know.
+
 ```{=latex}
 \begin{equation}
-y_i = \beta_0 + \beta_1 (x_i - 12) + u_i
+y_i = \beta_0 + \beta_1 (x_i - 13) + u_i
 \end{equation}
 ```
 
 - $y_i$: hourly earnings of person $i$, in euro
 - $x_i$: years of schooling of person $i$
-- $\beta_0$: expected earnings at twelve years of schooling
+- $\beta_0$: expected earnings at thirteen years of schooling
 - $\beta_1$: the change in expected earnings for one more year
 - $u_i$: everything else that moves person $i$'s earnings
 
-::: {.caveat title="Why subtract twelve"}
-Without it, $\beta_0$ would be expected earnings for a person with no
-schooling at all, and nobody in this population has that. Centring buys a
-constant you can read out loud.
+::: {.caveat title="Thirteen Years Is the Leaving Certificate"}
+Eight years of primary, three of junior cycle and two of senior cycle is
+thirteen. Subtracting it makes $\beta_0$ the expected earnings of someone who
+finished school there. Without it, $\beta_0$ would be expected earnings at zero
+years of schooling, which describes nobody.
 :::
 
-## Hat Notation: Population Parameter Versus Sample Estimate
+## When the Line Is the Conditional Expectation
 
-::: {.defn title="The convention, once, before any algebra"}
-$\beta_1$ is the number in the population. We will never see it.
-$\hat{\beta}_1$ is what we compute from a sample. It is a different object,
-it changes every time we draw a new sample, and the whole of week 6 is about
-the relationship between the two.
+The line and the CEF are the same object under one condition, and the rest of
+the module is an argument about whether it holds [@wooldridge2020]:
+
+```{=latex}
+\begin{equation}
+E[u \mid x] = 0
+\quad\Longrightarrow\quad
+E[y \mid x] = \beta_0 + \beta_1 (x - 13)
+\end{equation}
+```
+
+- $E[u \mid x] = 0$: at every level of schooling, everything else has average zero
+
+Take the expectation of the model at a fixed $x$. The two $\beta$ terms are
+constants, so they pass through unchanged, and $u$ contributes its conditional
+average. If that average is zero, what is left is the line.
+
+::: {.caveat title="Everything Else Must Not Differ With Schooling"}
+If people who stayed longer in school also have higher ability, then
+$E[u \mid x]$ rises with $x$ and is not zero. The line is then not the CEF, and
+the slope is not what it appears to be. Lecture 3.1 puts ability into the model;
+Lecture 4.2 is about when that cannot be done.
 :::
 
-::: {.tablenotes}
-Watch for this in your own writing. A sentence containing $\beta_1$ is a claim
-about the world; a sentence containing $\hat{\beta}_1$ is a claim about your
-data.
-:::
+## The Hat on the Slope Marks a Sample Estimate
 
-## Vote: What Are the Units of the Slope?
+Lecture 1.3 put a hat on an estimate of $E[y]$. The same mark now goes on an
+estimate of a slope, and it means exactly what it meant then.
 
-Earnings are in euro per hour. Schooling is in years.
+- $\beta_1$: one fixed number in the population of 200,000, which we never see
+- $\hat{\beta}_1$: what we compute from our 120 people, which changes with every new sample
 
-::: {.tablenotes}
-Vote, argue with your neighbour, vote again. Then: what would a slope of
-$-0.4$ mean, in a sentence with no symbols in it?
-:::
-
-<!-- ConcepTest 1. Take answers, do not adjudicate. The revote is the
-     point - peer discussion does the work, not the extra time. -->
-
-## Pause
-
-<!-- 35-38 min. -->
-
-::: {.tablenotes}
-Two minutes. Sketch the scatter you expect for schooling and earnings, and
-draw the line you would fit by eye. Keep it - we come back to it at the end.
-Then compare with your neighbour.
+::: {.defn title="A Sentence With a Hat Is About Your Data"}
+A sentence containing $\beta_1$ is a claim about the world. A sentence
+containing $\hat{\beta}_1$ is a claim about the 120 rows in front of you. The
+whole of Lecture 2.3 is about the distance between the two.
 :::
 
 # Least Squares
 
 ## Comparing Candidate Lines Through the Same Scatter
 
-**The goal of this section:** choose one line out of all the lines we could
-draw, and be honest that it is a choice.
-
 ```{=latex}
-\figsmall{../_shared/figures/2-1_candidates.png}{Three lines through the same 120
-people. The sum of squared residuals is printed beside each.}
+\fig{../_shared/figures/2-1_candidates.png}{Three candidate lines through the same 120 people.}
 ```
 
-<!-- IDEA 2. 38-63 min. -->
+::: {.tablenotes title="Three Lines, Three Totals"}
+Every line leaves each person a gap. The total of the squared gaps is printed
+beside each line and the three totals differ, so the totals rank the lines.
+Nothing so far says that ranking by this total is the right thing to do.
+:::
 
 ## The Least-Squares Criterion
 
-For any candidate line, every person has a **residual**: the gap between
-what they earn and what the line says they earn.
+For any candidate line, every person has a **residual**: the gap between what
+they earn and what the line says they earn [@wooldridge2020].
 
 ```{=latex}
 \begin{equation}
 \mathrm{SSR}(b_0, b_1) = \sum_{i=1}^{n}
-  \bigl(y_i - b_0 - b_1 (x_i - 12)\bigr)^2
+  \bigl(y_i - b_0 - b_1 (x_i - 13)\bigr)^2
 \end{equation}
 ```
 
 - $b_0, b_1$: any candidate pair, not yet the chosen ones
-- $\mathrm{SSR}$: the total of the squared gaps
+- $r_i = y_i - b_0 - b_1(x_i - 13)$: the residual left for person $i$
+- $\mathrm{SSR}$: the total of the squared residuals, over all 120 people
 
-::: {.result}
-Least squares is the pair that makes this number as small as possible. That
-is the entire definition. It is a criterion someone chose, not a law.
+::: {.defn title="Least Squares Is a Chosen Criterion"}
+Least squares is the pair $(b_0, b_1)$ that makes this total as small as
+possible. That is the entire definition, and it is a criterion someone chose
+rather than a law.
+:::
+
+## Why the Residuals Are Squared
+
+Squaring is a choice with three reasons behind it, and one cost.
+
+- **Raw gaps cancel.** Positive and negative residuals sum to zero for any line
+  through the sample means, so the plain total measures nothing.
+- **Absolute values do not cancel, but resist calculus.** $|r|$ has no
+  derivative at zero, so the minimum has to be searched for numerically.
+- **Squares are differentiable everywhere.** Two derivatives, set to zero, give
+  two linear equations, and those solve by hand for a formula.
+
+::: {.caveat title="The Cost: One Person Can Dominate the Total"}
+A residual of 10 adds 100; ten residuals of 1 add 10 between them. In our 120,
+the largest residual is 17.23, contributing 296.9 of the total 2,692.8. One
+person supplies eleven per cent of the criterion.
+:::
+
+## Deriving the Slope: Two Conditions
+
+Setting the two derivatives of the SSR to zero gives two conditions on the
+residuals of the chosen line [@wooldridge2020]:
+
+```{=latex}
+\begin{equation}
+\sum_{i=1}^{n} r_i = 0
+\qquad\qquad
+\sum_{i=1}^{n} (x_i - 13)\, r_i = 0
+\end{equation}
+```
+
+The first says the residuals average to zero. The second says they carry no
+remaining co-movement with schooling: whatever schooling could explain, the line
+has already used.
+
+::: {.takeaway title="These Two Conditions Are the Whole Derivation"}
+Everything below follows from them by summation algebra alone. No expectations,
+no calculus beyond the two derivatives already taken.
+:::
+
+## Deriving the Slope: Solving the Pair
+
+Expand the first condition. The sum of $y_i$ is $n\bar{y}$, and the sum of a
+constant is $n$ times it, so dividing by $n$ gives the intercept in terms of the
+slope:
+
+```{=latex}
+\begin{equation}
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 (\bar{x} - 13)
+\end{equation}
+```
+
+Substitute that into the second condition and the constants cancel in pairs,
+leaving sums of deviations from the means:
+
+```{=latex}
+\begin{equation}
+\hat{\beta}_1
+  = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}
+         {\sum_{i=1}^{n}(x_i - \bar{x})^{2}}
+  = \frac{\widehat{\operatorname{Cov}}(x, y)}{\widehat{\operatorname{Var}}(x)}
+\end{equation}
+```
+
+::: {.defn title="The Slope Is a Sample Covariance Divided by a Sample Variance"}
+Both were computed on this same sample in Lecture 1.1. Dividing top and bottom
+by $n-1$ turns the sums into the covariance and the variance, which is why the
+centring constant disappears: subtracting thirteen shifts $x_i$ and $\bar{x}$
+by the same amount.
+:::
+
+## The Slope on Our 120 People
+
+The two sums, computed on the sample in front of us:
+
+```{=latex}
+\begin{equation}
+\hat{\beta}_1 = \frac{965.3}{633.9} = 1.52
+\qquad\qquad
+\hat{\beta}_0 = 12.25 - 1.52\,(13.45 - 13) = 11.57
+\end{equation}
+```
+
+- $965.3$: the sum of cross-products of deviations, $\sum (x_i-\bar{x})(y_i-\bar{y})$
+- $633.9$: the sum of squared deviations of schooling, $\sum (x_i-\bar{x})^2$
+
+::: {.caveat title="The Denominator Must Not Be Zero"}
+If every person in the sample had the same schooling, $\sum (x_i-\bar{x})^2$
+would be zero and there would be no slope to compute. A line needs schooling to
+vary, and how much it varies is what Lecture 2.3 turns into precision.
 :::
 
 ## Residuals as Vertical Distances From the Fitted Line
 
 ```{=latex}
-\figsmall{../_shared/figures/2-1_residuals.png}{The fitted line and all 120
-residuals. Least squares makes the total of their squares as small as it can
-be.}
+\fig{../_shared/figures/2-1_residuals.png}{The least-squares line and the 120 residuals it leaves.}
 ```
 
-::: {.tablenotes}
-The segments are the figure. A scatter with a line through it hides the thing
-least squares is actually about.
+::: {.tablenotes title="Every Person Has One Residual"}
+Each segment runs vertically from a person to the line, because the criterion is
+about $y$ and not about distance in the plane. On our 120 the squared segments
+total 2,692.8, and no other line makes that total smaller.
 :::
 
-## Vote: Why Squares and Not Absolute Values?
+## Squares Rather Than Absolute Values
 
-We could have minimised the total absolute gap instead.
+Minimising the total absolute gap also picks a line, and it does not pick the
+same one. It is a real estimator, least absolute deviations, used when a few
+extreme observations should not be allowed to dominate.
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: what does squaring do to one person who is very
-far from the line?
-:::
-
-<!-- ConcepTest 2. The honest answer has three parts - it is differentiable,
-     it has a closed form, and it punishes large misses harder. The third is
-     the one that matters for the next section. Do not adjudicate. -->
-
-## Pause
-
-<!-- 63-66 min. -->
-
-::: {.tablenotes}
-Two minutes. Write down, without the slide, what a residual is and whose it
-is. Then compare with your neighbour.
+::: {.defn title="Question"}
+Which of the two would you rather fit to earnings data, and what would you need
+to know about the extreme earners before you could answer?
 :::
 
 # Reading the Slope
 
 ## The Slope Is Euro Per Year
 
-**The goal of this section:** say what the number means in the units the data
-came in, and then say what it does not mean.
+The slope is a ratio of two units: euro per hour on top, years of schooling
+underneath. So $\hat{\beta}_1$ is measured in euro per hour, per year of
+schooling [@wooldridge2020].
 
-::: {.worked title="Reading this estimate out loud"}
-Comparing two people whose schooling differs by one year, the one with more
-schooling earns about $\hat{\beta}_1$ euro more per hour, on average, in this
-sample.
+::: {.worked title="Reading the Estimate Out Loud"}
+Comparing two people in this sample whose schooling differs by one year, the one
+with more schooling earns about **1.52 euro more per hour**, on average. A person
+in this sample with thirteen years of schooling earns about **11.57 an hour**.
 :::
 
-::: {.caveat}
-Notice what that sentence does not say. It does not say that giving a person
-another year of school would raise their pay by that amount. Nothing we have
-done today licenses that, and week 12 is about why.
+## The Estimate Missed, and Nothing Went Wrong
+
+The population slope is 1.30 and we estimated 1.52. The population intercept is
+10.80 and we estimated 11.57.
+
+Both misses come from the same source: our 120 people are one draw, and a
+different 120 would give different numbers. That is Lecture 1.3's sampling
+variation arriving on a real estimate. Lecture 2.3 puts a number on how much
+$\hat{\beta}_1$ varies across samples, and 2.4 reports it alongside the estimate.
+
+::: {.caveat title="A Fitted Line Is Not an Effect"}
+That sentence does not say a year more school would raise a person's pay by
+1.52 euro. Simple regression is an analysis of correlation between two
+variables, so care is needed in inferring causality [@wooldridge2020]. Lecture
+4.2 is about why.
 :::
 
-<!-- IDEA 3. 66-92 min. -->
-
-## How a Few High Earners Shift the Fitted Line
+## How a Few High Earners Change the Fitted Slope
 
 ```{=latex}
-\figsmall{../_shared/figures/2-1_leverage.png}{The same population with a handful
-of very high earners switched on. Green is the line without them, dashed navy
-the line with.}
+\fig{../_shared/figures/2-1_leverage.png}{The same 120 people, with three very high earners added by hand.}
 ```
 
-::: {.tablenotes}
-Squaring the residuals is what does this. One person a long way from the line
-contributes more to the SSR than twenty people close to it, so the line moves
-to accommodate them.
+::: {.tablenotes title="Squaring Is Why Three People Matter"}
+Solid is the line without the three; dashed is the line with them. The slope
+rises: a large residual contributes its square, so tilting the line towards
+those three reduces the total more than it raises it elsewhere.
 :::
 
-## Vote: Should We Drop the Highest Earners?
+## Dropping the Highest Earners
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: what would you need to know about those people
-before you could answer?
+The slope rose because three people sit far above the line. One response is to
+remove them and refit.
+
+::: {.defn title="Question"}
+Should those people be dropped from the sample, and what would you need to know
+about them before you could answer?
 :::
-
-<!-- ConcepTest 3. The answer is that it depends entirely on whether they
-     belong in the population you are asking about. "It is an outlier" is a
-     statement about a plot; "this person is not who I am asking about" is a
-     statement about the question. Do not adjudicate. -->
 
 ## What Would Have To Be True?
 
-::: {.caveat title="The standing question"}
+This time the question is asked of the slope we just read out loud, 1.52 euro
+per hour per year of schooling.
+
+::: {.defn title="Question"}
 What would have to be true for this number to mean what we just said it means?
 And what is the plausible story where it isn't?
 :::
 
-[Candidate this week: the line fits whether or not schooling causes
-earnings. Least squares has no opinion on the matter, and neither does the
-R output.]
-
-<!-- 92-97 min. Same slot every week. They answer in pairs first, then
-     you. Not that causation is hard in the abstract, but that THIS
-     estimate rests on something nameable that may well be false. -->
-
 ## Application
 
-Open the app and move the line by hand before the fitted one appears.
+The app draws the scatter and lets you move a line by hand, and shows the SSR
+updating as you move it, before the least-squares line appears.
 
-::: {.tablenotes}
-Vote first, then run it: if we drop the three highest earners, does the slope
-go up, down, or stay put? Take the vote before anything is run - a
-demonstration nobody predicted is passive.
+::: {.defn title="Question"}
+If we drop the three highest earners, does the fitted slope go up, go down, or
+stay where it is?
 :::
 
-Lab this week: first regression in R. `lm()`, coefficients, fitted values.
+The lab for this lecture is the first regression in R: `lm()`, coefficients and
+fitted values.
 
-<!-- 97-105 min. ConcepTest 4 lives here. -->
-
-## Summary: The Three Ideas in Today's Lecture
-
-Today was three separate ideas, each doing one job:
+## Summary: The Line, Least Squares, and the Slope
 
 ::: {.contributions}
-1. **The Line and What It Is For.** A line is the simplest conditional expectation there is.
-2. **Least Squares.** Least squares is a criterion, and someone chose it.
-3. **Reading the Slope.** The slope is a rate, in euro per year, and it is fragile.
+1.  **The Line and What It Is For.** A line is the simplest conditional expectation there is, and it is the CEF only when $E[u \mid x] = 0$.
+2.  **Least Squares.** Squares are chosen because raw gaps cancel and absolute values have no closed form. The price is that one person can dominate the total.
+3.  **Reading the Slope.** Covariance over variance gave 1.52 euro per hour per year, against a population 1.30.
 :::
 
-::: {.tablenotes}
-Next week: how much of the variation that line actually accounts for, and why that is a smaller claim than it sounds.
-:::
+## Next Lecture
 
-<!-- 105-110 min. No new material. Names match the section titles, which
-     match the roadmap. Exit ticket after this: what was the muddiest
-     point? The answers set next week's retrieval questions. -->
+Lecture 2.2 asks how much of the variation in earnings this line accounts for:
+
+- **Goodness of Fit:** what $R^2$ counts, and what it does not.
+- **The Hold-Out Sample:** the second 120, opened for the first time.
+
+A line can account for very little of the variation and still carry the slope we
+want, so a low $R^2$ is not on its own a verdict.
 
 ## Before Lecture 2.2
 
-- **Read** [chapter].
-- **Do** the derivation in the appendix. It is short, and week 6 assumes you
-  have seen it once.
-- **Try** the app: fit a line by eye, then reveal the least-squares one and
-  see how close you were.
-
-::: {.defn title="Problem set 1"}
-[Out this week, due week n. Covers 2.1 and 2.2.]
+::: {.contributions}
+1.  **Play:** The app. Fit a line by eye, watch the SSR, then reveal the least-squares one.
+2.  **Apply:** Problem set 2, covering 2.1 and 2.2. It repeats today's derivation with $n = 6$ and numbers you can do by hand.
+3.  **Review:** @wooldridge2020, sections 2-1 to 2-3, on the model, the estimates and their algebra.
 :::
 
 ## {.plain}
@@ -380,28 +532,30 @@ Next week: how much of the variation that line actually accounts for, and why th
 ::: {.appendix}
 :::
 
-## Derivation: The Least-Squares Estimators
+## Derivation: The Two Derivatives
 
-Minimise the sum of squared residuals with respect to the two unknowns, set
-both derivatives to zero, and solve the pair.
+The body frames start from the two conditions. This is where they come from.
+Differentiate the SSR with respect to each unknown in turn:
 
-::: {.tablenotes}
-Three steps. Differentiate, set to zero, solve. The step that does the work is
-the second: setting the derivative to zero is what makes the residuals sum to
-zero and be uncorrelated with schooling, and those two facts are what every
-result in weeks 5 and 6 rests on.
+```{=latex}
+\begin{equation}
+\frac{\partial\,\mathrm{SSR}}{\partial b_0} = -2\sum_{i=1}^{n} r_i
+\qquad\qquad
+\frac{\partial\,\mathrm{SSR}}{\partial b_1} = -2\sum_{i=1}^{n} (x_i - 13)\, r_i
+\end{equation}
+```
+
+::: {.takeaway title="Setting Both to Zero Gives the Two Conditions"}
+The $-2$ divides out, leaving the two sums used on the body frames. The SSR is a
+sum of squares in $b_0$ and $b_1$, so this stationary point is a minimum rather
+than a maximum.
 :::
-
-[Full derivation. Set as homework; worked solution published with the set.]
 
 ## Notes and Tools
 
-- The app, and the lab script for this week.
-- `lm()` and `coef()` in R. Everything else can wait.
-
-::: {.tablenotes}
-Link only what has a stable public URL; Brightspace carries the rest.
-:::
+- **The App:** the line-fitting app, and the script that draws this deck's exhibits.
+- **The Lecture in One Line:** `coef(lm(y ~ I(x - 13)))`.
+- **This Lecture's Lab:** `lm()`, `coef()` and `fitted()`, and nothing else yet.
 
 ## References {.allowframebreaks}
 

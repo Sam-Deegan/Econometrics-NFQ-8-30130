@@ -13,16 +13,50 @@
 #      2. Every equation states its OBJECTIVE before it appears - what
 #         question it answers, in one line.
 #
-#      3. Notation CONVENTIONS are taught as callouts where each first
-#         bites. The one that matters in this module is the hat: a student
-#         who reads beta-hat and beta as the same object cannot be taught
-#         sampling variation.
+#      3. Notation CONVENTIONS are taught as callouts where each is first
+#         used. The hat was INTRODUCED in 1.3, extended to a slope in 2.1
+#         and to sigma and a standard error in 2.3. Nothing new is done
+#         to it today. Two marks ARE new: the critical value c, and the
+#         degrees of freedom, which are n-2 here and were n-1 in 1.3.
 #
 #      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate.
 #
-#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
-#         appendix and set as homework. Class time goes on the shape of
-#         the proof: what it does, its steps, which step does the work.
+#      5. THE CONFIDENCE INTERVAL IS DERIVED ON THE SLIDES. CHANGED 18
+#         September, overturning the previous rule that nothing was
+#         derived in the room. The reason: the skeleton printed the
+#         interval as a picture and a sentence, so a student had no way
+#         to see that the interval and the test are one inequality
+#         written twice, and the "95 per cent counts intervals" frame
+#         then had to be asserted. The route taken is Wooldridge's own,
+#         4-3 p.135: start from the t distribution of the standardised
+#         slope, put the critical value around it, and invert. Three
+#         lines, and the third is the interval. The arithmetic is then
+#         done with the module's own numbers on the next frame.
+#
+#      6. NO VOTES AND NO PAUSE FRAMES. A question to the room is a
+#         titled frame, one or two lines of context, the question in a
+#         `.defn title="Question"` box, and nothing under the box.
+#         "Objective:" and "The goal of this section:" are banned
+#         openings, and no stage direction appears on a slide.
+#
+#         WHAT THE SKELETON'S FIVE INTERACTIVE FRAMES BECAME. Three
+#         votes and two pauses were adjudicated against two tests: would
+#         a competent student get it wrong, and does the point come back
+#         later. Two survive as question frames. "Would you reject at
+#         five per cent?" becomes "A Null of 1.30 Rather Than Zero",
+#         which is the same arithmetic on a value the room knows is
+#         true, and it comes back four frames later when the interval
+#         covers it. "Which interval is more useful?" survives unchanged
+#         in substance and sets up section 3. "What is missing from this
+#         table?" fails the second test - the answer is the whole of the
+#         frame that follows it - so it is folded into "What a Table of
+#         Stars Leaves Out". Both pauses were revision prompts with no
+#         content of their own and are gone; what they asked students to
+#         recall is now written on the frames themselves.
+#
+#      7. NO SPEAKER NOTES IN THIS BLOCK. A slide has to teach on its
+#         own, so what would have been said is written on it, and what a
+#         claim rests on is carried by a citation rather than a script.
 #
 #      NARRATIVE SPINE. Three sections, named by content, and named the
 #      same way in the roadmap, the dividers and the closing summary.
@@ -31,30 +65,189 @@
 #        2  Confidence Intervals for an Effect
 #        3  Reading a Regression Table
 #
+#      WHAT THIS DECK EXTENDS RATHER THAN RE-TEACHES. Lecture 1.3 taught
+#      the t-statistic, the p-value and the 95 per cent confidence
+#      interval, all FOR A MEAN, and taught that the 95 per cent belongs
+#      to the procedure and not to one interval. None of that is taught
+#      again. Every one of them is extended to a SLOPE, and each frame
+#      that extends one says so in those words. Three things are new
+#      rather than transferred: the degrees of freedom are n-2 rather
+#      than n-1; the critical value is the exact t value 1.980 rather
+#      than 1.3's large-sample 1.96; and the interval can be checked
+#      against a truth, because we wrote the population.
+#
+#      SHELF LOCATORS. Wooldridge, Introductory Econometrics, 7th
+#      edition, cited @wooldridge2020. Every page below was opened in
+#      the 18 September pass; PDF page = book page + 23.
+#
+#        4     p.117            chapter 4 opens, Multiple Regression
+#                               Analysis: Inference
+#        4-1   p.117            the sampling distributions of the OLS
+#                               estimators, and why the first two
+#                               moments are not enough for inference
+#        4-1   p.118  MLR.6     normality of the population error; the
+#                               six together are the classical linear
+#                               model assumptions
+#        4-1   p.118  fig 4.1   the homoskedastic normal distribution
+#                               with a single explanatory variable
+#        4-1   p.119            the central limit theorem argument for
+#                               normal errors and its weaknesses; "past
+#                               empirical evidence suggests that
+#                               normality is not a good assumption for
+#                               wages"; and that nonnormality is not a
+#                               serious problem at large sample sizes
+#        4-1   p.119  Thm 4.1, eq (4.1)  beta-hat is normal, and
+#                               standardised by its sd it is N(0,1)
+#        4-2   p.120  Thm 4.2, eq (4.3)  (beta-hat - beta)/se follows
+#                               t on n-k-1 degrees of freedom, and the
+#                               sentence that the t arises because the
+#                               constant sigma has been replaced by the
+#                               random variable sigma-hat
+#        4-2   p.121  eq (4.4)  the null that a coefficient is zero
+#        4-2   p.121  eq (4.5)  t = beta-hat / se(beta-hat)
+#        4-2   p.122            a null is never stated about an estimate
+#        4-2b  p.126  eq (4.10) the two-sided alternative
+#        4-2b  p.127  eq (4.11) reject when |t| > c, with c the 97.5th
+#                               percentile of the t distribution
+#        4-2c  p.128  eq (4.12), (4.13)  t = (estimate - hypothesised
+#                               value) / standard error
+#        4-2c  p.128-129  ex 4.4  campus crime, a null of one rather
+#                               than zero, and why the printed t is the
+#                               wrong statistic for it
+#        4-2d  p.131  eq (4.15)  p = P(|T| > |t|), "the probability of
+#                               observing a t statistic as extreme as we
+#                               did if the null hypothesis is true"
+#        4-2e  p.132            "we fail to reject" rather than "accept",
+#                               because many other nulls also survive
+#        4-2f  p.132            economic, or practical, versus
+#                               statistical significance
+#        4-2f  p.133  ex 4.6    401(k) participation, n = 1,534: every
+#                               coefficient significant at small levels,
+#                               and firm size practically negligible
+#        4-2f  p.134            the three guidelines: check significance,
+#                               then discuss the magnitude in units
+#        4-3   p.134            confidence intervals open; they are also
+#                               called interval estimates because they
+#                               give a range rather than a point
+#        4-3   p.135  eq (4.16)  beta-hat +/- c times se(beta-hat)
+#        4-3   p.135            coverage across repeated samples, and
+#                               "for the single sample that we use to
+#                               construct the CI, we do not know whether
+#                               beta_j is actually contained"
+#        4-3   p.135            above 120 df, 1.96 will serve; above 50
+#                               df, plus or minus two standard errors
+#        4-3   p.135            a null is rejected at five per cent if
+#                               and only if it is outside the interval
+#        4-3   p.136            "a confidence interval is only as good as
+#                               the underlying assumptions used to
+#                               construct it"
+#
+#      CHAPTER 4 IS STATED FOR MULTIPLE REGRESSION. Wooldridge has no
+#      separate inference chapter for simple regression: Theorems 4.1
+#      and 4.2 are written for k regressors and carry n-k-1 degrees of
+#      freedom. Our line has one regressor, so k = 1 and n-k-1 is 118.
+#      The deck says this on the frame where the t distribution first
+#      appears rather than presenting chapter 4 as simple-regression
+#      material. Lecture 3.1 uses the general form.
+#
+#      THE SIXTH ASSUMPTION. Lecture 2.3 stopped at five, SLR.1 to
+#      SLR.5, which deliver unbiasedness and the variance and say
+#      nothing about shape. The exact t result needs one more, MLR.6,
+#      normality of the population error. The deck names it where it is
+#      used and says plainly that earnings are not normal, which is
+#      Wooldridge's own remark on p.119, and that 120 people make the t
+#      a good approximation regardless. It is NOT smuggled in as a sixth
+#      Gauss-Markov assumption: the Gauss-Markov theorem of 2.3 does not
+#      use it.
+#
+#      Mastering Metrics, cited @angrist2015: the "Mastering Inference"
+#      appendix to chapter 1, for the working rule that a t past about
+#      two in absolute value is hard to square with the null. The shelf
+#      copy is an ebook without printed pagination, so no page is cited.
+#
 #      TIMING, 110 minutes of a two-hour slot
 #         0-6     retrieval
 #         6-10    lecture plan
 #        10-35    Testing a Coefficient
-#        35-38    pause
-#        38-63    Confidence Intervals for an Effect
-#        63-66    pause
-#        66-92    Reading a Regression Table
-#        92-97    the standing question
-#        97-105   application
+#        35-39    question to the room: a null of 1.30 rather than zero
+#        39-68    Confidence Intervals for an Effect, including the
+#                 derivation and the coverage frame
+#        68-72    question to the room: a wide interval or a narrow one
+#        72-95    Reading a Regression Table
+#        95-99    the standing question
+#        99-105   application
 #       105-110   synthesis and exit ticket
 #
-#      FIGURES. Every exhibit is built by _apps/regression/R/model.R and
-#      written by _apps/export_figures.R. Rebuild with
+#      FIGURES. Two, both built. Every exhibit is built by
+#      _apps/regression/R/model.R and written by _apps/export_figures.R.
+#      Rebuild with
 #
 #        source("_apps/export_figures.R")
 #
-#      from the repo root, and every slide follows on the next render. Do
-#      not edit a PNG: edit the builder.
+#      from the repo root, and every slide follows on the next render.
+#      Do not edit a PNG: edit the builder.
+#
+#        2-4_interval   the distribution implied by our estimate and its
+#                       standard error, 95 per cent region shaded, zero
+#                       and the true 1.30 both marked
+#        2-4_studies    four studies at n = 30, 120, 480 and 1920, the
+#                       same point estimate in each, intervals only
 #
 #      THE POPULATION. One simulated population of 200,000 people, a
 #      sample of 120 drawn from it, and a hold-out of another 120. The
-#      truth is known because we wrote it. The flaws are in the generator
-#      already, switched off, and each later lecture turns one on.
+#      truth is known because we wrote it. The flaws are in the
+#      generator already, switched off, so every one of the five
+#      assumptions holds exactly in this block. Lecture 3.1 turns the
+#      first one on.
+#
+#      THE NUMBERS ON THIS DECK, computed from the generator at the
+#      module seed on 18 September and re-checked after the centring
+#      change:
+#
+#        population   slope 1.30
+#        our 120      fitted slope 1.5227   se 0.1897
+#        the miss     1.5227 - 1.30 = 0.2227, about one standard error
+#        df           n - 2 = 118
+#        t vs zero    1.5227 / 0.1897 = 8.03
+#        critical t   1.980, the 97.5th percentile on 118 df
+#        half-width   1.980 x 0.1897 = 0.3756
+#        95% interval 1.5227 +/- 0.3756 = [1.147, 1.898]
+#        coverage     the interval CONTAINS the true 1.30
+#
+#      THE FOUR SAMPLE SIZES, computed from the generator and supplied
+#      on 18 September. The estimate is FROZEN at 1.5227, sigma-hat at
+#      4.777 and the sample variance of schooling at s_x^2 = 5.3271;
+#      only n varies, and S_xx = (n-1) s_x^2 follows. The n = 120 row
+#      reproduces the deck's own numbers exactly, which is the check
+#      that the calculation is right.
+#
+#        n      S_xx        se        t     t crit     95% interval
+#        30     154.5     0.3843    3.962    2.048    [0.735, 2.310]
+#        120    633.9     0.1897    8.025    1.980    [1.147, 1.898]
+#        480    2551.7    0.0946   16.101    1.965    [1.337, 1.709]
+#        1920   10222.8   0.0472   32.228    1.961    [1.430, 1.615]
+#
+#      The frame prints t to two decimals, so 8.03 there matches 8.03
+#      everywhere else on the deck.
+#
+#      WHAT THAT FRAME HAS TO SAY, because the table is easy to
+#      misread, and both points are on the slide rather than in a
+#      script. FIRST, it is a THOUGHT EXPERIMENT: we hold the estimate
+#      at the value our own 120 people happened to give and ask what its
+#      standard error would be with more of the same kind of data. A
+#      real sample of 480 would also give a different estimate, usually
+#      one closer to 1.30, and the frame says so in its first line.
+#      SECOND, the intervals at 480 and 1920 DO NOT COVER 1.30, and the
+#      frame states that plainly instead of leaving it to be noticed.
+#      The reason is that the estimate was frozen at a number that had
+#      already missed by 0.2227, so a narrow interval around it is
+#      confidently wrong. This is the sharpest statement of the
+#      lecture's point available anywhere on the deck: precision is not
+#      accuracy, and a large t is not evidence that an estimate sits
+#      near the truth. The frame must NOT be allowed to imply that
+#      collecting more data makes a researcher wrong, which is why the
+#      thought-experiment line comes first and the callout names the
+#      frozen estimate as the cause.
 #
 title: "Reporting an Estimate"
 subtitle: "ECONXXXXX Econometrics I"
@@ -84,260 +277,493 @@ qr-code: ../_shared/qr-sam-deegan.png
 \roadmap{2.4}
 ```
 
-::: {.tablenotes}
-Weeks already covered are greyed; today's is marked.
+::: {.tablenotes title="The Last of Four Lectures on One Estimator"}
+Lectures already given are greyed and today's is marked. Lecture 2.1 fitted the
+line, 2.2 asked how much of earnings it accounts for, and 2.3 asked how far the
+fitted slope lands from the truth. Today turns it into a reported number.
 :::
 
-## Last Week: The Spread of the Sampling Distribution
+## What Lectures 1.3 and 2.3 Left Open
 
-Last week the sampling distribution had a centre and a spread, and we gave the
-spread a name.
+Lecture 2.3 produced two numbers from our 120 people: a fitted slope of 1.5227
+and a standard error of 0.1897. On their own they are not yet a sentence anybody
+else can check.
 
-::: {.tablenotes}
-Two minutes with your neighbour. Our sample gave a slope of 1.52. What else
-would you need before you would write that number in a sentence?
+Lecture 1.3 turned an estimate and its standard error into a t-statistic, a
+p-value and a 95 per cent confidence interval. Every one of those was built for
+a mean.
+
+Today builds all three for a slope. The arithmetic differs in one place only,
+and it is the degrees of freedom.
+
+::: {.defn title="Question"}
+Our sample gave 1.5227 euro a year. What else would you want printed beside that
+number before you would be willing to put it in a report?
 :::
-
-<!-- 0-6 min. Retrieval. The answer is the standard error, and today is what
-     you do with it. -->
 
 ## Lecture Plan
 
-- **Testing a Coefficient.** Asking whether an estimate is distinguishable from nothing at all.
-- **Confidence Intervals for an Effect.** Reporting a range instead of a point, and why it says more.
-- **Reading a Regression Table.** What the numbers in a published table are, and what to look at first.
-
-::: {.tablenotes}
-Reading: [to settle].
+::: {.contributions}
+1.  **Testing a Coefficient.** Comparing an estimate with its own standard error, and what that settles.
+2.  **Confidence Intervals for an Effect.** A range built from the same two numbers, and whether it covers 1.30.
+3.  **Reading a Regression Table.** What each number in a published table is, and the order to read them in.
 :::
 
 # Testing a Coefficient
 
-## Testing a Coefficient Against a Benchmark Value
+## Everything Lecture 1.3 Did for a Mean, Now for a Slope
 
-**The goal of this section:** ask whether an estimate is distinguishable from
-zero, and be exact about what that question is.
+Lecture 1.3 built three objects out of an estimate and its standard error, and
+none of the three is taught again today:
 
-An estimate of 1.52 euro a year is large or small only against something. The
-only thing we have to compare it with is its own sampling variation.
+- **A t-statistic:** the distance from a claimed value, counted in standard errors.
+- **A p-value:** what the claim would produce, and never whether the claim is true.
+- **A confidence interval:** the estimate and its precision reported as one object.
+
+Wherever Lecture 1.3 wrote $\bar{y}$ and $\mathrm{se}(\bar{y})$, write
+$\hat{\beta}_1$ and $\mathrm{se}(\hat{\beta}_1)$ instead. The formulas are the
+same formulas.
+
+::: {.takeaway title="Two Things Are Genuinely New"}
+The degrees of freedom are $n-2$ rather than $n-1$, because the line used two
+coefficients rather than one. And the quantity is a slope, so a sentence about
+it is a sentence about schooling and earnings, in euro per year.
+:::
+
+## The Standardised Slope Follows a t Distribution
+
+Assumptions one to five of Lecture 2.3 made the slope unbiased and gave its
+variance. They say nothing about the shape of its distribution, and a test needs
+the shape:
 
 ```{=latex}
 \begin{equation}
-t = \frac{\hat{\beta}_1 - 0}{\mathrm{se}(\hat{\beta}_1)}
+\frac{\hat{\beta}_1 - \beta_1}{\mathrm{se}(\hat{\beta}_1)}
+\;\sim\; t_{\,n-2}
+\qquad\qquad
+n - 2 = 118
 \end{equation}
 ```
 
-- $\hat{\beta}_1$: our estimate, from our one sample
-- $\mathrm{se}(\hat{\beta}_1)$: the estimated spread of last week's histogram
-- $0$: the value we are testing against, which is a choice
+- $t_{\,n-2}$: the t distribution on $n-2$ degrees of freedom
+- $n-2$: the 120 people, less the two coefficients the line already used
 
-::: {.caveat title="Zero is a choice, not a default"}
-Nothing makes zero special except that it is often the interesting comparison.
-If theory says the return should be two euro, test against two.
+One further assumption delivers this: the population error is normally
+distributed. The slope is then a weighted sum of normal errors and is itself
+normal, and replacing $\sigma$ by $\hat{\sigma}$ turns that normal into a t
+[@wooldridge2020].
+
+::: {.caveat title="Chapter 4 Is Stated for Multiple Regression"}
+Wooldridge writes this for $k$ regressors, with $n-k-1$ degrees of freedom. Our
+line has one regressor, so $k=1$ and $n-k-1$ is 118. He also says plainly that
+normality is a poor assumption for wages, and that it stops mattering at large
+sample sizes [@wooldridge2020].
 :::
 
-<!-- IDEA 1. 10-35 min. -->
+## The t-Statistic Compares an Estimate With Its Own Standard Error
 
-## What Rejecting Does and Does Not Mean
+That result is written in terms of $\beta_1$, which we never see. Putting a
+claimed value in its place gives a statistic we can compute from our data alone:
 
-::: {.defn title="What a rejection says"}
-If the true return were zero, a sample like ours would be unusual.
+```{=latex}
+\begin{equation}
+t = \frac{\hat{\beta}_1 - a}{\mathrm{se}(\hat{\beta}_1)}
+\qquad\text{and, when } a = 0, \qquad
+t = \frac{\hat{\beta}_1}{\mathrm{se}(\hat{\beta}_1)}
+\end{equation}
+```
+
+- $a$: the value the null hypothesis claims $\beta_1$ takes
+- $t$: how many standard errors the estimate sits from that claim
+
+The general form is estimate minus hypothesised value, over standard error
+[@wooldridge2020]. An estimate of 1.5227 euro is large or small only against
+something, and its own standard error is the only comparison the data supplies.
+The claim is always about $\beta_1$: a null written about 1.5227 is not a
+hypothesis at all.
+
+::: {.caveat title="Zero Is a Choice, Not a Default"}
+Software prints the test against zero because zero is often the interesting
+claim, not because it is the right one. If theory says the return should be one
+euro, subtract one. Wooldridge tests an elasticity against one for exactly that
+reason [@wooldridge2020].
 :::
 
-::: {.caveat title="What it does not say"}
-It does not say the true return is 1.52. It does not say the return is large.
-It does not say the finding matters. And it says nothing at all about whether
-schooling causes earnings.
+## The t-Statistic on Our 120 People
+
+The arithmetic, against a null that schooling carries no return at all:
+
+```{=latex}
+\begin{equation}
+t = \frac{1.5227 - 0}{0.1897} = 8.03
+\qquad
+\mathrm{df} = 118
+\qquad
+c = 1.980
+\end{equation}
+```
+
+- $c$: the 97.5th percentile of the t distribution on 118 degrees of freedom
+
+Read out loud: our estimate sits about eight standard errors above zero. The
+two-sided five per cent rule rejects when $|t|$ is larger than 1.980, and 8.03
+is more than four times that [@wooldridge2020]. Angrist and Pischke's working
+rule is that a t past about two is already hard to square with the claim
+[@angrist2015].
+
+::: {.takeaway title="The Wording Is Fail to Reject, Never Accept"}
+We reject a null of zero at the five per cent level. Where a test does not
+reject, the correct sentence is that the data do not let us reject: many other
+values survive the same sample, and they cannot all be true [@wooldridge2020].
 :::
 
-## Vote: Would You Reject at Five Per Cent?
+## What Rejecting a Null of Zero Does Not Establish
 
-An estimate of 0.40 with a standard error of 0.19.
+The rejection is a narrow statement: if the true return were zero, a sample like
+ours would be rare. Four things it is not:
 
-::: {.tablenotes}
-Vote, argue with your neighbour, vote again. Then: what is the largest
-standard error that would still let you reject?
+- **Not that the return is 1.5227.** Lecture 2.3 showed the true value is 1.30.
+- **Not that the return is large.** 8.03 is a ratio with a precision underneath it.
+- **Not that the finding matters.** Whether 1.5227 euro an hour matters is a judgement.
+- **Not that schooling causes earnings.** That question is Lecture 4.2's, and no test here touches it.
+
+::: {.caveat title="A p-Value Describes the Claim, Not Its Truth"}
+The p-value is the probability of a t at least this extreme if the null were
+true [@wooldridge2020]. It is not the probability that the null is false.
+Lecture 1.3 settled this for a mean, and nothing about a slope is different.
 :::
 
-<!-- ConcepTest 1. The arithmetic is easy; the second question is the one
-     that shows whether they understand what the ratio is doing. -->
+## A Null of 1.30 Rather Than Zero
 
-## Pause
+Zero is not the only value worth testing, and this module knows a more
+interesting one. Subtract 1.30 from 1.5227 instead, and the numerator becomes
+the 0.2227 miss from Lecture 2.3, which is a little more than one standard
+error.
 
-<!-- 35-38 min. -->
-
-::: {.tablenotes}
-Two minutes. Write down, without the slide, what the number in the denominator
-of a t-statistic is measuring. Then compare with your neighbour.
+::: {.defn title="Question"}
+Would a null of 1.30 be rejected at the five per cent level, and what does your
+answer tell you in advance about the interval we are about to build?
 :::
 
 # Confidence Intervals for an Effect
 
-## Reporting an Interval Instead of a Point Estimate
+## Reporting a Range Instead of a Point
 
-**The goal of this section:** report the estimate and its precision in one
-object, instead of throwing the precision away.
+A t-statistic answers one question about one claimed value and discards
+everything else the sample had to say. An interval answers it for every claimed
+value at once, which is why Wooldridge calls intervals *interval estimates*: a
+range of likely values rather than a point [@wooldridge2020].
+
+Lecture 1.3 built one for a mean, as the estimate plus or minus a critical value
+times its standard error. Today's object is that object, built from a slope.
+
+A point estimate reported alone tells a reader nothing about how far it might
+have landed from the truth. Ours landed 0.2227 away.
+
+::: {.defn title="What the Interval Is Made Of"}
+Three numbers and nothing else: the estimate 1.5227, its standard error 0.1897,
+and a critical value read off the t distribution on 118 degrees of freedom. Two
+of the three were on the board at the end of Lecture 2.3.
+:::
+
+## Deriving the Interval From the t Distribution
+
+The distribution of the standardised slope is a statement about a quantity we
+cannot compute. Three lines turn it into two numbers we can:
 
 ```{=latex}
-\figsmall{../_shared/figures/2-4_interval.png}{The sampling distribution implied by
-our estimate and its standard error. The shaded region is the 95 per cent
-interval; the dashed line is the null.}
+\begin{equation}
+\begin{aligned}
+0.95
+ &= \Pr\!\left(-c < \frac{\hat{\beta}_1 - \beta_1}{\mathrm{se}(\hat{\beta}_1)} < c\right) \\[2pt]
+ &= \Pr\!\bigl(-c\,\mathrm{se}(\hat{\beta}_1) < \hat{\beta}_1 - \beta_1 < c\,\mathrm{se}(\hat{\beta}_1)\bigr) \\[2pt]
+ &= \Pr\!\bigl(\hat{\beta}_1 - c\,\mathrm{se}(\hat{\beta}_1) < \beta_1 < \hat{\beta}_1 + c\,\mathrm{se}(\hat{\beta}_1)\bigr)
+\end{aligned}
+\end{equation}
 ```
 
-<!-- IDEA 2. 38-63 min. -->
+The first line is the definition of the critical value. The second multiplies
+through by the standard error, which is positive, so the inequalities keep their
+direction. The third subtracts $\hat{\beta}_1$ and multiplies by $-1$, which
+reverses them and swaps the two ends [@wooldridge2020].
+
+::: {.takeaway title="Only the Endpoints Differ From Sample to Sample"}
+$\beta_1$ is one fixed number in all three lines and is never the thing that
+varies. What differs from one sample to the next is $\hat{\beta}_1$, and
+therefore both endpoints. The last line is the interval.
+:::
+
+## The Interval on Our 120 People
+
+The three numbers, multiplied out:
+
+```{=latex}
+\begin{equation}
+1.5227 \;\pm\; 1.980 \times 0.1897
+\;=\; 1.5227 \pm 0.3756
+\;=\; [\,1.147,\; 1.898\,]
+\end{equation}
+```
+
+- $0.3756$: the half-width, which is the standard error scaled by the critical value
+
+The critical value is 1.980 rather than Lecture 1.3's 1.96 because 118 degrees
+of freedom is a t and not a normal. Above 120 degrees of freedom Wooldridge
+licenses 1.96, and above 50 he licenses a plain two standard errors
+[@wooldridge2020].
+
+::: {.caveat title="The Width Comes From the Standard Error, Not the Estimate"}
+1.5227 only says where the interval sits. Its width is 0.1897 scaled, and so it
+carries the three ingredients of Lecture 2.3: the error variance, the spread of
+schooling, and the number of people.
+:::
+
+## The Interval Covers the True Slope
+
+The population slope is 1.30, our estimate is 1.5227, and the interval runs from
+1.147 to 1.898. The true value sits inside it, and not at its edge.
+
+Two things are true at once, and this is the only place in the module where both
+can be checked against a known truth:
+
+- **The point estimate missed.** $1.5227 - 1.30 = 0.2227$, and no arithmetic error produced that.
+- **The interval caught it.** The machinery of 2.3 and today worked on this sample exactly as advertised.
+
+In any real application the first is unknowable and the second unverifiable.
+Here we wrote the population, so we can look.
+
+::: {.takeaway title="This Is What the Machinery Was Built to Do"}
+An unbiased rule that misses by 0.2227 is not a failure, provided the number
+printed beside it is honest about how far it might have missed. Reporting 1.5227
+alone conceals that. Reporting 1.147 to 1.898 does not.
+:::
 
 ## Reading the Interval Out Loud
 
-::: {.worked title="The sentence"}
-Our estimate of the return to a year of schooling is 1.52 euro an hour, with a
-95 per cent confidence interval from [lower] to [upper].
+The wording is examinable, and the indefensible version sounds better than the
+defensible one. Lecture 1.3 drew this distinction for a mean; for a slope the
+sentence has to carry units as well.
+
+The sentence to avoid is "there is a 95 per cent chance the true return lies
+between 1.147 and 1.898". It makes $\beta_1$ the thing that varies, and
+$\beta_1$ is one fixed number in the population of 200,000.
+
+::: {.worked title="The Sentence to Use"}
+Our estimate of the return to a year of schooling is **1.5227 euro an hour**,
+with a 95 per cent confidence interval from **1.147 to 1.898**. Comparing two
+people in this sample whose schooling differs by one year, that is the earnings
+gap the line reports.
 :::
 
-::: {.caveat title="What the 95 per cent counts"}
-It counts intervals, not truths. If we repeated the whole exercise many times,
-about 95 per cent of the intervals we built this way would contain the true
-return. This particular interval either contains it or does not.
+## What the Ninety-Five Per Cent Counts
+
+It counts intervals, not truths. Lecture 1.3 established this for a mean and
+nothing about a slope is different [@wooldridge2020]:
+
+- **Before the sample is drawn:** the rule produces an interval covering $\beta_1$ in 95 per cent of samples.
+- **After the endpoints are numbers:** 1.30 is either inside 1.147 to 1.898 or it is not.
+
+In this module we can see which, and on the previous frame we did. In any
+application you run, you cannot: Wooldridge's own wording is that we hope our
+sample is one of the 95 per cent where the interval contains the truth, and have
+no guarantee.
+
+::: {.caveat title="The Coverage Belongs to the Procedure, and the Procedure Includes the Sampling"}
+The 95 per cent is a property of the rule under assumptions one to five. If the
+120 chose themselves, or if earnings spread out more at higher schooling, the
+rule covers less often, and the printed interval will not say so
+[@wooldridge2020].
 :::
 
-::: {.tablenotes}
-The test is inside the picture: the interval excludes zero exactly when the
-test rejects at five per cent. They are the same statement, and the interval
-is the more informative way to say it.
+## The Interval and the Test Are One Statement
+
+A value is rejected at five per cent exactly when it falls outside the 95 per
+cent interval. The two are one inequality written twice [@wooldridge2020]:
+
+- **Zero is outside 1.147 to 1.898,** so a null of zero is rejected, which is what $t = 8.03$ said.
+- **1.30 is inside it,** so a null of 1.30 is not rejected, which answers the question asked in section 1.
+
+The interval settles both at once, and it settles the same question for every
+other candidate value as well. That is the argument for printing it rather than
+printing a verdict.
+
+::: {.takeaway title="An Interval Is Every Test You Could Have Run"}
+Each value inside the interval is a null this sample does not reject, and each
+value outside it is one it does. A single test reports one of those verdicts and
+throws the rest away.
 :::
 
-## Vote: Which Interval Is More Useful?
+## The Interval Against the Sampling Distribution
 
-An estimate of 1.5 with an interval from $-0.1$ to $3.1$, or an estimate of
-0.4 with an interval from 0.3 to 0.5.
+```{=latex}
+\fig{../_shared/figures/2-4_interval.png}{The distribution implied by 1.5227 and 0.1897, with the 95 per cent region shaded.}
+```
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: which one would you act on, and does that match
-which one is significant?
+::: {.tablenotes title="The Shaded Region Excludes Zero and Contains 1.30"}
+The curve is centred on our estimate, because an interval is built around what
+we have rather than around what is true. Zero sits far outside the shaded
+region. The true 1.30 sits inside it, left of centre by 0.2227.
 :::
 
-<!-- ConcepTest 2. The second is significant and small; the first is not
-     significant and might be large. Most rooms pick on the star. Do not
-     adjudicate. -->
+## A Wide Interval or a Narrow One
 
-## Pause
+Two research teams report the return to a year of schooling. One estimates 1.5, with an
+interval from $-0.1$ to 3.1. The other estimates 0.4, with an interval from 0.3
+to 0.5.
 
-<!-- 63-66 min. -->
-
-::: {.tablenotes}
-Two minutes. Say what the 95 per cent in a 95 per cent confidence interval is
-counting. Then compare with your neighbour and see if you agree.
+::: {.defn title="Question"}
+Which of the two would you rather have been given, and does your answer agree
+with which of the two is statistically significant?
 :::
 
 # Reading a Regression Table
 
 ## The Same Estimate at Four Different Sample Sizes
 
-**The goal of this section:** read published output the way a referee reads
-it, starting with the right number.
+This is a thought experiment, not four samples. The estimate is frozen at the
+1.5227 our 120 people happened to give, and only the number of people differs. A
+real sample of 480 would return its own estimate, usually one nearer 1.30.
+
+| People | Slope | Standard error | $t$ | 95 per cent interval |
+|---:|---:|---:|---:|---:|
+| 30 | 1.5227 | 0.3843 | 3.96 | [0.735, 2.310] |
+| 120 | 1.5227 | 0.1897 | 8.03 | [1.147, 1.898] |
+| 480 | 1.5227 | 0.0946 | 16.10 | [1.337, 1.709] |
+| 1920 | 1.5227 | 0.0472 | 32.23 | [1.430, 1.615] |
+
+Four times the people halves the standard error and doubles the t, which is
+Lecture 2.3's $\sqrt{n-1}$: $1.5227/0.1897 = 8.03$ and $1.5227/0.0472 = 32.23$,
+with the same estimate on top of both.
+
+::: {.caveat title="The Last Two Intervals Do Not Cover 1.30"}
+They exclude the truth because the estimate was frozen at a number that had
+already missed it by 0.2227. A narrow interval around an estimate that missed is
+confidently wrong: precision is not accuracy, and a t of 32.23 is no evidence
+that 1.5227 sits near 1.30.
+:::
+
+## One Return to Schooling, Four Sample Sizes
 
 ```{=latex}
-\figsmall{../_shared/figures/2-4_studies.png}{Four studies reporting an identical
-return to schooling. Only the sample size differs.}
+\fig{../_shared/figures/2-4_studies.png}{The same estimated return to schooling, reported at four different sample sizes.}
 ```
 
-<!-- IDEA 3. 66-92 min. -->
+::: {.tablenotes title="All Four Exclude Zero and the Two Narrowest Exclude 1.30"}
+Every interval is drawn around the same frozen estimate, so the four share a
+centre and differ only in width. Each one rejects a null of zero. The two
+narrowest also reject the true value, and no real study could know that.
+:::
 
 ## Why Significance Is About Precision, Not Effect Size
 
-Every one of those four found the same effect. Two of them would be published
-as a finding and two as a null result.
+Significance is a statement about how precisely something was measured. It is
+not a statement about how large it is, and the two are confused in print
+constantly [@wooldridge2020].
 
-::: {.result}
-Significance is a statement about how precisely you measured something. It is
-not a statement about how big the something is, and the two get confused in
-print constantly.
-:::
+The mechanism is visible in the ratio. A t has the estimate on top and a
+precision underneath, so a large t comes from a large estimate or from a small
+standard error, and a star alone cannot tell you which:
 
-::: {.tablenotes}
-This is also why a large study can report a significant effect that nobody
-should act on, and a small one can miss an effect that matters.
+- **A very large sample** makes a negligible return significant, because the standard error is tiny.
+- **A small sample** misses a return that matters, because a wide standard error raises the bar.
+
+Wooldridge's 401(k) example has 1,534 firms, every coefficient significant at
+small levels, and one of them practically trivial [@wooldridge2020].
+
+::: {.caveat title="Practical Significance Is a Separate Judgement"}
+Whether 1.5227 euro an hour per year of schooling is worth acting on is a
+question about Irish wages, not a question this arithmetic answers. Wooldridge's
+instruction is to check the statistic first and then discuss the magnitude in
+its units [@wooldridge2020].
 :::
 
 ## What to Read First in a Regression Table
 
-1. **The coefficient, in units.** What does it mean in euro?
-2. **The standard error.** How precisely was it measured?
-3. **The sample size and what it is a sample of.**
-4. **What else is in the regression**, which is week 8.
-5. **The stars**, last, if at all.
+Our own regression, laid out the way a published table lays one out:
 
-::: {.caveat}
-A table with stars and no standard errors is hiding the number you most need.
-When you build your own, report the interval.
+|  | Hourly earnings |
+|:---|---:|
+| Years of schooling, centred at 13 | 1.5227 |
+| Standard error | (0.1897) |
+| 95 per cent interval | [1.147, 1.898] |
+| $t$ against a null of zero | 8.03 |
+| People | 120 |
+
+Only the first two lines are printed by most tables. The interval is the one
+line a reader can do most with, and it is the one most often left out.
+
+::: {.defn title="The Order to Read Them In"}
+The coefficient in units first, then the standard error, then the sample size
+and what it is a sample of, then what else is in the regression, which is
+Lecture 3.1's subject. The stars last, and only if the first four are there.
 :::
 
-## Vote: What Is Missing From This Table?
+## What a Table of Stars Leaves Out
 
-[Show a published table with stars, no standard errors, and no sample size.]
+A table printing coefficients and stars, with no standard errors, has removed
+the number a reader most needs. A star says only that $|t|$ passed a threshold,
+so our 8.03 and a t just past 1.980 carry the same mark. Three consequences:
 
-::: {.tablenotes}
-Vote, argue, vote again. Then: could you tell from it whether the effect is
-large?
+- **No interval can be rebuilt,** so no reader can ask whether 1.30, or any other value, is consistent with the data.
+- **A precise small estimate reads exactly like an imprecise large one,** which is the previous frame in one line.
+- **The result cannot be combined with anybody else's,** because combining estimates needs their standard errors.
+
+::: {.caveat title="Report the Interval in Your Own Tables"}
+The interval carries the estimate and its precision together, and the test is
+inside it. When the table is yours, print 1.147 to 1.898 beside 1.5227 and a
+reader needs nothing further from you.
 :::
-
-<!-- ConcepTest 3. No, and that is the point. Do not adjudicate. -->
 
 ## What Would Have To Be True?
 
-::: {.caveat title="The standing question"}
+This time the question is asked of the interval we just built, 1.147 to 1.898,
+and of the sentence we agreed to report it in.
+
+::: {.defn title="Question"}
 What would have to be true for this number to mean what we just said it means?
 And what is the plausible story where it isn't?
 :::
 
-[Candidate this week: significance is not size, and size is not
-importance. A star tells you about the standard error. It tells you nothing
-about whether the number matters.]
-
-<!-- 92-97 min. Same slot every week. They answer in pairs first, then
-     you. Not that causation is hard in the abstract, but that THIS
-     estimate rests on something nameable that may well be false. -->
-
 ## Application
 
-Take the same estimate and report it four ways: bare, with a standard error,
-with an interval, and with a star.
+The app reports one estimate four ways, bare, with a standard error, with an
+interval and with a star, and it raises the sample size while holding the
+estimate at 1.5227.
 
-::: {.tablenotes}
-Vote first: which of the four would you want if you were deciding whether to
-stay in education another year? Take the vote before we discuss.
+::: {.defn title="Question"}
+If the sample size goes to 480 and the estimate stays at 1.5227, which of the
+four printed forms differ, and which of the four does a reader need?
 :::
 
-Lab this week: building a regression table in R, and reading someone else's.
+The lab for this lecture is `confint()` beside `summary()`, and building a
+regression table that prints standard errors rather than stars.
 
-<!-- 97-105 min. ConcepTest 4. -->
-
-## Three Ways to Report One Number
-
-Today was three separate ideas, each doing one job:
+## Summary: Testing, Intervals and Tables
 
 ::: {.contributions}
-1. **Testing a Coefficient.** A t-statistic compares an estimate to its own standard error, and to nothing else.
-2. **Confidence Intervals for an Effect.** An interval carries the estimate and its precision in one object.
-3. **Reading a Regression Table.** A table is a set of claims, each with a standard error attached - read those first.
+1.  **Testing a Coefficient.** $t = 1.5227/0.1897 = 8.03$ on 118 degrees of freedom, against a five per cent critical value of 1.980.
+2.  **Confidence Intervals for an Effect.** $1.5227 \pm 1.980 \times 0.1897$ runs from 1.147 to 1.898, and it covers the true 1.30.
+3.  **Reading a Regression Table.** The coefficient in units first, the standard error second, and the stars last if at all.
 :::
 
-::: {.tablenotes}
-Next week: what happens when a second variable enters, and what holding it fixed actually buys you.
-:::
+## Next Lecture
 
-<!-- 105-110 min. No new material. Names match the section titles, which
-     match the roadmap. Exit ticket after this: what was the muddiest
-     point? The answers set next week's retrieval questions. -->
+Lecture 3.1 puts a second variable into the regression, and it is the first
+lecture that returns a different number in place of 1.5227:
+
+- **Partialling Out:** what adding a second variable does to the slope you already had.
+- **Reading a Partial Coefficient:** what holding something fixed covers, and three variables where it goes wrong.
+- **Omitted Variable Bias:** turning the thing you could not measure into a number.
+
+Everything reported today rests on assumptions one to five. Lecture 3.1 is the
+first lecture in which one of them is false on purpose.
 
 ## Before Lecture 3.1
 
-- **Read** [chapter].
-- **Do** the appendix derivation, and problem set 2.
-- **Try** the app: move the sample size and watch the interval and the verdict
-  change while the estimate stays put.
-
-::: {.defn title="Problem set 2"}
-[Due this week. Covers 2.3 and 2.4.]
+::: {.contributions}
+1.  **Play:** The app. Hold the estimate at 1.5227, raise the sample size, and watch the interval narrow around it.
+2.  **Apply:** Problem set 2, covering 2.3 and 2.4. It rebuilds today's interval by hand from a standard error you compute yourself.
+3.  **Review:** @wooldridge2020, sections 4-1 to 4-3, on the t test and confidence intervals.
 :::
 
 ## {.plain}
@@ -358,30 +784,53 @@ Next week: what happens when a second variable enters, and what holding it fixed
 ::: {.appendix}
 :::
 
-## Derivation: Where the t-Statistic Comes From
+## Derivation: Why the Distribution Is t and Not Normal
 
-Standardise the estimator by its own estimated standard error and show what
-distribution the result has.
+The body frames asserted the t. With $\sigma$ known, the standardised slope
+would be standard normal, because a weighted sum of normal errors is normal:
 
-::: {.tablenotes}
-Three steps. Start from the sampling distribution of the slope, divide by the
-standard error, and account for the fact that the standard error is itself
-estimated. The step that does the work is the third: it is the only reason the
-answer is a t and not a normal, and it is why the difference stops mattering
-once the sample is large.
+```{=latex}
+\begin{equation}
+\frac{\hat{\beta}_1 - \beta_1}{\operatorname{sd}(\hat{\beta}_1)} \sim \mathrm{Normal}(0,1)
+\qquad\qquad
+\frac{\hat{\beta}_1 - \beta_1}{\mathrm{se}(\hat{\beta}_1)} \sim t_{\,118}
+\end{equation}
+```
+
+::: {.takeaway title="One Estimated Number Separates the Two"}
+The only difference is that $\sigma$ on the left has been replaced by
+$\hat{\sigma}$ on the right, and $\hat{\sigma}$ was itself computed from the 120
+residuals in Lecture 2.3. That second source of variation thickens the tails,
+which is why 1.980 is larger than 1.96 [@wooldridge2020].
 :::
 
-[Full derivation. Set as homework; worked solution published with the set.]
+## Derivation: The Interval as the Set of Nulls That Survive
+
+Run section 1's test at every possible null value $a$ in turn and keep the
+values the sample does not reject:
+
+```{=latex}
+\begin{equation}
+\left|\frac{\hat{\beta}_1 - a}{\mathrm{se}(\hat{\beta}_1)}\right| \le c
+\qquad\Longleftrightarrow\qquad
+\hat{\beta}_1 - c\,\mathrm{se}(\hat{\beta}_1)
+\;\le\; a \;\le\;
+\hat{\beta}_1 + c\,\mathrm{se}(\hat{\beta}_1)
+\end{equation}
+```
+
+::: {.takeaway title="The Same Two Endpoints by a Second Route"}
+The values that survive are exactly 1.147 to 1.898. This is why a null is
+rejected at five per cent precisely when it falls outside the 95 per cent
+interval, and why the two frames in section 2 were making one claim
+[@wooldridge2020].
+:::
 
 ## Notes and Tools
 
-- The app, and this week's lab script.
-- `summary()`, `confint()`, and one table package in R.
-
-::: {.tablenotes}
-Report intervals. If a table you are writing has stars and no standard errors,
-it is hiding the thing a reader needs.
-:::
+- **The App:** the reporting app, with the sample size raised while the estimate is held fixed.
+- **The Lecture in One Line:** `confint(lm(y ~ I(x - 13)), level = 0.95)`.
+- **This Lecture's Lab:** `summary()` and `confint()`, and one table package.
 
 ## References {.allowframebreaks}
 

@@ -13,22 +13,64 @@
 #      2. Every equation states its OBJECTIVE before it appears - what
 #         question it answers, in one line.
 #
-#      3. Notation CONVENTIONS are taught as callouts where each first
-#         bites. Two bite today: the SUBSCRIPT on a slope, which is now
-#         needed because there is more than one, and the TILDE, which
-#         marks the estimate from the regression that left something out.
+#      3. Notation CONVENTIONS are taught as callouts where each is first
+#         used. Two are new today. The SUBSCRIPT on a slope is needed
+#         because there is now more than one slope. The TILDE marks an
+#         estimate from a regression that left a variable out, and it is
+#         taught on the frame in section 3 where the short regression
+#         first appears rather than as a frame of its own.
 #
 #      4. SCALAR ALGEBRA ONLY. Matrix notation is postgraduate. This is
-#         the week that rule earns its keep: the closed form for a
-#         multiple-regression coefficient is not writable in scalars, so
-#         REGRESSION ANATOMY does the work instead. Say the anatomy
-#         sentence out loud in class and make them say it back. It is the
-#         most portable idea in the module - it is what makes instrumental
-#         variables and fixed effects legible in Part II.
+#         the deck where that rule costs something: there is no scalar
+#         closed form for a multiple-regression coefficient. Regression
+#         anatomy is what replaces it, and it is the most portable result
+#         in the module - instrumental variables and fixed effects in
+#         Part II are both read through it.
 #
-#      5. NOTHING IS DERIVED IN THE ROOM. The derivation is in the
-#         appendix and set as homework. Class time goes on the shape of
-#         the proof: what it does, its steps, which step does the work.
+#      5. BOTH RESULTS ARE DERIVED ON THE SLIDES, IN SAMPLE ALGEBRA.
+#         CHANGED 18 September, overturning the previous rule that
+#         nothing was derived in the room. The reason: the skeleton
+#         asserted the omitted variable bias formula as a displayed
+#         equation and then asserted that it held, so a student had no
+#         way to see WHY the bias is a product of exactly two slopes
+#         rather than a sum or a correlation. Both derivations here are
+#         sums over the 120 people and both use the same two facts about
+#         deviations of schooling that Lecture 2.3 proved in its
+#         appendix. Regression anatomy needs the first-order conditions
+#         of the two-regressor fit; those conditions are stated in the
+#         body and obtained in the appendix, which is the only
+#         mechanical step that leaves the room. The route is
+#         Wooldridge's own, 3-2f p.75 and 3-3b pp.84-85.
+#
+#      6. NO VOTES AND NO PAUSE FRAMES. A question to the room is a
+#         titled frame, one or two lines of context, the question in a
+#         `.defn title="Question"` box, and nothing under the box.
+#         "Objective:" and "The goal of this section:" are banned
+#         openings, and no stage direction appears on a slide.
+#
+#         WHAT THE SKELETON'S FIVE INTERACTIVE FRAMES BECAME. Three
+#         votes and two pauses were adjudicated against two tests: would
+#         a competent student get it wrong, and does the point come back
+#         later. Two survive as question frames. "How does a strong
+#         control affect the standard error?" becomes "A Control That
+#         Almost Perfectly Predicts Schooling": a competent student
+#         answers that the standard error falls because more has been
+#         accounted for, which is the wrong direction, and the point
+#         returns in Lecture 3.3 as multicollinearity. "Should promotion
+#         go into the regression?" survives as "Whether Promotion
+#         Belongs in the Regression", and its second half is the whole
+#         of the standing question four frames later. "How large would
+#         the ability bias have to be?" fails the first test - it asks
+#         for a pair of numbers rather than exposing a misconception -
+#         so it is folded into "Any Pair of Slopes With the Same
+#         Product", which teaches the point directly. Both pauses were
+#         revision prompts with no content of their own and are gone;
+#         what they asked students to recall is written on the frames
+#         themselves.
+#
+#      7. NO SPEAKER NOTES IN THIS BLOCK. A slide has to teach on its
+#         own, so what would have been said is written on it, and what a
+#         claim rests on is carried by a citation rather than a script.
 #
 #      NARRATIVE SPINE. Three sections, named by content, and named the
 #      same way in the roadmap, the dividers and the closing summary.
@@ -37,48 +79,213 @@
 #        2  Reading a Partial Coefficient
 #        3  Omitted Variable Bias
 #
+#      WHAT THIS DECK EXTENDS RATHER THAN RE-TEACHES. Lecture 2.3's five
+#      assumptions are not taught again; they are renumbered MLR.1 to
+#      MLR.5 and only the two that change are discussed. MLR.3 is no
+#      longer "schooling varies" but "no exact linear relationship among
+#      the regressors", and MLR.4 now conditions on every regressor at
+#      once. Lecture 2.1's slope formula is not re-derived: regression
+#      anatomy is shown to return it when the residualised regressor is
+#      used in place of schooling. Lecture 2.3's two facts about
+#      deviations of schooling, proved in its appendix, are used twice
+#      today and cited to it rather than reproved.
+#
+#      ONE CONTROL RUNS THROUGH THE WHOLE DECK, AND IT IS ABILITY.
+#      Changed 18 September, replacing the skeleton's parental education.
+#      The reason is that the only anatomy numbers the generator supplies
+#      are from the ability run, and a deck that residualises on parental
+#      education in section 1 and prices ability in section 3 makes the
+#      student carry two controls for no gain. Ability also sharpens the
+#      section 1 point that has to be made anyway: we can run the long
+#      regression here ONLY because we wrote the population, which is
+#      what section 3 then takes away. Parental education is gone from
+#      the deck entirely.
+#
+#      SHELF LOCATORS. Wooldridge, Introductory Econometrics, 7th
+#      edition, cited @wooldridge2020. Every page below was opened in
+#      the 18 September pass; PDF page = book page + 23.
+#
+#        3-1   p.68  eq (3.5)   E(u | x_1, x_2) = 0 for two regressors
+#        3-1b  p.69  eq (3.6)   the multiple linear regression model
+#        3-1b  p.70  eq (3.8)   the same condition on all k regressors
+#        3-2   p.70             "Mechanics and Interpretation of
+#                               Ordinary Least Squares" opens
+#        3-2a  p.70  eq (3.10)  least squares with two regressors
+#        3-2a  p.71  eq (3.13)  the k+1 first-order conditions, which is
+#                               where the orthogonality used in the
+#                               anatomy derivation comes from
+#        3-2b  p.72  eq (3.14)  the fitted equation, and the sentence
+#                               that the slopes have partial effect, or
+#                               ceteris paribus, interpretations
+#        3-2b  p.73  eq (3.18)  the coefficient on x_1 is the change in
+#                               the fitted value holding x_2 ... x_k
+#                               fixed; "we have controlled for" those
+#        3-2c  p.73             "On the Meaning of Holding Other Factors
+#                               Fixed in Multiple Regression": the data
+#                               have NOT been collected in a ceteris
+#                               paribus fashion, and multiple regression
+#                               "allows us to mimic this situation
+#                               without restricting the values of any
+#                               independent variables"
+#        3-2e  p.74             property 2 of the fitted values: the
+#                               sample covariance between each
+#                               independent variable and the residuals
+#                               is zero
+#        3-2f  p.75  eq (3.22)  the partialling-out formula, and the
+#                               sentence that the residuals are "the
+#                               part of x_i1 that is uncorrelated with
+#                               x_i2"; the Frisch-Waugh theorem is named
+#                               here
+#        3-2g  p.75  eq (3.23)  short slope = long slope plus the second
+#                               long coefficient times the auxiliary
+#                               slope, and the two cases where the two
+#                               regressions agree
+#        3-3   p.80  MLR.1-3    linear in parameters, random sampling,
+#                               no perfect collinearity
+#        3-3   p.82  MLR.4, eq (3.36)  zero conditional mean, and the
+#                               paragraph that omitting a factor
+#                               correlated with a regressor is what
+#                               makes MLR.4 fail
+#        3-3   p.83  Thm 3.1, eq (3.37)  unbiasedness of OLS
+#        3-3a  p.83             including an irrelevant variable leaves
+#                               unbiasedness intact
+#        3-3b  p.84             "Omitted Variable Bias: The Simple
+#                               Case"; eq (3.40) the long model, eq
+#                               (3.41) the tilde, eq (3.42) the wage
+#                               equation with unobserved ability
+#        3-3b  p.85  eq (3.45)  the expectation of the short slope
+#        3-3b  p.85  eq (3.46)  Bias = the product of the two slopes
+#        3-3b  p.85  Table 3.2  the four sign cases
+#        3-3b  p.86  ex 3.6     wage on schooling alone, n = 526, and
+#                               the statement that the average of the
+#                               estimates across samples is too large
+#        3-3b  p.86             upward bias, downward bias and biased
+#                               toward zero, defined
+#        3-4   p.88  Thm 3.2, eq (3.51)  Var(beta_j-hat) =
+#                               sigma^2 / [SST_j (1 - R_j^2)]
+#        3-4a  p.89             the three components, and R_j^2 as the
+#                               R-squared from regressing x_j on the
+#                               other regressors
+#
+#      NOTE ON THE SECTION NUMBER. Omitted variable bias is 3-3b, not
+#      3-3a; 3-3a is the irrelevant-variable case. The deck cites 3-3b.
+#
+#      Mastering Metrics, cited @angrist2015: chapter 2, which is where
+#      the term regression anatomy and the phrase "other things equal"
+#      come from, and where the short-versus-long comparison is set out
+#      as the working language of applied work. The shelf copy is an
+#      ebook without reliable printed pagination, so no page is cited.
+#
+#      NOTATION. S_xx is the sum of squared deviations of SCHOOLING, as
+#      in Lecture 2.3 and for the same reason: SST_x reads as a fourth
+#      member of the TSS, ESS, RSS family taught in 2.2.
+#
+#      TWO AUXILIARY REGRESSIONS RUN IN OPPOSITE DIRECTIONS TODAY, and
+#      they must not share a letter. Section 1 regresses SCHOOLING ON
+#      ABILITY to build the residual, and its slope is pi-hat. Section 3
+#      regresses ABILITY ON SCHOOLING to build the bias, and its slope
+#      is delta-hat. The deck says on the section 3 frame that the two
+#      point opposite ways, because a student who has just met the
+#      residual recipe will otherwise read delta-hat as pi-hat.
+#      Wooldridge writes the auxiliary slope delta-tilde-1 and the
+#      omitted variable's coefficient beta-2; this deck writes gamma-hat
+#      for the latter, because beta-2 would be read as a second return
+#      to schooling.
+#
 #      TIMING, 110 minutes of a two-hour slot
 #         0-6     retrieval
 #         6-10    lecture plan
-#        10-35    Partialling Out
-#        35-38    pause
-#        38-63    Reading a Partial Coefficient
-#        63-66    pause
-#        66-92    Omitted Variable Bias
-#        92-97    the standing question
-#        97-105   application
-#       105-110   synthesis and exit ticket
+#        10-36    Partialling Out, including the anatomy derivation
+#        36-40    question to the room: a control that almost perfectly
+#                 predicts schooling
+#        40-68    Reading a Partial Coefficient
+#        68-72    question to the room: whether promotion belongs in
+#                 the regression
+#        72-97    Omitted Variable Bias, including the derivation and
+#                 the arithmetic that closes it
+#        97-101   the standing question
+#       101-106   application
+#       106-110   synthesis and exit ticket
 #
-#      FIGURES. None exist for this lecture yet. Every exhibit below is a
-#      call to ../_shared/placeholder.pdf followed by an HTML comment
-#      saying what to draw and which switch in _apps/regression/R/model.R
-#      it needs. When they are built they belong in export_figures.R like
-#      the block 2 exhibits, so the slide and the app cannot drift apart.
-#      Do not edit a PNG: edit the builder.
+#      FIGURES. Three, none built. Every exhibit points at
+#      ../_shared/placeholder.pdf and carries an HTML comment giving
+#      what it has to show and which switch in _apps/regression/R/model.R
+#      it needs. When they are built they belong in
+#      _apps/export_figures.R like the block 2 exhibits, so that the
+#      slide and the app cannot drift apart. Do not edit a PNG: edit the
+#      builder.
 #
-#      THE POPULATION. The same 200,000 people as every other week, and a
-#      sample of 120 drawn from it. Four switches that have been inert
-#      since week 1 come on today, one per case:
+#        3-1_anatomy    the raw scatter beside the residualised one
+#        3-1_diagram    the three controls in one causal diagram
+#        3-1_shortlong  short and long slopes as ability is made to
+#                       matter more
 #
-#        parent_edu    B_05_01 = 0.50, B_05_02 = 0.45   good control
-#        occupation    B_05_03 = 0.50, slope = 0.90     mediator
-#        promoted      B_05_04 = 0.50, B_05_05 = 0.15   collider
-#        ability       B_04_02 = 0.80, B_04_01 = 1.50   unobserved
+#      THE COLLIDER FIGURE WAS DROPPED on 18 September. The skeleton
+#      asked for a scatter shaded by promotion with separate fits within
+#      the promoted and the not promoted. `promoted_idx` in the
+#      generator is a CONTINUOUS index rather than a yes/no flag, and a
+#      median split of it does not show the reversal cleanly. The two
+#      headline coefficients carry the demonstration instead, and no
+#      frame on this deck describes splitting the sample into promoted
+#      and not-promoted groups.
 #
-#      Every number quoted on a slide is the POPULATION regression on all
-#      200,000, not a sample estimate. That is deliberate: the collider
-#      case only lands if nobody can file it under sampling noise. The
-#      figures draw samples; the numbers in the prose do not.
+#      EVERY DEMONSTRATION TODAY IS ITS OWN SIMULATED WORLD. This is the
+#      single easiest thing to get wrong on this deck. Block 2 ran the
+#      generator with every switch off. Each case today runs it with one
+#      switch on, and each such run has its OWN population of 200,000
+#      and its OWN sample of 120. The anatomy run, the mediator run, the
+#      collider run and the omitted variable run are four separate
+#      worlds. No pair of numbers from two different runs is the same
+#      regression under different controls, and the deck says so in
+#      prose on the frame where numbers first appear and again in
+#      section 3 against block 2.
 #
-#      The mediator case sets the direct slope to 0.90 so that the TOTAL
-#      return stays 1.30 - 0.90 direct plus 0.80 x 0.50 through
-#      occupation. The headline truth of the module does not move.
+#      THE NUMBERS ON THIS DECK, computed from the generator at the
+#      module seed on 18 September.
 #
-#      WHY THE COLLIDER IS HERE AT ALL. Most first courses stop at
-#      omitted variable bias and never mention bad controls. Treating
-#      them here is a deliberate departure, and the reason is that the
-#      population has been generated in causal order since week 1, so
-#      promotion is an actual collider rather than an assertion.
+#        ANATOMY RUN, ability switch on, one sample of 120
+#          earnings on schooling alone                  1.5201
+#          earnings on schooling and ability            1.1022
+#          earnings on residualised schooling alone     1.1022
+#        The second and third agree to four decimals, which is the
+#        two-step recipe demonstrated rather than asserted.
+#
+#        MEDIATOR RUN, occupation switch on, its own population and
+#        sample
+#          schooling, occupation not controlled         2.5041
+#          schooling, occupation controlled             0.8936
+#        Controlling removes roughly two thirds of the coefficient. The
+#        frame must say that the smaller number is not the better one.
+#
+#        COLLIDER RUN, promotion switch on, its own population and
+#        sample
+#          schooling, promotion not controlled          1.1020
+#          schooling, promotion controlled             -0.9125
+#        The sign reverses. Nothing was omitted and nothing was
+#        mismeasured; the control created the bias.
+#
+#        OMITTED VARIABLE RUN, ability switch on, its own sample of 120
+#          short regression, ability omitted
+#            slope 1.6700   se 0.1652   t 10.11   R-squared 0.4642
+#          long regression, ability included
+#            slope 1.2538
+#          the bias      1.6700 - 1.2538 = 0.4162
+#          delta-hat     0.2206, the slope of ability on schooling
+#          gamma-hat     1.8867, the coefficient on ability in the long
+#                        regression
+#          the product   0.2206 x 1.8867 = 0.4162, to four decimals
+#
+#      BLOCK 2's SAMPLE, quoted once for contrast only, with every
+#      switch OFF and its own population behind it:
+#
+#          slope 1.5227   se 0.1897   R-squared 0.3531   true slope 1.30
+#
+#      THE PRODUCT CLOSING EXACTLY IS THE CENTREPIECE OF THE DECK. It is
+#      given a frame of its own with the arithmetic written out. The
+#      formula is usually taught as an expectation that cannot be
+#      checked; here it is an identity in the sample, and the module's
+#      own two auxiliary slopes reproduce the gap between the two
+#      regressions to the last printed digit.
 #
 title: "Adding Controls"
 subtitle: "ECONXXXXX Econometrics I"
@@ -108,473 +315,634 @@ qr-code: ../_shared/qr-sam-deegan.png
 \roadmap{3.1}
 ```
 
-::: {.tablenotes}
-Weeks already covered are greyed; today's is marked.
+::: {.tablenotes title="The First Lecture With Two Regressors"}
+Lectures already given are greyed and today's is marked. Block 2 fitted one line
+four times over and reported it. Today puts a second variable into that line, and
+Lecture 3.2 changes what the variables themselves are.
 :::
 
-## Last Week's Slope and Standard Error in a Sentence
+## What Lecture 2.4 Left Open
 
-Last week we took one slope and one standard error and turned them into a
-sentence somebody else could check.
+Lecture 2.4 finished with a defensible sentence about one number: a return of
+1.5227 euro a year, a standard error of 0.1897, and an interval that covers the
+true 1.30.
 
-::: {.tablenotes}
-Two minutes with your neighbour. The table said the return to a year of
-schooling was 1.52 euro an hour, with a standard error of 0.17. Write down the
-one sentence you would put in a report. Then write down the sentence you would
-not be willing to put in it.
+Every word of that rests on the five assumptions of Lecture 2.3, and on the
+fourth in particular: at every level of schooling, the error averages to zero.
+
+Today is the first lecture in which that assumption is false on purpose. Ability
+raises pay, it is not in the data, and people who stayed longer in school have
+more of it.
+
+::: {.defn title="Question"}
+If the thing you left out raises pay and also raises schooling, is your estimate
+of the return too large or too small? Answer before the arithmetic.
 :::
-
-<!-- 0-6 min. Retrieval. Most of them will write a causal sentence and a
-     hedge, and the hedge is where today starts. Take three answers. Do not
-     resolve them. -->
 
 ## Lecture Plan
 
-- **Partialling Out.** What adding a second variable actually does to the slope you already had.
-- **Reading a Partial Coefficient.** What holding something fixed covers, and three variables where it goes wrong.
-- **Omitted Variable Bias.** Turning the thing you could not measure into a number.
-
-::: {.tablenotes}
-Reading: [to settle].
+::: {.contributions}
+1.  **Partialling Out.** What a second variable does to a coefficient, written as a formula you can run.
+2.  **Reading a Partial Coefficient.** What holding other things fixed covers, and three variables that break it three ways.
+3.  **Omitted Variable Bias.** The gap between the regression you ran and the one you wanted, as a product of two slopes.
 :::
 
 # Partialling Out
 
 ## The Two-Regressor Model for Earnings and Schooling
 
-**The goal of this section:** say what adding a variable actually does to a
-coefficient, precisely enough that you could do it by hand.
+We want the return to a year of schooling among people of equal ability, so the
+population model carries two slopes rather than one:
 
-We want the return to a year of schooling once parental education is in the
-model, so the model now carries two slopes rather than one:
+```{=latex}
+\begin{equation}
+y_i = \beta_0 + \beta_1 (x_i - 13) + \beta_2 a_i + u_i
+\end{equation}
+```
 
-$$
-\text{earnings}_i = \beta_0 + \beta_1\,\text{school}_i
-                  + \beta_2\,\text{parent}_i + u_i
-$$
+- $y_i$: hourly earnings of person $i$, in euro
+- $x_i$: years of schooling of person $i$
+- $a_i$: ability of person $i$, on the generator's own scale
+- $\beta_1$: the return to a year of schooling, holding $a_i$ fixed
+- $\beta_2$: the return to a unit of ability, holding $x_i$ fixed
+- $u_i$: everything else that raises or lowers earnings
 
-- $\text{earnings}_i$: hourly earnings of person $i$, in euro
-- $\text{school}_i$: years of schooling of person $i$
-- $\text{parent}_i$: years of schooling of person $i$'s parents
-- $\beta_1$: the return to a year of schooling
-- $\beta_2$: the return to a year of parental schooling
-- $u_i$: everything else that moves earnings
+Assumption four now conditions on both regressors at once, $E[u \mid x, a] = 0$,
+and the five assumptions are renumbered MLR.1 to MLR.5 [@wooldridge2020].
 
-<!-- IDEA 1. 10-35 min. -->
-
-## Subscript Notation for Multiple Regressors
-
-::: {.defn title="A convention that starts mattering today"}
-Until this week there was one slope, so $\beta$ needed no subscript. There are
-now two, and $\beta_1$ is not the same object as the $\beta$ of week 6 even
-though both are called the return to schooling. Same name, different quantity,
-different assumptions behind it.
+::: {.defn title="Subscripts on the Slopes"}
+Until today there was one slope and $\beta$ needed no subscript. There are now
+two. $\beta_1$ is not the $\beta_1$ of Lecture 2.3 even though both are called
+the return to schooling: same name, different quantity, different assumptions.
 :::
 
-## Regression Anatomy: The Slope on the Residualised Regressor
+## Ability Is in the Data Only Because We Wrote the Population
 
-We want an expression for $\hat\beta_1$ that we can actually read, so we ask
-what part of schooling the regression has to work with:
+No survey of Irish earnings carries a usable measure of ability, and the whole of
+section 3 is about what to do when it is missing. It is available today for one
+reason only: the generator produced it, so we can read it off.
 
-$$
-\text{school}_i = \hat\delta_0 + \hat\delta_1\,\text{parent}_i + r_i
-$$
+That makes this section a controlled demonstration. We can run both regressions,
+put them side by side, and check by arithmetic what adding the second one did.
+Section 3 removes the column again and asks what survives.
 
-- $r_i$: the part of person $i$'s schooling that parental education cannot explain
-- $\hat\delta_1$: the slope from regressing schooling on parental education
+A control is any regressor included so that the coefficient you care about can be
+read as a comparison at fixed values of it. Nothing about the arithmetic marks a
+variable as a control; that is a decision you make and defend.
 
-::: {.result title="Regression anatomy"}
-$\hat\beta_j$ is the slope from regressing $y$ on the part of $x_j$ that the
-other regressors cannot explain.
+::: {.caveat title="A Simulation Is Not an Argument About Ireland"}
+Every number today is checkable because the population was written rather than
+observed. That is what lets us verify a formula. It is not evidence about the
+Irish return to schooling, and no frame today claims it is.
 :::
 
-## The Two-Step Residual Recipe for a Coefficient
+## The Part of Schooling That Ability Cannot Account For
 
-Take those residuals and use them as the only regressor:
+A closed form for $\hat{\beta}_1$ in two regressors is not writable in scalars.
+What is writable is the variable the regression has left to use, so regress
+schooling on ability first:
 
-$$
-\hat\beta_1 = \frac{\sum_i r_i\,\text{earnings}_i}{\sum_i r_i^2}
-$$
+```{=latex}
+\begin{equation}
+x_i = \hat{\pi}_0 + \hat{\pi}_1 a_i + r_i
+\qquad\qquad
+\sum_{i=1}^{n} r_i = 0
+\qquad
+\sum_{i=1}^{n} a_i r_i = 0
+\end{equation}
+```
 
-::: {.worked title="The recipe, in three lines of R"}
-Regress schooling on parental education. Keep the residuals. Regress earnings
-on those residuals. The slope you get back is the coefficient on schooling
-from the two-variable regression, to the last decimal place.
+- $r_i$: the part of person $i$'s schooling that ability leaves over
+- $\hat{\pi}_1$: the slope from regressing schooling on ability
+
+The two sums are the first-order conditions of that auxiliary fit, exactly the
+pair Lecture 2.1 wrote for earnings on schooling. They say that $r_i$ carries no
+ability in it at all [@wooldridge2020].
+
+::: {.defn title="Regression Anatomy"}
+$\hat{\beta}_j$ is the slope from a simple regression of earnings on the part of
+$x_j$ that the other regressors leave over. The name and the phrase "other things
+equal" are both from @angrist2015, and it is the sentence to be able to say back.
 :::
 
-::: {.tablenotes}
-This is not an approximation and it is not a teaching analogy. It is an
-identity, and it is what the appendix derivation shows.
+## The Two-Step Residual Recipe, Run on Our Own 120 People
+
+Regression anatomy is not a description of what the machine is like. It is an
+identity, and it is computable in two lines:
+
+```{=latex}
+\begin{equation}
+\hat{\beta}_1
+  = \frac{\sum_{i=1}^{n} r_i\, y_i}{\sum_{i=1}^{n} r_i^{2}}
+\end{equation}
+```
+
+- $\sum r_i y_i$: the covariance of earnings with the leftover schooling
+- $\sum r_i^2$: the variation in schooling that ability leaves over
+
+These are the first numbers of the lecture, and each demonstration today is a
+separate run of the generator with one switch on, each with its own population of
+200,000 and its own sample of 120. Numbers from two different runs are never the
+same regression under different controls.
+
+::: {.worked title="Three Regressions, and the Last Two Agree Exactly"}
+Earnings on schooling alone gives 1.5201. Earnings on schooling and ability
+together gives 1.1022. Residualise schooling on ability, then regress earnings on
+that residual alone, and the slope is 1.1022. The recipe returns the
+multiple-regression coefficient to four decimal places.
+:::
+
+## Why the Two Steps Return the Same Coefficient
+
+The agreement to four decimals is not a coincidence of this sample. Start from
+the long fit, which defines its own residuals, and sum:
+
+```{=latex}
+\begin{equation}
+\begin{aligned}
+\sum_{i=1}^{n} r_i\, y_i
+  &= \sum_{i=1}^{n} r_i \bigl(\hat{\beta}_0 + \hat{\beta}_1 (x_i - 13)
+     + \hat{\beta}_2 a_i + \hat{u}_i\bigr) \\[2pt]
+  &= \hat{\beta}_0 \sum_{i} r_i
+   \;+\; \hat{\beta}_1 \sum_{i} r_i (x_i - 13)
+   \;+\; \hat{\beta}_2 \sum_{i} a_i r_i
+   \;+\; \sum_{i} r_i \hat{u}_i \\[2pt]
+  &= \hat{\beta}_1 \sum_{i=1}^{n} r_i^{2}
+\end{aligned}
+\end{equation}
+```
+
+The first and third sums are the auxiliary conditions from the previous frame.
+The fourth is zero because $r_i$ is built from schooling and ability, and the long
+fit's residuals are uncorrelated with both in the sample. The second is
+$\sum r_i^2$, because $\sum r_i x_i = \sum r_i(\hat{\pi}_0 + \hat{\pi}_1 a_i + r_i)$.
+
+::: {.takeaway title="One Step Carries the Whole Proof"}
+The step is the fourth sum. Orthogonality of the long residuals to every
+regressor is what removes it, and that is a first-order condition rather than an
+assumption about the world [@wooldridge2020].
 :::
 
 ## Raw and Residualised Scatterplots Side by Side
 
 ```{=latex}
-\figsmall{../_shared/placeholder.pdf}{Left: earnings against schooling, raw.
-Right: earnings against the part of schooling that parental education cannot
-explain. The right-hand slope is the coefficient from the two-variable
-regression.}
+\fig{../_shared/placeholder.pdf}{Earnings on raw schooling, 1.5201, and on the schooling that ability leaves over, 1.1022.}
 ```
 
-<!-- FIGURE 3-1_anatomy: two panels side by side, a sample of 120. Left panel
-     is the raw scatter with the simple fit (slope 1.57). Right panel plots
-     earnings against the residual from schooling-on-parent, x-axis centred on
-     zero, with its fit (slope 1.30). Needs B_05_01 = 0.50 and B_05_02 = 0.45.
-     Annotate both slopes on the panels. Use figpair if both fit. -->
+<!-- FIGURE 3-1_anatomy: two panels, the anatomy run's one sample of 120. Left,
+     the raw scatter of earnings on schooling with its simple fit, slope 1.5201.
+     Right, earnings against the residual from schooling-on-ability, horizontal
+     axis centred at zero, with its fit, slope 1.1022. Annotate both slopes on
+     the panels. The right-hand slope must equal the coefficient on schooling
+     from the two-variable regression, which is also 1.1022. Needs the ability
+     switch on, B_04_01 and B_04_02. -->
 
-::: {.takeaway}
-The horizontal axis on the right is narrower than the one on the left, because
-some of the variation in schooling has been used up. That is the whole cost of
-a control, and it is the reason the standard error moves too.
+::: {.tablenotes title="The Right-Hand Axis Is Narrower Than the Left-Hand One"}
+Some of the variation in schooling has already been used by ability, so what is
+left to identify the slope is less than what we started with. That is the whole
+cost of a control, and the next frame prices it.
 :::
 
-## Vote: How Does a Strong Control Affect the Standard Error?
+## What a Control Costs in Precision
 
-Suppose parental education predicts schooling almost perfectly in our sample.
-What happens to the residuals, and what happens to the standard error on the
-coefficient for schooling?
+The denominator of the anatomy formula is also the denominator of the variance,
+which is why adding a variable and losing precision are the same event:
 
-::: {.tablenotes}
-Vote, argue with your neighbour, vote again. Then: which part of the formula
-did you just reason about?
+```{=latex}
+\begin{equation}
+\operatorname{Var}(\hat{\beta}_1)
+  = \frac{\sigma^{2}}{\sum_{i=1}^{n} r_i^{2}}
+  = \frac{\sigma^{2}}{S_{xx}\,\bigl(1 - R_1^{2}\bigr)}
+\end{equation}
+```
+
+- $R_1^2$: the R-squared from regressing schooling on the other regressors
+- $S_{xx}$: the sum of squared deviations of schooling, as in Lecture 2.3
+
+Lecture 2.3's formula is the case $R_1^2 = 0$. Every control with any predictive
+power for schooling raises $R_1^2$, shrinks the denominator and widens the
+sampling distribution [@wooldridge2020].
+
+::: {.caveat title="A Control Is Paid For in Standard Errors"}
+Unbiasedness and precision are traded here, and the trade is not free in either
+direction. Lecture 3.3 gives the extreme case its name; today it is enough that
+the price is visible in the denominator rather than asserted beside it.
 :::
 
-<!-- ConcepTest 1. The residuals collapse toward zero, the denominator
-     collapses with them, and the standard error blows up. They can get there
-     from the picture without touching the formula, which is the point. This
-     is also where multicollinearity in 3.3 comes from, but do not name it
-     today. Take answers, do not adjudicate. -->
+## A Control That Almost Perfectly Predicts Schooling
 
-## Pause
+Suppose ability predicts schooling almost exactly in our 120 people, so every
+$r_i$ sits very close to zero. Nothing about earnings has changed.
 
-<!-- 35-38 min. -->
-
-::: {.tablenotes}
-Two minutes. Say the anatomy sentence back to your neighbour without looking
-at it, then swap. You will need it in every remaining week of the module.
+::: {.defn title="Question"}
+What happens to the standard error on the coefficient for schooling, and which
+part of the formula did you reason about to get there?
 :::
 
 # Reading a Partial Coefficient
 
-## The Limits of Holding Other Variables Fixed
+## What Holding Other Things Fixed Actually Covers
 
-**The goal of this section:** say what holding other things fixed does and does
-not cover, and then look at three variables where adding them is a mistake.
+Nobody sampled 120 people of identical ability. The data arrived as a random
+sample, with ability taking whatever values it took:
 
-Regression anatomy tells you what the machine did. It does not tell you
-whether you should have asked it to.
+```{=latex}
+\begin{equation}
+\Delta \hat{y} = \hat{\beta}_1\, \Delta x
+\qquad\text{when}\qquad
+\Delta a = 0
+\end{equation}
+```
 
-::: {.caveat}
-"Controlling for parental education" is a description of an arithmetic
-operation. Whether that operation removes a bias, removes part of the answer,
-or invents a bias out of nothing depends entirely on where the variable sits
-in the story that generated the data -- and the regression cannot see that.
+- $\Delta \hat{y}$: the difference in fitted earnings between two people
+- $\Delta x$: the difference in their schooling
+
+Wooldridge's own words are that multiple regression lets us mimic a comparison at
+fixed ability without restricting the values of any regressor, and that the data
+were not collected in that fashion [@wooldridge2020].
+
+::: {.caveat title="Holding Fixed Reaches Exactly as Far as Your Columns"}
+The comparison is between two people who differ in schooling and agree on
+ability. It says nothing about anything you did not measure, and it is arithmetic
+rather than evidence about what would happen if schooling rose.
 :::
 
-<!-- IDEA 2. 38-63 min. -->
+## Why Only One Coefficient in Your Table Is Interpretable
+
+Every slope in a two-regressor table is a partial effect, and that is precisely
+why the table is not a list of comparable effects:
+
+- $\hat{\beta}_1$ compares people who differ in **schooling** and agree on ability.
+- $\hat{\beta}_2$ compares people who differ in **ability** and agree on schooling.
+
+The set of things held fixed is different for each row, so the two numbers answer
+two different questions about two different comparisons. Reading down the column
+as though each row were an effect of its own variable is a category error.
+
+Only one of them was designed. You put ability in to make assumption four
+credible for schooling. Nothing in the model was chosen to make it credible for
+ability, and schooling is a mediator for ability: one of the routes by which
+ability raises pay is that able people stay in school longer, and $\hat{\beta}_2$
+has that route removed.
+
+::: {.takeaway title="The Coefficient You Built the Model For Is the One You May Read"}
+Report one coefficient causally and the rest as what they are, the adjustments
+that made it credible. A control's own coefficient almost never carries a
+defensible interpretation, and it is printed anyway.
+:::
 
 ## Confounder, Mediator and Collider in One Causal Diagram
 
 ```{=latex}
-\figsmall{../_shared/placeholder.pdf}{Parental education causes schooling and
-earnings. Occupation sits between them. Promotion is caused by both. The same
-regression command does three different things to these three variables.}
+\fig{../_shared/placeholder.pdf}{Ability causes both; occupation sits between them; promotion is caused by both.}
 ```
 
-<!-- FIGURE 3-1_diagram: a causal diagram, drawn not simulated. Schooling on
-     the left, earnings on the right, arrow between them. Parent above with
-     arrows down into both. Occupation on the arrow between schooling and
-     earnings. Promotion below with arrows into it from both. Colour the
-     three controls differently and label them confounder, mediator,
-     collider. No model.R switch needed. -->
+<!-- FIGURE 3-1_diagram: drawn, not simulated. Schooling left, earnings right,
+     arrow between them. Ability above with arrows down into both. Occupation on
+     the arrow from schooling to earnings. Promotion below with arrows into it
+     from schooling and from earnings. Colour the three controls differently and
+     label them confounder, mediator, collider. No model.R switch needed. -->
 
-The taxonomy is older than the diagram convention and is set out carefully in
-@cinelli2024; the collider case in particular is surveyed in @elwert2014.
-
-## Confounders: Why Controlling Removes Bias
-
-Parents with more schooling send their children further in school, and they
-also help their children earn more for reasons that have nothing to do with
-school. So schooling and earnings move together partly for a reason that is
-not the return to schooling.
-
-::: {.result}
-In the population of 200,000, leaving parental education out gives 1.57. Put
-it in and the coefficient is 1.30, which is the truth we wrote into the
-generator.
+::: {.tablenotes title="One Command, Three Different Consequences"}
+The same `lm()` call adds all three, and the regression cannot see which is
+which. Where a variable sits in the diagram is a claim about the world, and it
+has to be argued rather than tested.
 :::
 
-::: {.tablenotes}
+## Confounders: Controlling Removes a Bias
+
+Able people stay in school for longer, and they also earn more for reasons that
+have nothing to do with school. So schooling and earnings rise together partly
+for a reason that is not the return to schooling.
+
+A regression of earnings on schooling alone credits that reason to schooling.
+Putting the confounder in removes it: in the anatomy run, 1.5201 with ability
+left out and 1.1022 with ability included.
+
 This is the case the phrase "adding controls" was invented for, and it is the
-only one of the three where the coefficient moves toward the answer.
+only one of the three in which the coefficient ends up closer to the truth.
+Section 3 prices exactly this case, on a different run, once the column is taken
+away again.
+
+::: {.takeaway title="A Confounder Causes Both, and Is Caused by Neither"}
+That is the test, and it is a test about causal order rather than about
+correlation. A variable correlated with schooling and with earnings can equally
+well be a mediator or a collider, and those two make the answer worse.
 :::
 
-## Mediators: Why Controlling Removes Part of the Effect
+## Mediators: Controlling Removes Part of the Effect You Wanted
 
-Schooling gets you into a different occupation, and the occupation pays
-differently. That is not a nuisance. That is one of the ways schooling raises
-earnings, and it is part of the number we said we wanted.
+Schooling gets a person into a different occupation, and that occupation pays
+differently. This is not a nuisance to be removed. It is one of the routes by
+which schooling raises pay, and it is part of the number we said we wanted.
 
-::: {.result}
-With occupation left out, the coefficient is 1.30: the full return. Put
-occupation in and it falls to 0.91. The missing 0.39 did not disappear -- it
-is the part of the return that travels through occupation.
+This is its own run of the generator, with the occupation switch on and its own
+sample. With occupation left out the coefficient is 2.5041. Control for
+occupation and it falls to 0.8936, so roughly two thirds of it is gone.
+
+The missing two thirds did not disappear. It is the part of the return that
+travels through occupation, and the regression has handed it to the occupation
+coefficient instead.
+
+::: {.caveat title="The Smaller Number Is Not the Better Number"}
+0.8936 is the return to schooling among people in the same occupation, which is a
+real quantity and is not the return to schooling. It deserves the name direct
+effect only if nothing unmeasured causes both occupation and pay; if something
+does, conditioning on occupation opens the problem on the next frame.
 :::
 
-::: {.caveat title="And the fallback is not safe either"}
-You might say fine, report 0.91 and call it the direct effect. Even that only
-works if nothing unmeasured causes both occupation and earnings. If something
-does, conditioning on occupation opens exactly the problem on the next slide
-[@cinelli2024].
-:::
+## Colliders: Controlling Creates a Bias That Was Not There
 
-## Colliders: Why Controlling Creates a Bias
+Promotion is caused by schooling and it is caused by earnings. Nothing runs the
+other way. This is a third run of the generator, with the promotion switch on and
+its own population and sample.
 
-Promotion is caused by schooling and it is caused by earnings. Nothing causes
-it in the other direction. Add it to the regression and something genuinely
-strange happens.
+With promotion left out, the coefficient on schooling is 1.1020, positive and
+close to the module's true return. Control for promotion and it is $-0.9125$.
 
-```{=latex}
-\figsmall{../_shared/placeholder.pdf}{Within the promoted and within the
-not-promoted, the relationship between schooling and earnings is flatter than
-it is overall -- and in this population it turns negative.}
-```
+The sign reverses. Nothing was omitted from the second regression and nothing was
+mismeasured in either. The only difference between the two is the control, and
+the control is what produced the negative number.
 
-<!-- FIGURE 3-1_collider: scatter of earnings on schooling for a sample of 120,
-     points shaded by promotion, with the overall fit in green and separate
-     fits within the promoted and the not-promoted in navy. The within-group
-     lines should visibly tilt the other way. Needs B_05_04 = 0.50 and
-     B_05_05 = 0.15. This is the figure students will remember, so give the
-     within-group slopes on the panel. -->
-
-::: {.result}
-Leave promotion out: 1.30, the truth. Put it in: $-0.15$. The sign flips.
+::: {.caveat title="This Is Why I Controlled for Everything I Had Is Not a Defence"}
+Adding a variable made the answer worse, on a population we wrote ourselves. A
+defence has to name each control and say which of the three it is, and that claim
+cannot be read off the dataset.
 :::
 
 ## Why the Collider Bias Is Not Sampling Noise
 
-Take the people who did get promoted. Some of them got there on schooling.
-Some got there on earnings. So among the promoted, the ones with less
-schooling must have had something else going for them -- they earned more.
-Within that group, less schooling now comes with higher pay.
+Promotion in this generator is a continuous index built from schooling and from
+earnings together. A person reaches a given value of it either by having stayed
+in school or by earning well.
 
-::: {.caveat title="Read this one carefully"}
-Nothing in the world changed. Every number quoted here is computed on the full
-population of 200,000, so it is not sampling noise, and it is not a bug in the
-data. The correlation was manufactured by the act of conditioning. This is
-the case where adding a variable made the answer worse, and it is the reason
-"I controlled for everything I had" is not a defence.
+So among people who share a value of the index, a person with less schooling must
+have arrived there the other way: by earning more. Holding the index fixed forces
+schooling and earnings to trade off against each other, and the regression reads
+that trade-off as a negative return.
+
+Both regressions were run on the same rows, so the distance between 1.1020 and
+$-0.9125$ is not a difference between two samples at all. It is what conditioning
+on a common consequence did.
+
+::: {.takeaway title="Conditioning Can Manufacture a Relation That Nothing Caused"}
+No arrow in the diagram runs from schooling to earnings through promotion. The
+association appears only inside the regression that holds promotion fixed, and it
+would appear in a sample of any size [@wooldridge2020].
 :::
 
-The general statement, and the reason post-treatment variables are the usual
-culprits, is in @rosenbaum1984 and @montgomery2018.
+## What Controlling Does in Each of the Three Cases
 
-## Why Only One Coefficient in Your Table Is Interpretable
+Three variables, one command, three results, and only the first is the one the
+phrase "adding controls" promises:
 
-::: {.caveat title="The other coefficients in your table"}
-If you built the model to estimate the return to schooling, then the
-coefficient on schooling is the one your assumptions were chosen for. The
-coefficient on parental education in the same table is a different quantity
-that nobody justified, and it usually cannot be read causally at all.
+- **Confounder.** Controlling **removes a bias**: the part of the association that came from the common cause is taken out.
+- **Mediator.** Controlling **removes part of the effect you wanted**: the route through the mediator is taken out with it.
+- **Collider.** Controlling **creates a bias where there was none**: conditioning on a common consequence induces an association.
+
+::: {.takeaway title="Two of the Three Are Made Worse by the Control"}
+The regression output looks identical in all three cases: a coefficient, a
+standard error, a star. Which case you are in is settled by causal order, which is
+an argument you make before you fit and cannot recover afterwards.
 :::
 
-Reporting every row of a regression table as though each were an effect is
-common enough to have a name [@westreich2013], and the practice of adding
-controls without saying what job each is doing is criticised directly in
-@hunermund2025.
+## Whether Promotion Belongs in the Regression
 
-## Vote: Should Promotion Go Into the Regression?
+I want the return to schooling. The dataset has an index of whether the person was
+promoted in the last three years, and people high on it both earn more and have
+more schooling.
 
-I want the return to schooling. My dataset has a variable for whether the
-person was promoted in the last three years. Should it go in the regression?
-
-::: {.tablenotes}
-Vote, argue with your neighbour, vote again. Then: what would you need to know
-about the world, rather than about the data, to settle it?
-:::
-
-<!-- ConcepTest 2. The answer is no, and the second question is the real one:
-     nothing in the dataset tells you, because the answer depends on what
-     causes what. Some will argue promotion is a confounder because promoted
-     people earn more AND have more schooling, which is exactly the confusion
-     to surface. Take answers, do not adjudicate. -->
-
-## Pause
-
-<!-- 63-66 min. -->
-
-::: {.tablenotes}
-Two minutes. Write down one variable from your own field that you now suspect
-is a bad control, and say which of the two kinds it is. Then compare with your
-neighbour.
+::: {.defn title="Question"}
+Should it go into the regression, and what would you need to know about the world,
+rather than about the data, to settle it?
 :::
 
 # Omitted Variable Bias
 
-## The Omitted Variable Bias Formula
+## The Regression We Ran and the Regression We Wanted
 
-**The goal of this section:** turn "but I couldn't measure everything" from a
-worry into a quantity you can argue about.
-
-We want to know how far off the coefficient is when a variable is missing, so
-we compare the regression we ran with the one we wish we had run:
-
-$$
-\tilde\beta_1 = \hat\beta_1 + \hat\delta \cdot \hat\gamma
-$$
-
-- $\tilde\beta_1$: the slope on schooling from the regression that left the variable out
-- $\hat\beta_1$: the slope on schooling from the regression that includes it
-- $\hat\delta$: the slope on the omitted variable, in the regression that includes it
-- $\hat\gamma$: the slope from regressing the omitted variable on schooling
-
-<!-- IDEA 3. 66-92 min. -->
-
-## Hat and Tilde: Notation for Two Estimates
-
-::: {.defn title="Hat, and now tilde"}
-A hat marks an estimate. A tilde marks an estimate from a regression that left
-something out. Both are estimates; only one of them is estimating the thing you
-said you wanted.
-:::
-
-## The Bias Is a Product of Two Slopes
+Section 1 had ability because we wrote it. Take the column away, which is the
+situation of every real dataset, and the question is how far that puts the
+coefficient we can compute from the one we want:
 
 ```{=latex}
-\figsmall{../_shared/placeholder.pdf}{The coefficient with parental education
-left out, as parental education is made to matter more and more. The
-coefficient with it included does not move.}
+\begin{equation}
+\text{long:}\quad
+y_i = \hat{\beta}_0 + \hat{\beta}_1 (x_i - 13) + \hat{\gamma}\, a_i + \hat{u}_i
+\qquad\qquad
+\text{short:}\quad
+y_i = \tilde{\beta}_0 + \tilde{\beta}_1 (x_i - 13) + \tilde{u}_i
+\end{equation}
 ```
 
-<!-- FIGURE 3-1_shortlong: sweep B_05_02 (parent -> pay) from 0 to 0.60 with
-     B_05_01 fixed at 0.50, and plot two lines: the short coefficient, which
-     climbs from 1.30 to about 1.67, and the long coefficient, which stays flat
-     at 1.30. Mark the module's headline 1.30 with a reference line. -->
+- $\hat{\gamma}$: the coefficient on ability in the long regression
+- $\tilde{\beta}_1$: the slope on schooling from the regression that left ability out
 
-::: {.takeaway}
-Multiply two things and a zero anywhere kills it. A variable that moves
-earnings but is unrelated to schooling costs you nothing in bias. Neither does
-one strongly related to schooling that has no effect on earnings. It takes
-both.
+Omitting a variable correlated with schooling is what makes assumption four fail,
+and this is the case Wooldridge derives rather than asserts [@wooldridge2020].
+
+::: {.defn title="Hat, and Now Tilde"}
+A hat marks an estimate, as it has since Lecture 1.3. A tilde marks an estimate
+from a regression that left something out. Both are estimates; only one of them is
+estimating the quantity we said we wanted.
 :::
 
-## Applying the Formula to Unmeasured Ability
+## Deriving the Bias in Sample Algebra
 
-Ability is not in the dataset and never will be, so we cannot run the long
-regression. But we can put numbers on the two ingredients and see what they
-would have to be.
+The two regressions are run on the same 120 rows, so the gap between them is
+arithmetic rather than a statistical claim. Substitute the long fit into the short
+formula:
 
 ```{=latex}
-\figsmall{../_shared/placeholder.pdf}{The estimated return to schooling as
-ability is allowed to matter more. The truth stays at 1.30 throughout; only
-what we would estimate moves.}
+\begin{equation}
+\begin{aligned}
+\tilde{\beta}_1
+  &= \frac{1}{S_{xx}} \sum_{i=1}^{n} (x_i - \bar{x})\, y_i
+   = \frac{1}{S_{xx}} \sum_{i=1}^{n} (x_i - \bar{x})
+     \bigl(\hat{\beta}_0 + \hat{\beta}_1 (x_i - 13) + \hat{\gamma}\, a_i + \hat{u}_i\bigr) \\[2pt]
+  &= \hat{\beta}_0 \underbrace{\frac{\sum_i (x_i - \bar{x})}{S_{xx}}}_{=\,0}
+   \;+\; \hat{\beta}_1 \underbrace{\frac{\sum_i (x_i - \bar{x})(x_i - 13)}{S_{xx}}}_{=\,1}
+   \;+\; \hat{\gamma} \underbrace{\frac{\sum_i (x_i - \bar{x})\, a_i}{S_{xx}}}_{=\,\hat{\delta}}
+   \;+\; \underbrace{\frac{\sum_i (x_i - \bar{x})\, \hat{u}_i}{S_{xx}}}_{=\,0} \\[2pt]
+  &= \hat{\beta}_1 + \hat{\gamma}\,\hat{\delta}
+\end{aligned}
+\end{equation}
 ```
 
-<!-- FIGURE 3-1_ability: sweep B_04_01 (ability -> pay) across a plausible
-     range with B_04_02 = 0.80, plotting the short coefficient against the
-     truth at 1.30. Shade the region where the estimate exceeds 1.50, which is
-     roughly what the module's block 2 sample reported. -->
+The first two braces are Lecture 2.3's two facts about deviations of schooling.
+The fourth is the long fit's first-order condition for schooling. The third is the
+slope from regressing ability on schooling [@wooldridge2020].
 
-::: {.result}
-Set ability to move schooling by 0.13 years per standard deviation and pay by
-1.51 euro an hour per standard deviation. The product is 0.20, and the
-estimate is 1.50 against a truth of 1.30.
+::: {.defn title="The Auxiliary Slope Points the Other Way"}
+$\hat{\delta}$ regresses ability on schooling. Section 1's $\hat{\pi}_1$ regressed
+schooling on ability. Two auxiliary regressions, opposite directions, different
+numbers: the residual recipe needs one and the bias formula needs the other.
 :::
 
-::: {.tablenotes}
-Both of those are guesses, and they are guesses about the world rather than
-about the data. That is not a weakness of the formula. It is the formula
-telling you honestly what the argument actually turns on, and week 12 is the
-week we stop being able to fix it by adding a column.
+## The Bias Is a Product of Exactly Two Slopes
+
+Rearranged, the derivation says the short regression reports the long coefficient
+plus one product, and names both of its ingredients:
+
+```{=latex}
+\begin{equation}
+\underbrace{\tilde{\beta}_1 - \hat{\beta}_1}_{\text{bias}}
+  = \hat{\gamma} \times \hat{\delta}
+\qquad
+\hat{\gamma}: \text{ ability to pay}
+\qquad
+\hat{\delta}: \text{ schooling to ability}
+\end{equation}
+```
+
+A product, so a zero in either ingredient gives no bias at all. A variable that
+raises pay but is unrelated to schooling costs nothing. Neither does one that
+predicts schooling well and has no return of its own. Both are needed.
+
+The sign follows the two signs. Both positive, or both negative, and the short
+slope is too large. One of each, and it is too small [@wooldridge2020].
+
+::: {.takeaway title="The Two Ingredients Are Arguable Separately"}
+Each is a claim someone can dispute on its own terms: does the missing thing pay,
+and do the people who have it stay in school longer. That is a more useful
+argument than a dispute about whether the estimate is credible.
 :::
 
-## Vote: How Large Would the Ability Bias Have To Be?
+## The Ability Population Is Not Block 2's Population
 
-Our estimate is 1.50. For the truth to be 1.00, ability would have to do two
-things at once. Which pair of numbers would get you there, and would you
-defend either of them out loud?
+Block 2 ran the generator with every switch off, and its sample of 120 gave
+1.5227, a standard error of 0.1897 and an R-squared of 0.3531, against a true
+return of 1.30.
 
-::: {.tablenotes}
-Vote, argue with your neighbour, vote again. Then: is the pair you chose more
-or less plausible than the one on the last slide?
+The arithmetic on the next frame comes from a run with the ability switch on: its
+own population, its own sample of 120. The short regression there gives 1.6700,
+with a standard error of 0.1652, a t-statistic of 10.11 and an R-squared of
+0.4642.
+
+::: {.caveat title="1.6700 Is Not What Happens When You Drop a Column From Block 2"}
+Two different populations and two different samples, so 1.5227 and 1.6700 are not
+a before and an after. The same warning applies to section 1's 1.5201 and to the
+two bad-control runs: four separate worlds, four separate draws. The only pair on
+this deck that is a before and an after is the next frame's.
 :::
 
-<!-- ConcepTest 3. Any pair whose product is 0.50 works, which is the insight:
-     the formula does not pin down a story, it prices one. Push them to say
-     which ingredient they find easier to argue about, because it is almost
-     always the second. Take answers, do not adjudicate. -->
+## The Formula Closing on Our Own 120 People
+
+The short and the long regression here are run on the same 120 rows, so the
+formula is checkable to the last digit rather than true on average:
+
+```{=latex}
+\begin{equation}
+\underbrace{1.6700}_{\tilde{\beta}_1}
+  \;-\; \underbrace{1.2538}_{\hat{\beta}_1}
+  \;=\; 0.4162
+  \;=\; \underbrace{0.2206}_{\hat{\delta}} \times \underbrace{1.8867}_{\hat{\gamma}}
+\end{equation}
+```
+
+A year more schooling goes with 0.2206 more ability, and a unit more ability is
+worth 1.8867 euro an hour. Their product is 0.4162, which is the whole distance
+between the two regressions, to four decimal places.
+
+Nothing was fitted to make that work. The two ingredients come from two separate
+regressions that never saw each other, and the identity is what forces them to
+agree [@wooldridge2020].
+
+::: {.takeaway title="The Formula Is an Identity, Not an Approximation"}
+It holds in every sample, including ours, for any omitted variable and any sample
+size. What is unavailable in real work is not the formula: it is $\hat{\gamma}$
+and $\hat{\delta}$, because computing either needs the column we do not have.
+:::
+
+## The Short and the Long Slope as Ability Is Made to Matter More
+
+```{=latex}
+\fig{../_shared/placeholder.pdf}{The short slope rises with the return to ability; the long slope stays where it is.}
+```
+
+<!-- FIGURE 3-1_shortlong: sweep B_04_01, ability to pay, across a plausible
+     range with B_04_02 = 0.80 fixed. Plot two lines against that sweep: the
+     short coefficient, which rises, and the long coefficient, which is flat.
+     Mark the module's 1.30 with a reference line and mark this deck's own point,
+     short 1.6700 and long 1.2538. Needs the ability switch on. -->
+
+::: {.tablenotes title="Only One of the Two Lines Rises"}
+The long regression holds ability fixed, so the return to ability is irrelevant to
+it. The short regression has nowhere to put ability except the schooling
+coefficient, and the steeper the return to ability, the more of it lands there.
+:::
+
+## Any Pair of Slopes With the Same Product
+
+Suppose someone rejects our estimate and claims the true return is one euro. That
+claim has a price: the bias would have to be 0.6700, and the objector owes us a
+pair of slopes whose product is 0.6700.
+
+Many pairs do it, and that is the point rather than a weakness. The formula does
+not settle an objection; it converts it into two claims about the world that can
+be argued separately and, sometimes, checked against other evidence.
+
+In practice the second ingredient is the harder one to defend. Almost everyone
+will agree that ability is worth something in pay. Arguing that it is worth three
+euro an hour per unit, on a scale nobody has measured, is a different matter.
+
+::: {.defn title="A Bias of 0.6700 Requires Both of These at Once"}
+A return to ability of 1.8867 needs an auxiliary slope of 0.3551 rather than
+0.2206, which is over half again as much sorting into school by ability. Holding
+the sorting fixed instead needs a return to ability of 3.0372.
+:::
 
 ## What Would Have To Be True?
 
-::: {.caveat title="The standing question"}
+The claim on the table is that 1.2538 is the return to schooling among people of
+equal ability, and that nothing else left out of the model does what ability does.
+
+::: {.defn title="Question"}
 What would have to be true for this number to mean what we just said it means?
 And what is the plausible story where it isn't?
 :::
 
-[Candidate this week: every variable we controlled for is a confounder and
-none is a mediator or a collider, and nothing we left out moves both schooling
-and earnings. The first half is a claim about causal order that the data
-cannot check. The second half has a price, and we just computed it.]
-
-<!-- 92-97 min. Same slot every week. They answer in pairs first, then you.
-     Not that causation is hard in the abstract, but that THIS estimate rests
-     on something nameable that may well be false. -->
-
 ## Application
 
-The two-slider app. One slider moves how much the omitted variable shifts
-schooling; the other moves how much it shifts earnings.
+The app carries two sliders: how much the omitted variable raises schooling, and
+how much it raises pay. The short and the long coefficient are printed side by
+side as the sliders are set.
 
-::: {.tablenotes}
-Vote first, before anything is run: with both sliders at their midpoint, is the
-estimated return above 1.30, below it, or unchanged? Then move one slider to
-zero and take the vote again.
+::: {.defn title="Question"}
+With both sliders at their midpoint, is the short estimate above the long one,
+below it, or the same? Then set either slider to zero and answer again.
 :::
 
-Lab this week: run the three-line residual recipe on our sample and confirm you
-get the multiple-regression coefficient back, then turn the collider switch on
-and watch a coefficient you trusted change sign.
-
-<!-- 97-105 min. ConcepTest 4. The second vote is the one that teaches the
-     product structure, so do not skip it to save time. -->
+The lab for this lecture is the residual recipe: `resid()`, then `lm()`, checked
+against the two-variable `lm()`, and then the same check for the bias formula.
 
 ## Summary: Partialling Out, Bad Controls and Omitted Variable Bias
 
-Today was three separate ideas, each doing one job:
-
 ::: {.contributions}
-1. **Partialling Out.** A coefficient is the slope on the part of a variable that nothing else in the model explains.
-2. **Reading a Partial Coefficient.** Holding fixed covers only what you measured, and three kinds of variable break it in three different ways.
-3. **Omitted Variable Bias.** The bias is a product of two things, so naming them turns an objection into an argument with numbers in it.
+1.  **Partialling Out.** A coefficient is the simple-regression slope on the part of a variable the other regressors leave over, which on our sample is 1.1022 either way.
+2.  **Reading a Partial Coefficient.** Each row holds a different set of things fixed, and a control can remove a bias, remove part of the effect, or reverse the sign.
+3.  **Omitted Variable Bias.** Short minus long is $\hat{\gamma}\hat{\delta}$, which on our 120 people is $0.2206 \times 1.8867 = 0.4162$.
 :::
 
-::: {.tablenotes}
-Next week: the same machinery, but the regressors stop being years and start
-being categories and logarithms.
-:::
+## Next Lecture
 
-<!-- 105-110 min. No new material. Names match the section titles, which match
-     the roadmap.
+Lecture 3.2 keeps today's machinery unchanged and replaces the variables that go
+into it:
 
-     The .contributions component sets the bold lead on one line and the body
-     on the next, so the lead has to be a complete label and the body a
-     complete sentence. An em dash opening the body leaves a dangling dash.
+- **Logs and Elasticities:** change the units and the coefficient answers a different question.
+- **Dummy Variables:** a category shifts the intercept, relative to a base you chose.
+- **Interactions:** let the slope differ across groups, and every coefficient around it is read differently.
 
-     Exit ticket after this: what was the muddiest point? It will be the
-     collider. The answers set next week's retrieval questions. -->
+Regression anatomy carries over intact. A dummy variable is residualised in
+exactly the way ability was today, and the interpretation of an interaction is
+read off the same partial-effect rule.
 
 ## Before Lecture 3.2
 
-- **Read** [chapter].
-- **Do** the appendix derivations. There are two, and the first is the one that
-  makes every remaining week of the module readable.
-- **Try** the app: set the second slider to zero and see whether you can make
-  the bias come back.
-
-::: {.defn title="Problem set 3"}
-[Out this week, due week n. Covers 3.1 and 3.2, and asks for one written
-paragraph defending a control you chose and one rejecting a control you
-did not.]
+::: {.contributions}
+1.  **Play:** The app. Set the second slider to zero and see whether you can make the bias come back by any setting of the first.
+2.  **Apply:** Problem set 3, covering 3.1 and 3.2. One paragraph defending a control you chose, one rejecting a control you did not.
+3.  **Review:** @wooldridge2020, sections 3-2 and 3-3, on the mechanics, the partialling-out interpretation and the bias.
 :::
 
 ## {.plain}
@@ -595,44 +963,53 @@ did not.]
 ::: {.appendix}
 :::
 
-## Derivation: Regression Anatomy
+## Derivation: The First-Order Conditions for Two Regressors
 
-Show that the two-step residual recipe returns the multiple-regression
-coefficient exactly.
+The anatomy proof used three conditions on the long fit's residuals without
+obtaining them. All three come from differentiating the sum of squared residuals
+and setting each derivative to zero:
 
-::: {.tablenotes}
-Three steps. Write the first-order conditions for the two-variable fit, use
-the one for parental education to show that the residual $r_i$ is uncorrelated
-with parental education by construction, and substitute. The step that does
-the work is the second: it is orthogonality, and it is why the residual
-carries only the schooling variation that parental education has not already
-claimed. The result is the scalar version of a theorem usually stated in
-matrices [@frisch1933; @lovell1963], and the short proof is @lovell2008.
+```{=latex}
+\begin{equation}
+\sum_{i=1}^{n} \hat{u}_i = 0
+\qquad
+\sum_{i=1}^{n} (x_i - 13)\,\hat{u}_i = 0
+\qquad
+\sum_{i=1}^{n} a_i\, \hat{u}_i = 0
+\end{equation}
+```
+
+::: {.takeaway title="One Condition per Coefficient"}
+Three coefficients give three conditions, which is why the divisor for
+$\hat{\sigma}^2$ is $n-3$ here and was $n-2$ in Lecture 2.3. Wooldridge writes the
+general set for $k$ regressors as $k+1$ equations [@wooldridge2020].
 :::
 
-[Full derivation. Set as homework; worked solution published with the set.]
+## Derivation: Why the Centring Constant Cancels
 
-## Derivation: The Omitted Variable Bias Formula
+Both body derivations used $\sum (x_i - \bar{x}) = 0$ and
+$\sum (x_i - \bar{x})(x_i - 13) = S_{xx}$, proved in the appendix to Lecture 2.3:
 
-Show that the slope from the short regression equals the slope from the long
-one plus the product of two other slopes.
+```{=latex}
+\begin{equation}
+\sum_{i=1}^{n} (x_i - \bar{x})(x_i - 13)
+  = \sum_{i=1}^{n} (x_i - \bar{x})^{2}
+  + (\bar{x} - 13)\sum_{i=1}^{n} (x_i - \bar{x})
+  = S_{xx}
+\end{equation}
+```
 
-::: {.tablenotes}
-Three steps. Substitute the long model into the short estimator, split the
-result into the long slope plus a term in the omitted variable, and recognise
-that term as the auxiliary regression of the omitted variable on schooling.
-The step that does the work is the third, and it is where the product
-structure comes from. The same algebra with the omitted variable put back is
-what week 12 uses to argue about measurement error.
+::: {.takeaway title="Centring at the Leaving Certificate Costs Nothing"}
+The second sum is zero, so the 13 contributes nothing and both derivations run
+unchanged on raw schooling. Centring sets what the intercept means and leaves
+every slope on this deck where it was.
 :::
-
-[Full derivation. Set as homework; worked solution published with the set.]
 
 ## Notes and Tools
 
-- The two-slider app, and this week's residual-recipe script.
-- `resid()` and `lm()` in R, which is the whole of the anatomy lab.
-- Longer treatments of good and bad controls at this level: @huntingtonklein2022, @cunningham2021 and @angrist2015; the case for putting causal language into a first course is @angrist2017undergraduate, and the bad-control section of @angrist2009 is where most economists meet the idea.
+- **The App:** two sliders, ability to schooling and ability to pay, with the short and long coefficients printed.
+- **The Lecture in One Line:** `coef(lm(y ~ x + a))[2]` beside `coef(lm(y ~ x))[2]`.
+- **This Lecture's Lab:** `resid()` and `lm()`, checked against the two-variable fit and against $\hat{\gamma}\hat{\delta}$.
 
 ## References {.allowframebreaks}
 
@@ -640,10 +1017,12 @@ what week 12 uses to argue about measurement error.
 :::
 
 <!-- Written by citeproc from ../_shared/econometrics.bib, styled by
-     ../_shared/apa.csl (APA 7th). The entries for this deck are drafted in
-     ../../bib/3-1.bib and must be merged into the shared file before this
-     renders. A work mentioned only inside a raw LaTeX block is invisible to
-     citeproc - every citation above is in markdown prose for that reason.
+     ../_shared/apa.csl (APA 7th). Only two works are cited on this deck,
+     @wooldridge2020 and @angrist2015, and both are already in the shared
+     file from block 2. A work mentioned only inside a raw LaTeX block is
+     invisible to citeproc - every citation above is in markdown prose for
+     that reason.
 
-     The frame takes .allowframebreaks because the list outgrows one slide;
-     the theme blanks the continuation title so the breaks are invisible. -->
+     The frame takes .allowframebreaks because the list can outgrow one
+     slide; the theme blanks the continuation title so the breaks are
+     invisible. -->

@@ -1,3 +1,0 @@
-\beamer@sectionintoc {1}{What Makes an Estimator Good}{5}{0}{1}
-\beamer@sectionintoc {2}{The Sampling Distribution}{13}{0}{2}
-\beamer@sectionintoc {3}{Confidence Intervals and Tests}{24}{0}{3}
