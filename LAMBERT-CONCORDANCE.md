@@ -1,4 +1,4 @@
-# Ben Lambert Video Concordance — ECONXXXXX Econometrics I
+# Ben Lambert Video Concordance — ECON30130 Econometrics I
 
 A map from Lambert's undergraduate econometrics playlists to this module's
 twelve lectures, built from public video titles on 17 September 2026. Its job

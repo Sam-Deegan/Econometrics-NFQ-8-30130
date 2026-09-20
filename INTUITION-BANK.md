@@ -1,4 +1,4 @@
-# Intuition Bank — ECONXXXXX Econometrics I
+# Intuition Bank — ECON30130 Econometrics I
 
 Teaching devices for the places where the mathematics is standard and the
 intuition is not supplied by any source on the shelf. Written for this module;

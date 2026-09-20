@@ -121,8 +121,8 @@
 #        largest single residual 17.23, contributing 296.9 of the SSR
 #
 title: "Fitting a Line"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 2.1"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 2.1"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

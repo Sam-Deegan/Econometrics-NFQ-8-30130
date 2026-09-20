@@ -168,8 +168,8 @@
 #        std error    4.777/sqrt(633.9) = 0.1897
 #
 title: "Bias and Precision"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 2.3"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 2.3"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

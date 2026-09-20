@@ -71,8 +71,8 @@
 #      three of them on: hetero_gain, curvature and outlier_share.
 #
 title: "Diagnosing Violations"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 4.1"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 4.1"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

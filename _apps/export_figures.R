@@ -1,5 +1,5 @@
 ################################################################################
-## Project: ECONXXXXX Econometrics I                                          ##
+## Project: ECON30130 Econometrics I                                          ##
 ## Export the registered figures to _shared/figures/                          ##
 ################################################################################
 

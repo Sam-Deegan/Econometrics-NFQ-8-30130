@@ -87,8 +87,8 @@
 #      has given them the ability to say exactly what is missing.
 #
 title: "What Regression Cannot Do"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 4.2"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 4.2"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

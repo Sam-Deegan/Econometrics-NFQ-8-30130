@@ -184,8 +184,8 @@
 #      already, switched off, and each later lecture turns one on.
 #
 title: "Data and Variation"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 1.1"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 1.1"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

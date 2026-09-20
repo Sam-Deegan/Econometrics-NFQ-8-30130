@@ -289,8 +289,8 @@
 #       105-110   synthesis and exit ticket
 #
 title: "Functional Form and Dummies"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 3.2"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 3.2"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

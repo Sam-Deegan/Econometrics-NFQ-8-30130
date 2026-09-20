@@ -250,8 +250,8 @@
 #      frozen estimate as the cause.
 #
 title: "Reporting an Estimate"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 2.4"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 2.4"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

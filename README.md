@@ -1,12 +1,22 @@
-# ECONXXXXX Econometrics I
+# ECON30130 Econometrics I
 
 First undergraduate econometrics module. Twelve weeks, one deck each, plus the
 syllabus. Laid out to match ECON42550 so the two modules share a workflow, a
 theme and a set of slide rules.
 
-**Two placeholders need a find-and-replace.** `ECONXXXXX` appears in every
-filename and header; `PLACEHOLDER TERM` is the `\date{}` line at the foot of
-`_shared/econometrics-roadmap.tex`.
+UCD's own title for the module is *Econometrics: Applying Statistics to
+Economic Data*; "Econometrics I" is the working name here, against a planned
+Part II. Live descriptor:
+<https://hub.ucd.ie/usis/!W_HU_MENU.P_PUBLISH?MODULE=ECON30130&p_tag=MODULE> —
+5 credits, level 3, 22 lecture hours plus 10 computer-lab hours, assessed
+80% final examination and 20% on four in-class quizzes with the best three
+counting. Coordinator: Dr Enda Hargaden.
+
+**Both placeholders are now filled in.** `ECON30130` replaced `ECONXXXXX` in
+every filename and header on 20 September 2026, and the term is set in the
+`\date{}` line at the foot of `_shared/econometrics-roadmap.tex` — **check it
+reads the trimester you are actually teaching**, since the module runs in both
+Autumn and Spring.
 
 ## What this module is
 
@@ -50,7 +60,7 @@ deck renders from inside its own folder but not if it is moved up a level.
 
 From inside a week's folder:
 
-    quarto render ECONXXXXX_Lecture_2-1.qmd
+    quarto render ECON30130_Lecture_2-1.qmd
 
 Or every deck at once, from here:
 

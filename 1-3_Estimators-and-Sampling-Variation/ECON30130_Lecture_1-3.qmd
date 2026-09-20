@@ -133,8 +133,8 @@
 #      if B_03 changes, re-read them - they appear on six slides.
 #
 title: "Estimators and Sampling Variation"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 1.3"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 1.3"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer

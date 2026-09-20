@@ -1,5 +1,5 @@
 ################################################################################
-## Project: ECONXXXXX Econometrics I                                          ##
+## Project: ECON30130 Econometrics I                                          ##
 ## Regression exhibits: the population, the sample, and the builders          ##
 ################################################################################
 

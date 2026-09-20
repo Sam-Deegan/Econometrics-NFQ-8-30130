@@ -288,8 +288,8 @@
 #      regressions to the last printed digit.
 #
 title: "Adding Controls"
-subtitle: "ECONXXXXX Econometrics I"
-short-title: "ECONXXXXX -- Lecture 3.1"
+subtitle: "ECON30130 Econometrics I"
+short-title: "ECON30130 -- Lecture 3.1"
 author: "Sam Deegan"
 institute: "University College Dublin"
 format: dublin-beamer
